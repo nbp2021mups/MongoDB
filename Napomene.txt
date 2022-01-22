@@ -1,0 +1,15 @@
+Članovi tima MUPS:
+- Miljana 	Simić 		[17401]
+- Uroš 		Pešić 		[17356]
+- Petar 	Petković 	[17339]
+- Stefan 	Aleksić 	[16995]
+
+
+U svrhu deljenja baze je napravljen nalog:
+MongoDB (https://cloud.mongodb.com/):
+    username: "nbp2021mups@gmail.com"
+    password: "Imate li 1000 pereca?"
+	
+Connection string za povezivanje na cluster: "mongodb+srv://mups2021:ImateLi1000Pereca@nbpno1.h4xhj.mongodb.net/baza?retryWrites=true&w=majority"
+
+Ako je bilo šta potrebno objasniti, otvoreni smo za bilo kakva pitanja.
