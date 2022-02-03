@@ -15,7 +15,7 @@ const schema = new mongoose.Schema({
         required: [true, "Name is required!"],
     },
     offeredProducts: {
-        type: [String],
+        type: [mongoose.Types.ObjectId],
     },
 });
 

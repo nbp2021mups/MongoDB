@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "2c9859af-00cd-4cd4-9cbb-5414dbdf71c5",
+		"_postman_id": "2cd25cd6-64eb-4ac9-ac95-6dd9a7cf89f8",
 		"name": "E-Knjižara",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -132,6 +132,431 @@
 							"port": "3000",
 							"path": [
 								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"stefan1234\",\r\n    \"password\": \"stefan1234\",\r\n    \"firstName\" : \"Stefan\",\r\n    \"lastName\": \"Aleksic\",\r\n    \"contact\":{\r\n        \"email\":\"stefan.sa.aleksic@gmail.com\",\r\n        \"phone\":\"+381677772300\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/users/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"stefan123\",\r\n    \"password\": \"stefan123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/users/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Companies",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pib\": \"1234512345\",\r\n    \"password\": \"laguna123\",\r\n    \"name\": \"Laguna\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/companies/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"companies",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pib\": \"1234512345\",\r\n    \"password\": \"laguna123\",\r\n    \"name\": \"Laguna\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/companies/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"companies",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/books/search?skip=0&count=10&filter={}&select",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books",
+								"search"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "count",
+									"value": "10"
+								},
+								{
+									"key": "filter",
+									"value": "{}"
+								},
+								{
+									"key": "select",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create - Rent out",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Stefan/Desktop/download.png"
+								},
+								{
+									"key": "isbn",
+									"value": "1234567870",
+									"type": "default"
+								},
+								{
+									"key": "title",
+									"value": "Tryouts",
+									"type": "default"
+								},
+								{
+									"key": "author",
+									"value": "Stefan Aleksic",
+									"type": "default"
+								},
+								{
+									"key": "genre",
+									"value": "comedy",
+									"type": "default"
+								},
+								{
+									"key": "stockNo",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "published",
+									"value": "\"02.03.2000.\"",
+									"type": "default"
+								},
+								{
+									"key": "price",
+									"value": "1000",
+									"type": "default"
+								},
+								{
+									"key": "description",
+									"value": "Book about testing",
+									"type": "default"
+								},
+								{
+									"key": "format",
+									"value": "12x15cm",
+									"type": "default"
+								},
+								{
+									"key": "pagesNo",
+									"value": "250",
+									"type": "default"
+								},
+								{
+									"key": "tags",
+									"value": "book",
+									"type": "default"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/books/rent-out",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books",
+								"rent-out"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create - Put Up For Sale",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Stefan/Desktop/download.png"
+								},
+								{
+									"key": "isbn",
+									"value": "123456787770",
+									"type": "default"
+								},
+								{
+									"key": "title",
+									"value": "Tryouts",
+									"type": "default"
+								},
+								{
+									"key": "author",
+									"value": "Stefan Aleksic",
+									"type": "default"
+								},
+								{
+									"key": "genre",
+									"value": "comedy",
+									"type": "default"
+								},
+								{
+									"key": "stockNo",
+									"value": "10",
+									"type": "default"
+								},
+								{
+									"key": "published",
+									"value": "\"02.03.2000.\"",
+									"type": "default"
+								},
+								{
+									"key": "price",
+									"value": "1000",
+									"type": "default"
+								},
+								{
+									"key": "description",
+									"value": "Book about testing",
+									"type": "default"
+								},
+								{
+									"key": "format",
+									"value": "12x15cm",
+									"type": "default"
+								},
+								{
+									"key": "pagesNo",
+									"value": "250",
+									"type": "default"
+								},
+								{
+									"key": "tags",
+									"value": "book",
+									"type": "default"
+								},
+								{
+									"key": "company",
+									"value": "1234512345",
+									"type": "default"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/books/put-up-for-sale",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books",
+								"put-up-for-sale"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update - Buy",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/books",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/books?filter={\"isbn\": \"\\\"1234567870\\\"\"}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"isbn\": \"\\\"1234567870\\\"\"}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/books",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books"
 							]
 						}
 					},

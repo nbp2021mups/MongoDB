@@ -4,7 +4,7 @@ const schema = new mongoose.Schema({
     isbn: {
         type: String,
         index: true,
-        unique: [true, "ISBN must be a unieque value!"],
+        unique: [true, "ISBN must be a unique value!"],
         required: [true, "ISBN is required!"],
     },
     title: {
@@ -48,6 +48,10 @@ const schema = new mongoose.Schema({
     tags: {
         type: [String],
         default: [],
+    },
+    image: {
+        type: String,
+        required: [true, "Image is required!"],
     },
 });
 

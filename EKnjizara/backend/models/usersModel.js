@@ -22,11 +22,13 @@ const schema = mongoose.Schema({
         email: {
             type: String,
             required: [true, "Email address is required!"],
+            unique: [true, "Email address is already taken!"],
             match: [/[\w-\.]+@([\w-]+\.)+[\w-]{2,4}/, "Wrong email address format!"],
         },
         phone: {
             type: String,
             required: [true, "Phone number is required!"],
+            unique: [true, "Phone number is already taken!"],
             match: [/\+[1-9]{1,3}[0-9]{8,10}/, "Wrong phone number format!"],
         },
     },
@@ -42,7 +44,7 @@ const schema = mongoose.Schema({
             default: 0,
         },
         products: {
-            type: [String],
+            type: [mongoose.Types.ObjectId],
         },
     },
 });
