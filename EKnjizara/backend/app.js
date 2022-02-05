@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 
+const authRoute = require("./routes/auth");
 const booksRoute = require("./routes/books");
 const companiesRoute = require("./routes/companies");
 const productsRoute = require("./routes/products");
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use("/auth", authRoute);
 app.use("/books", booksRoute);
 app.use("/companies", companiesRoute);
 app.use("/products", productsRoute);

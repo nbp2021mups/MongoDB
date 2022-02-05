@@ -4,7 +4,7 @@ const schema = new mongoose.Schema({
     isbn: {
         type: String,
         index: true,
-        unique: [true, "ISBN mora biti unikatan!"],
+        unique: [true, "ISBN mora biti jedinstven!"],
         required: [true, "ISBN je obavezan!"],
     },
     autor: {

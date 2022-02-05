@@ -19,6 +19,10 @@ const schema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
     },
+    potvrdjena: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const OrderModel = mongoose.model("order", schema);

@@ -6,11 +6,13 @@ const schema = new mongoose.Schema({
         type: String,
         unique: [true, "PIB mora biti jedinstven!"],
         required: [true, "PIB je obavezan!"],
+        index: true,
     },
     username: {
         type: String,
         unique: [true, "Username mora biti jedinstven!"],
         required: [true, "Username je obavezan!"],
+        index: true,
     },
     lozinka: {
         type: String,
@@ -25,12 +27,14 @@ const schema = new mongoose.Schema({
         required: [true, "Email adresa je obavezna!"],
         unique: [true, "Email adresa mora biti jedinstvena!"],
         validate: [isEmail, "Pogresan format email adrese!"],
+        index: true,
     },
     telefon: {
         type: String,
         required: [true, "Broj telefona je obavezan!"],
         unique: [true, "Broj telefona mora biti jedinstven!"],
         match: [/\+[1-9]{1,3}[0-9]{8,10}/, "Pogresan format broja telefona!"],
+        index: true,
     },
     ponudjeniProizvodi: {
         type: [mongoose.Types.ObjectId],
