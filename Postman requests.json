@@ -141,125 +141,11 @@
 		},
 		{
 			"name": "Users",
-			"item": [
-				{
-					"name": "Register",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"stefssannn1234\",\r\n    \"lozinka\": \"stefan1234\",\r\n    \"ime\" : \"Stefan\",\r\n    \"prezime\": \"Aleksic\",\r\n    \"email\": \"stefan.sa.aleksic@gmail.com\",\r\n    \"telefon\": \"0677772300\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:3000/users/register",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"users",
-								"register"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"stefan123\",\r\n    \"password\": \"stefan123\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:3000/users/login",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"users",
-								"login"
-							]
-						}
-					},
-					"response": []
-				}
-			]
+			"item": []
 		},
 		{
 			"name": "Companies",
-			"item": [
-				{
-					"name": "Register",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"pib\": \"1234512345\",\r\n    \"password\": \"laguna123\",\r\n    \"name\": \"Laguna\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:3000/companies/register",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"companies",
-								"register"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"pib\": \"1234512345\",\r\n    \"password\": \"laguna123\",\r\n    \"name\": \"Laguna\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:3000/companies/login",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"companies",
-								"login"
-							]
-						}
-					},
-					"response": []
-				}
-			]
+			"item": []
 		},
 		{
 			"name": "Books",
@@ -294,7 +180,7 @@
 								},
 								{
 									"key": "select",
-									"value": null
+									"value": ""
 								}
 							]
 						}
@@ -369,12 +255,7 @@
 									"value": "book",
 									"type": "default"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "localhost:3000/books/rent-out",
@@ -463,12 +344,7 @@
 									"value": "1234512345",
 									"type": "default"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "localhost:3000/books/put-up-for-sale",
@@ -557,6 +433,95 @@
 							"port": "3000",
 							"path": [
 								"books"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Registracija kompanije",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pib\": \"12343512345\",\r\n    \"username\": \"lagunna123\",\r\n    \"lozinka\": \"laguna123\",\r\n    \"naziv\": \"Laguna\",\r\n    \"email\": \"laguna@gmail.com\",\r\n    \"telefon\": \"+3816576234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/auth/register-company",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"register-company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registracija korisnika",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"stefssannn1234\",\r\n    \"lozinka\": \"stefan1234\",\r\n    \"ime\" : \"Stefan\",\r\n    \"prezime\": \"Aleksic\",\r\n    \"email\": \"stefan.sa.aleksic@gmail.com\",\r\n    \"telefon\": \"+381677772300\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/auth/register-user",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"register-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Prijava",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"stefan123\",\r\n    \"lozinka\": \"stefan123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
 							]
 						}
 					},

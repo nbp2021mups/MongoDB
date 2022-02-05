@@ -45,7 +45,10 @@ router.post("/register-user", async(req, res) => {
                     console.log(err);
                     res
                         .status(409)
-                        .send({ poruka: "Nastala je greska!", sadrzaj: err.message });
+                        .send({
+                            poruka: "Nastala je Nastala je greska!",
+                            sadrzaj: err.message,
+                        });
                 });
         } else if (korisnik.username == req.body.username)
             return res.status(409).send({
@@ -66,7 +69,7 @@ router.post("/register-user", async(req, res) => {
         console.log(ex);
         return res
             .status(501)
-            .send({ poruka: "Nastala je serverska greska!", sadrzaj: ex });
+            .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
 
@@ -129,7 +132,7 @@ router.post("/register-company", async(req, res) => {
         console.log(ex);
         return res
             .status(501)
-            .send({ poruka: "Nastala je serverska greska!", sadrzaj: ex });
+            .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
 
@@ -155,7 +158,7 @@ router.post("/login", async(req, res) => {
 
         if (!user)
             return res.status(401).send({
-                poruka: "Greska!",
+                poruka: "Nastala je greska!",
                 sadrzaj: "Prosledjeni podaci ne odgovaraju nijednom korisniku!",
             });
         else {
@@ -181,18 +184,23 @@ router.post("/login", async(req, res) => {
                     else
                         return res
                             .status(401)
-                            .send({ poruka: "Greska!", sadrzaj: "Pogresna lozinka!" });
+                            .send({
+                                poruka: "Nastala je greska!",
+                                sadrzaj: "Pogresna lozinka!",
+                            });
                 })
                 .catch((ex) => {
                     console.log(ex);
-                    return res.status(409).send({ poruka: "Greska!", sadrzaj: ex });
+                    return res
+                        .status(409)
+                        .send({ poruka: "Nastala je greska!", sadrzaj: ex });
                 });
         }
     } catch (ex) {
         console.log(ex);
         return res
             .status(501)
-            .send({ poruka: "Nastala je serverska greska!", sadrzaj: ex });
+            .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
 

@@ -14,17 +14,19 @@ router.get("/search", (req, res) => {
             .skip(req.query.skip)
             .limit(req.query.count)
             .then((result) => {
-                return res.send({ msg: "Success!", content: result });
+                return res.send({ poruka: "Uspesno!", sadrzaj: result });
             })
             .catch((err) => {
                 console.log(err);
                 return res
                     .status(409)
-                    .send({ msg: "Error occurred!", content: err.message });
+                    .send({ poruka: "Nastala je greska!", sadrzaj: err.message });
             });
     } catch (ex) {
         console.log(ex);
-        return res.status(501).send({ msg: "Server error occurred!", content: ex });
+        return res
+            .status(501)
+            .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
 
@@ -32,17 +34,19 @@ router.delete("/", (req, res) => {
     try {
         BookModel.deleteOne(JSON.parse(req.query.filter))
             .then((result) => {
-                return res.send({ msg: "Success!", content: result });
+                return res.send({ poruka: "Uspesno!", sadrzaj: result });
             })
             .catch((err) => {
                 console.log(err);
                 return res
                     .status(409)
-                    .send({ msg: "Error occurred!", content: err.message });
+                    .send({ poruka: "Nastala je greska!", sadrzaj: err.message });
             });
     } catch (ex) {
         console.log(ex);
-        return res.status(501).send({ msg: "Server error occurred!", content: ex });
+        return res
+            .status(501)
+            .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
 
@@ -62,23 +66,27 @@ router.post(
                 })
                 .save()
                 .then((result) => {
-                    return res.send({ msg: "Success!", content: result });
+                    return res.send({ poruka: "Uspesno!", sadrzaj: result });
                 })
                 .catch((err) => {
                     console.log(err);
                     return res
                         .status(409)
-                        .send({ msg: "Error occurred!", content: err.message });
+                        .send({ poruka: "Nastala je greska!", sadrzaj: err.message });
                 });
             else
                 return res
                     .status(409)
-                    .send({ msg: "Request must include an image file!", content: {} });
+                    .send({
+                        poruka: "Nastala je greska!",
+                        sadrzaj: "Potrebno je ubaciti sliku!",
+                    });
         } catch (ex) {
             console.log(ex);
-            return res
-                .status(501)
-                .send({ msg: "Server error occurred!", content: ex });
+            return res.status(501).send({
+                poruka: "Nastala je greska na serverskoj strani!",
+                sadrzaj: ex,
+            });
         }
     }
 );
@@ -105,38 +113,43 @@ router.post(
                         })
                         .save()
                         .then((result) => {
-                            return res.send({ msg: "Success!", content: result });
+                            return res.send({ poruka: "Uspesno!", sadrzaj: result });
                         })
                         .catch((err) => {
                             console.log(err);
-                            return res
-                                .status(409)
-                                .send({ msg: "Error occurred!", content: err.message });
+                            return res.status(409).send({
+                                poruka: "Nastala je greska!",
+                                sadrzaj: err.message,
+                            });
                         });
                     else
-                        return res
-                            .status(409)
-                            .send({ msg: "Error company doesn't exist", content: {} });
+                        return res.status(409).send({
+                            poruka: "Nastala je greska!",
+                            sadrzaj: "Kompanija ne postoji!",
+                        });
                 })
                 .catch((ex) => {
                     console.log(ex);
                     return res
                         .status(409)
-                        .send({ msg: "Error occurred!", content: ex });
+                        .send({ poruka: "Nastala je greska!", sadrzaj: ex });
                 });
             else if (req.file)
-                return res
-                    .status(409)
-                    .send({ msg: "Request must include an image file!", content: {} });
+                return res.status(409).send({
+                    poruka: "Nastala je greska!",
+                    sadrzaj: "Potrebno je ubaciti sliku!",
+                });
             else
-                return res
-                    .status(409)
-                    .send({ msg: "Request must include a company field!", content: {} });
+                return res.status(409).send({
+                    poruka: "Greska!",
+                    sadrzaj: "Morate navesti pib kompanije!",
+                });
         } catch (ex) {
             console.log(ex);
-            return res
-                .status(501)
-                .send({ msg: "Server error occurred!", content: ex });
+            return res.status(501).send({
+                poruka: "Nastala je greska na serverskoj strani!",
+                sadrzaj: ex,
+            });
         }
     }
 );

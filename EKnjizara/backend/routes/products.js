@@ -10,17 +10,19 @@ router.get("/search", (req, res) => {
             .skip(req.query.skip)
             .limit(req.query.count)
             .then((result) => {
-                return res.send({ msg: "Success!", content: result });
+                return res.send({ poruka: "Uspesno!", sadrzaj: result });
             })
             .catch((err) => {
                 console.log(err);
                 return res
                     .status(409)
-                    .send({ msg: "Error occurred!", content: err.message });
+                    .send({ poruka: "Nastala je greska!", sadrzaj: err.message });
             });
     } catch (ex) {
         console.log(ex);
-        return res.status(501).send({ msg: "Server error occurred!", content: ex });
+        return res
+            .status(501)
+            .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
 
@@ -29,17 +31,19 @@ router.post("/", (req, res) => {
         new ProductModel(req.body)
             .save()
             .then((response) => {
-                return res.send({ msg: "Success!", content: response });
+                return res.send({ poruka: "Uspesno!", sadrzaj: response });
             })
             .catch((err) => {
                 console.log(err);
                 return res
                     .status(409)
-                    .send({ msg: "Error occurred!", content: err.message });
+                    .send({ poruka: "Nastala je greska!", sadrzaj: err.message });
             });
     } catch (ex) {
         console.log(ex);
-        return res.status(501).send({ msg: "Server error occurred!", content: ex });
+        return res
+            .status(501)
+            .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
 
@@ -47,17 +51,19 @@ router.put("/", (req, res) => {
     try {
         ProductModel.updateOne(req.body.filter, req.body.update)
             .then((response) => {
-                return res.send({ msg: "Success!", content: response });
+                return res.send({ poruka: "Uspesno!", sadrzaj: response });
             })
             .catch((err) => {
                 console.log(err);
                 return res
                     .status(409)
-                    .send({ msg: "Error occurred!", content: err.message });
+                    .send({ poruka: "Nastala je greska!", sadrzaj: err.message });
             });
     } catch (ex) {
         console.log(ex);
-        return res.status(501).send({ msg: "Server error occurred!", content: ex });
+        return res
+            .status(501)
+            .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
 
@@ -65,17 +71,19 @@ router.delete("/", (req, res) => {
     try {
         ProductModel.deleteOne(JSON.parse(req.query.filter))
             .then((response) => {
-                return res.send({ msg: "Success!", content: response });
+                return res.send({ poruka: "Uspesno!", sadrzaj: response });
             })
             .catch((err) => {
                 console.log(err);
                 return res
                     .status(409)
-                    .send({ msg: "Error occurred!", content: err.message });
+                    .send({ poruka: "Nastala je greska!", sadrzaj: err.message });
             });
     } catch (ex) {
         console.log(ex);
-        return res.status(501).send({ msg: "Server error occurred!", content: ex });
+        return res
+            .status(501)
+            .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
 
