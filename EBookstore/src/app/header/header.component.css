@@ -1,3 +1,11 @@
-.header{
-    background-color: aquamarine;
+.header {
+    background-color: #ade8f4;
+}
+.nav-button {
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
+}
+.right{
+    margin-left: auto;
 }
