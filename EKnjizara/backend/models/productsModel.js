@@ -1,43 +1,56 @@
 const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
-    barcode: {
+    naziv: {
         type: String,
-        match: [/[0-9]{13}/, "Wrong barcode format!"],
-        unique: [true, "Barcode must be unique for each product!"],
-        required: [true, "Barcode is required!"],
+        required: [true, "Naziv proizvoda je obavezan!"],
         index: true,
     },
-    name: {
+    // Izdavac/proizvodjac
+    proizvodjac: {
         type: String,
-        required: [true, "Name of the product is required!"],
-        index: true,
+        required: [true, "Proizvodjac je obavezan!"],
     },
-    stockNo: {
+    kolicina: {
         type: Number,
-        required: [true, "Number of products in stock is required!"],
-        min: [0, "Number of products in stock cannot be a negative number!"],
+        required: [true, "Obavezno je navesti kolicinu!"],
+        min: [0, "Kolicina ne sme biti negativna vrednost!"],
     },
-    price: {
+    cena: {
         type: Number,
-        required: [true, "Price tag is required!"],
+        required: [true, "Cena mora biti navedena!"],
+        min: [0, "Cena ne sme biti negativna vrednost!"],
     },
-    image: {
+    slika: {
         type: String,
         default: "template.jpg",
     },
-    category: {
+    kategorija: {
         type: String,
-        required: [true, "Product category is required!"],
+        required: [true, "Kategorija proizvoda je obavezna!"],
         enum: [
-            "books",
-            "backpacks",
-            "writing utencils",
-            "drawing utencils",
-            "other",
+            "knjiga",
+            "knjiga na izdavanje",
+            "ranac",
+            "sveska",
+            "slagalica",
+            "drustvena igra",
+            "privezak",
         ],
     },
-});
+    opis: {
+        type: String,
+    },
+    poreklo: {
+        ime: String,
+        prezime: String,
+        naziv: String,
+        id: {
+            type: mongoose.Types.ObjectId,
+            required: [true, "ID je obavezno polje!"],
+        },
+    },
+}, { strict: false });
 
 const ProductModel = mongoose.model("product", schema);
 

@@ -1,20 +1,38 @@
 const mongoose = require("mongoose");
+const { isEmail } = require("validator");
 
 const schema = new mongoose.Schema({
     pib: {
         type: String,
-        unique: [true, "PIB must be unique!"],
-        required: [true, "PIB is required!"],
+        unique: [true, "PIB mora biti jedinstven!"],
+        required: [true, "PIB je obavezan!"],
     },
-    password: {
+    username: {
         type: String,
-        required: [true, "Password is required!"],
+        unique: [true, "Username mora biti jedinstven!"],
+        required: [true, "Username je obavezan!"],
     },
-    name: {
+    lozinka: {
         type: String,
-        required: [true, "Name is required!"],
+        required: [true, "Lozinka je obavezna!"],
     },
-    offeredProducts: {
+    naziv: {
+        type: String,
+        required: [true, "Naziv je obavezan!"],
+    },
+    email: {
+        type: String,
+        required: [true, "Email adresa je obavezna!"],
+        unique: [true, "Email adresa mora biti jedinstvena!"],
+        validate: [isEmail, "Pogresan format email adrese!"],
+    },
+    telefon: {
+        type: String,
+        required: [true, "Broj telefona je obavezan!"],
+        unique: [true, "Broj telefona mora biti jedinstven!"],
+        match: [/\+[1-9]{1,3}[0-9]{8,10}/, "Pogresan format broja telefona!"],
+    },
+    ponudjeniProizvodi: {
         type: [mongoose.Types.ObjectId],
     },
 });

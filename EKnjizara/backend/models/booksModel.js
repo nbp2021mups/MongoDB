@@ -4,54 +4,38 @@ const schema = new mongoose.Schema({
     isbn: {
         type: String,
         index: true,
-        unique: [true, "ISBN must be a unique value!"],
-        required: [true, "ISBN is required!"],
+        unique: [true, "ISBN mora biti unikatan!"],
+        required: [true, "ISBN je obavezan!"],
     },
-    title: {
+    autor: {
         type: String,
-        required: [true, "Book title is required!"],
+        required: [true, "Autor je obavezan!"],
         index: true,
     },
-    author: {
-        type: String,
-        required: [true, "Author info is required!"],
-        index: true,
-    },
-    genre: {
+    zanr: {
         type: [String],
-        minlength: [1, "Book must have at least one genre!"],
+        minlength: [1, "Knjiga mora imati barem jedan zanr!"],
         index: true,
+        enum: [
+            "Drama",
+            "Komedija",
+            "Triler",
+            "Naucna fantastika",
+            "Psihologija",
+            "Stucna literatura",
+            "Zdravlje",
+        ],
     },
-    stockNo: {
-        type: Number,
-        required: [true, "Stock number is required!"],
-        min: [0, "Stock number cannot be a negative value!"],
-    },
-    published: {
+    izdata: {
         type: Date,
         index: true,
     },
-    price: {
-        type: Number,
-        required: [true, "Price tag is required!"],
-    },
-    description: {
-        type: String,
-    },
-    format: {
-        type: String,
-        match: [/[0-9][1-9]+[Xx][0-9][1-9]+\w{2,5}/, "Book format is invalid!"],
-    },
-    pagesNo: {
+    brojStrana: {
         type: Number,
     },
-    tags: {
+    tagovi: {
         type: [String],
         default: [],
-    },
-    image: {
-        type: String,
-        required: [true, "Image is required!"],
     },
 });
 

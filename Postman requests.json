@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "2cd25cd6-64eb-4ac9-ac95-6dd9a7cf89f8",
+		"_postman_id": "34c696f3-bf95-464a-8faa-24441f118e84",
 		"name": "E-Knjižara",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -117,7 +117,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"barcode\": 1235560891034,\r\n    \"category\": \"books\",\r\n    \"name\": \"Znam\",\r\n    \"price\": 150,\r\n    \"stockNo\": 999\r\n}",
+							"raw": "{\r\n    \"naziv\": \"Proba\",\r\n    \"proizvodjac\": \"Proba 123\",\r\n    \"kolicina\": 100,\r\n    \"cena\": 150,\r\n    \"slika\": \"Slika.jpg\",\r\n    \"kategorija\": \"knjiga\",\r\n    \"opis\": \"asvhfvdshfdsu\",\r\n    \"ashgdjashd\":24243\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -149,7 +149,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"stefan1234\",\r\n    \"password\": \"stefan1234\",\r\n    \"firstName\" : \"Stefan\",\r\n    \"lastName\": \"Aleksic\",\r\n    \"contact\":{\r\n        \"email\":\"stefan.sa.aleksic@gmail.com\",\r\n        \"phone\":\"+381677772300\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"username\": \"stefssannn1234\",\r\n    \"lozinka\": \"stefan1234\",\r\n    \"ime\" : \"Stefan\",\r\n    \"prezime\": \"Aleksic\",\r\n    \"email\": \"stefan.sa.aleksic@gmail.com\",\r\n    \"telefon\": \"0677772300\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

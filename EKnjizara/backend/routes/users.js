@@ -10,7 +10,7 @@ router.post("/register", async(req, res) => {
     try {
         new UserModel({
                 ...req.body,
-                password: bcrypt.hashSync(req.body.password, 12),
+                lozinka: bcrypt.hashSync(req.body.lozinka, 12),
             })
             .save()
             .then((result) => {

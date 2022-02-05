@@ -1,51 +1,78 @@
 const mongoose = require("mongoose");
+const { isEmail } = require("validator");
 
 const schema = mongoose.Schema({
     username: {
         type: String,
-        unique: [true, "Provided username is already taken!"],
-        required: [true, "Usename is required!"],
+        unique: [true, "Username mora biti jedinstven!"],
+        required: [true, "Username je obavezan!"],
     },
-    password: {
+    lozinka: {
         type: String,
-        required: [true, "Password is required!"],
+        required: [true, "Lozinka je obavezna!"],
     },
-    firstName: {
+    ime: {
         type: String,
-        required: [true, "First name is required!"],
+        required: [true, "Ime je obavezno!"],
     },
-    lastName: {
+    prezime: {
         type: String,
-        required: [true, "Last name is required!"],
+        required: [true, "Prezime je obavezno!"],
     },
-    contact: {
-        email: {
-            type: String,
-            required: [true, "Email address is required!"],
-            unique: [true, "Email address is already taken!"],
-            match: [/[\w-\.]+@([\w-]+\.)+[\w-]{2,4}/, "Wrong email address format!"],
-        },
-        phone: {
-            type: String,
-            required: [true, "Phone number is required!"],
-            unique: [true, "Phone number is already taken!"],
-            match: [/\+[1-9]{1,3}[0-9]{8,10}/, "Wrong phone number format!"],
-        },
+    email: {
+        type: String,
+        required: [true, "Email adresa je obavezna!"],
+        unique: [true, "Email adresa mora biti jedinstvena!"],
+        validate: [isEmail, "Pogresan format email adrese!"],
     },
-    cart: {
-        price: {
+    telefon: {
+        type: String,
+        required: [true, "Broj telefona je obavezan!"],
+        unique: [true, "Broj telefona mora biti jedinstven!"],
+        match: [/\+[1-9]{1,3}[0-9]{8,10}/, "Pogresan format broja telefona!"],
+    },
+    korpa: {
+        cena: {
             type: Number,
-            min: [0, "Price cannot be a negative value!"],
+            min: [0, "Cena ne moze biti negativna vrednost!"],
             default: 0,
         },
-        productsNo: {
+        brojProizvoda: {
             type: Number,
-            min: [0, "Number of products in the cart cannot be a negative value!"],
+            min: [0, "Broj proizvoda ne moze da bude negativna vrednost!"],
             default: 0,
         },
-        products: {
-            type: [mongoose.Types.ObjectId],
-        },
+        proizvodi: [{
+            id: {
+                type: mongoose.Types.ObjectId,
+                required: [true, "Mora se navesti ID proizvoda!"],
+            },
+            naziv: {
+                type: String,
+                required: [true, "Naziv proizvoda je obavezan!"],
+            },
+            cena: {
+                type: Number,
+                required: [true, "Cena mora biti navedena!"],
+                min: [0, "Cena ne sme biti negativna vrednost!"],
+            },
+            slika: {
+                type: String,
+                default: "template.jpg",
+            },
+            kategorija: {
+                type: String,
+                required: [true, "Kategorija proizvoda je obavezna!"],
+                enum: [
+                    "knjiga",
+                    "ranac",
+                    "sveska",
+                    "slagalica",
+                    "drustvena igra",
+                    "privezak",
+                ],
+            },
+        }, ],
     },
 });
 
