@@ -12,4 +12,12 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
+  onShoppingCartClicked() {
+    console.log('korpa');
+  }
+
+  onLogoutClicked() {
+    console.log('logout');
+  }
 }
