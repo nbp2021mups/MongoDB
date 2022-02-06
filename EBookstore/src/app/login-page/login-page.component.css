@@ -14,6 +14,10 @@
   background-image: url(https://mcdn.wallpapersafari.com/medium/83/78/IGHYr9.jpg);
   background-repeat: no-repeat;
   background-size: cover;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -46%);
 }
 mat-card {
   height: 600px;

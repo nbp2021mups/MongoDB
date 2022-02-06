@@ -8,6 +8,10 @@
   background-image: url(https://media.istockphoto.com/photos/pink-orange-backgrounds-watercolor-painting-abstract-picture-id514635080?k=20&m=514635080&s=170667a&w=0&h=HKZH0w79sKTyhOARSZppyGxGqMrFzhJrkZrj8WINK5c=);
   background-repeat: no-repeat;
   background-size: cover;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -46%);
 }
 
 .slika {
@@ -40,5 +44,8 @@ input[type="file"] {
 @media only screen and (max-width: 990px) {
   .reg {
     height: 100%;
+  }
+  .register{
+    transform: translate(-50%, -35%);
   }
 }

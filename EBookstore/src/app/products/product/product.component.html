@@ -1,6 +1,6 @@
 <div class="container product p-2 border">
 
-    <img class="img-fluid product-item" [src]='product.slika' alt="" (click)="onProductClicked()">
+    <img class="img-fluid product-item mb-1" [src]='product.slika' alt="" (click)="onProductClicked()">
 
     <div *ngIf="kategorija == 2">
         <p class="product-item name">{{product.naziv}}</p>
