@@ -25,7 +25,7 @@ export class LoginPageComponent implements OnInit {
 
     const username: string = this.form.get('username').value;
     const password: string = this.form.get('lozinka').value;
-
+    console.log(username,password)
     /*this.authService.login(username, password).subscribe(
       {
         next: (resp) =>{
