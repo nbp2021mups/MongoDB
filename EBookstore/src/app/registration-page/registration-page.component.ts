@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { mimeType } from '../mime-type-validator/mime-type-validator';
 
+import { Router } from '@angular/router';
+import { AuthService } from 'src/services/auth.service';
+
 
 @Component({
   selector: 'app-registration-page',
@@ -16,7 +19,7 @@ export class RegistrationPageComponent implements OnInit {
   selectedType: string = 'customer';
   imagePreview: string = '';
 
-  constructor() { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
 
@@ -47,35 +50,77 @@ export class RegistrationPageComponent implements OnInit {
 
   onSubmit() {
 
+    const data: FormData = new FormData();
+
     const email = this.form.get('email').value;
+    data.append('email', email);
     const username = this.form.get('username').value;
+    data.append('username', username);
     const password = this.form.get('lozinka').value;
-    const telefon = this.form.get('telefon').value;
+    data.append('lozinka', password);
+    const telefon = '+381'+this.form.get('telefon').value;
+    data.append('telefon', telefon);
+
+
 
     if (this.selectedType=='customer'){
       const fName = this.form.get('ime').value;
+      data.append('ime', fName);
       const lName = this.form.get('prezime').value;
-      const adresss = this.form.get('adresa').value;
+      data.append('prezime', lName);
+      const address = this.form.get('adresa').value;
+      data.append('adresa', address);
 
-
+      this.authService.registerUser(data).subscribe({
+        next : resp =>{
+          this.success=resp.poruka;
+          setTimeout(() => {
+            this.router.navigate(['prijavljivanje']);
+          }, 3000);
+        },
+        error : err =>{
+          this.error = err.error.sadrzaj;
+          setTimeout(() => {
+            this.error = '';
+          }, 3000);
+        }
+      });
 
     }
     else{
       const name = this.form.get('naziv').value;
+      data.append('naziv', name);
       const pib = this.form.get('pib').value;
+      data.append('pib', pib);
       const image = this.form.value.slika;
+      data.append('image', image);
+
+      this.authService.registerBookstore(data).subscribe({
+        next : resp =>{
+          this.success=resp.poruka;
+          setTimeout(() => {
+            this.router.navigate(['prijavljivanje']);
+          }, 3000);
+        },
+        error : err =>{
+          this.error = err.error.sadrzaj;
+          setTimeout(() => {
+            this.error = '';
+          }, 3000);
+        }
+
+      });
 
 
 
     }
-
-
 
 
   }
 
   checkType(event) {
     this.selectedType=event.value;
+    this.form.reset();
   }
 
   onImagePicked(event: Event) {
