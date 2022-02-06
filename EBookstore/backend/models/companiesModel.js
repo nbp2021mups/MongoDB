@@ -36,6 +36,10 @@ const schema = new mongoose.Schema({
         match: [/\+[1-9]{1,3}[0-9]{8,10}/, "Pogresan format broja telefona!"],
         index: true,
     },
+    slika: {
+        type: String,
+        default: "http://localhost:3000/images/template-company.png",
+    },
     ponudjeniProizvodi: {
         type: [mongoose.Types.ObjectId],
     },

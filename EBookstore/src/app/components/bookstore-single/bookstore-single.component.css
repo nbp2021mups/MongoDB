@@ -1,0 +1,14 @@
+img {
+    object-fit: cover;
+    width: 100%;
+    height: 50vh;
+}
+
+.company {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.company:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+}
