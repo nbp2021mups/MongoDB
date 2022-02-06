@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/services/auth.service';
 
 @Component({
   selector: 'app-login-page',
@@ -12,7 +14,7 @@ export class LoginPageComponent implements OnInit {
   hide = true;
   error: string = '';
 
-  constructor() { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -25,8 +27,8 @@ export class LoginPageComponent implements OnInit {
 
     const username: string = this.form.get('username').value;
     const password: string = this.form.get('lozinka').value;
-    console.log(username,password)
-    /*this.authService.login(username, password).subscribe(
+    console.log(username,password);
+    this.authService.login(username, password).subscribe(
       {
         next: (resp) =>{
           this.router.navigate(['/home']);
@@ -37,7 +39,7 @@ export class LoginPageComponent implements OnInit {
             this.error = '';
           }, 3000);
         }
-      });*/
+      });
 
   }
 

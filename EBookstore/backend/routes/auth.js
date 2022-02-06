@@ -165,17 +165,15 @@ router.post("/login", async(req, res) => {
         let user = await UserModel.findOne({
             $or: [
                 { username: req.body.username },
-                { email: req.body.username },
-                { telefon: req.body.telefon },
+                { email: req.body.username }
             ],
         });
         if (!user) {
             user = await CompanyModel.findOne({
                 $or: [
-                    { pib: req.body.pib },
+                    { pib: req.body.username },
                     { username: req.body.username },
-                    { email: req.body.username },
-                    { telefon: req.body.telefon },
+                    { email: req.body.username }
                 ],
             });
         }
