@@ -1,0 +1,44 @@
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+
+.register {
+  height: 92%;
+  width: 100%;
+  background-image: url(https://media.istockphoto.com/photos/pink-orange-backgrounds-watercolor-painting-abstract-picture-id514635080?k=20&m=514635080&s=170667a&w=0&h=HKZH0w79sKTyhOARSZppyGxGqMrFzhJrkZrj8WINK5c=);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.slika {
+  width: 200px;
+  height: 200px;
+  margin: 2% 0;
+  align-self: center;
+}
+
+input[type="file"] {
+  visibility: hidden;
+  width: 0px;
+}
+
+.slika-conteiner {
+  display: flex;
+  flex-direction: row;
+}
+
+.btn-reg-page {
+  background-color: transparent;
+}
+.btn-reg-page:hover {
+  background-color: #7dd9ee;
+  opacity: 0.8;
+  color: rgb(1, 15, 65);
+  border: 1px solid rgb(1, 15, 65);
+}
+
+@media only screen and (max-width: 990px) {
+  .reg {
+    height: 100%;
+  }
+}

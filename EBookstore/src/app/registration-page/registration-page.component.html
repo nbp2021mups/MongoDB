@@ -1,10 +1,201 @@
-<div class=" login d-flex align-items-center">
-  <mat-card class="container d-flex flex-row flex-wrap justify-content-around">
+<div class="register d-flex align-items-center">
+  <mat-card class="container d-flex flex-wrap justify-content-around">
     <form
       class=" py-3 px-2 d-flex flex-column justify-content-center"
       [formGroup]="form"
       (ngSubmit)="onSubmit()"
     >
+    <label class="text-center">Napravi nalog kao:</label>
+    <mat-radio-group class="align-self-center" (change)="checkType($event)">
+      <mat-radio-button value="customer" class="mt-3" checked="">Kupac</mat-radio-button>
+      <mat-radio-button value="bookstore" class="mt-3">Knjižara</mat-radio-button>
+    </mat-radio-group>
+    <div class="d-flex flex-row flex-wrap">
+      <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard"
+        *ngIf="selectedType == 'customer'">
+        <mat-label>Ime</mat-label>
+        <input
+          matInput
+          type="string"
+          name="ime"
+          formControlName="ime"
+        />
+        <mat-error *ngIf="form.get('ime').invalid"
+          >Molimo Vas da unesete ime</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard"
+        *ngIf="selectedType == 'customer'">
+        <mat-label>Prezime</mat-label>
+        <input
+          matInput
+          type="string"
+          name="prezime"
+          formControlName="prezime"
+        />
+        <mat-error *ngIf="form.get('prezime').invalid"
+          >Molimo Vas da unesete prezime</mat-error
+        >
+      </mat-form-field>
+
+
+
+      <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard"
+        *ngIf="selectedType == 'bookstore'">
+        <mat-label>Naziv knjižare</mat-label>
+        <input
+          matInput
+          type="string"
+          name="naziv"
+          formControlName="naziv"
+        />
+        <mat-error *ngIf="form.get('naziv').invalid"
+          >Molimo Vas da unesete naziv</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard"
+        *ngIf="selectedType == 'bookstore'">
+        <mat-label>PIB</mat-label>
+        <input
+          matInput
+          type="string"
+          name="pib"
+          formControlName="pib"
+        />
+        <mat-error *ngIf="form.get('pib').invalid"
+          >Molimo Vas da unesete PIB knjižare</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard">
+        <mat-label>E-mail</mat-label>
+        <input
+          matInput
+          type="string"
+          name="email"
+          formControlName="email"
+        />
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error *ngIf="form.get('email').invalid"
+          >Molimo Vas da unesete email</mat-error
+        >
+      </mat-form-field>
+    </div>
+    <div class="d-flex flex-row flex-wrap">
+      <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard">
+        <mat-label>Korisničko ime</mat-label>
+        <input
+          matInput
+          type="string"
+          name="username"
+          formControlName="username"
+        />
+        <mat-error *ngIf="form.get('username').invalid"
+          >Molimo Vas da unesete korisničko ime</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard">
+        <mat-label>Lozinka</mat-label>
+        <input
+        matInput
+        [type]="hide ? 'password' : 'text'"
+        id="lozinka"
+        name="lozinka"
+        formControlName="lozinka"
+        >
+        <mat-error *ngIf="form.get('lozinka').invalid">Molimo Vas da unesete lozinku</mat-error>
+
+        <button class="post-button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-hint>Minimalna dužina 6 karaktera</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard">
+        <mat-label>Kontakt telefon</mat-label>
+        <label matPrefix>+381</label>
+        <input
+          matInput
+          type="string"
+          name="telefon"
+          formControlName="telefon"
+        />
+        <mat-icon matSuffix>phone</mat-icon>
+        <mat-error *ngIf="form.get('telefon').invalid"
+          >Molimo Vas da unesete telefon</mat-error
+        >
+      </mat-form-field>
+
+    </div>
+    <div class="d-flex flex-row flex-wrap">
+      <mat-form-field
+        class="p-2 col-12 col-lg-12"
+        appearance="standard"
+        *ngIf="selectedType == 'customer'">
+        <mat-label>Adresa stanovanja</mat-label>
+        <input
+          matInput
+          type="string"
+          name="adresa"
+          formControlName="adresa"
+        />
+        <mat-error *ngIf="form.get('adresa').invalid"
+          >Molimo Vas da unesete adresu</mat-error
+        >
+      </mat-form-field>
+    </div>
+    <div *ngIf="selectedType == 'bookstore'">
+      <div class="container d-flex">
+        <button
+          class="btn btn-outline-primary btn-reg-page btn-image p-2 m-auto "
+          type="button"
+          (click)="filePicker.click()"
+        >
+          Izaberi sliku
+        </button>
+        <input
+          type="file"
+          name="image"
+          #filePicker
+          (change)="onImagePicked($event)"
+        />
+      </div>
+      <div class="slika-conteiner">
+        <img
+          [src]="imagePreview"
+          class="slika mx-auto d-block img-fluid"
+          *ngIf="imagePreview !== '' && imagePreview && form.get('slika').valid"
+        />
+      </div>
+    </div>
+    <!-- DODATI JOS KAD CE DUGME DA BUDE DISABLED -->
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-outline-primary btn-reg-page mt-2" type="submit">
+      Registruj se</button>
+    </div>
     </form>
+    <div class="alert alert-success text-center ml-auto mt-3" *ngIf="success">
+      {{ success }}
+    </div>
+    <div class="alert alert-danger text-center ml-auto mt-3" *ngIf="error">
+      {{ error }}
+    </div>
   </mat-card>
 </div>
