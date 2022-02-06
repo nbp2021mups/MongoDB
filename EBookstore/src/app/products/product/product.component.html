@@ -1,1 +1,20 @@
-<p>product works!</p>
+<div class="container product p-2 border">
+
+    <img class="img-fluid product-item" [src]='product.slika' alt="" (click)="onProductClicked()">
+
+    <div *ngIf="kategorija == 2">
+        <p class="product-item name">{{product.naziv}}</p>
+        <p class="product-item category">{{product.kategorija}}</p>
+    </div>
+
+    <div *ngIf="kategorija != 2">
+        <p class="product-item name">{{product.naziv +  " - " + product.autor}}</p>
+        <p class="product-item category">{{"Knjige - " + product.zanr}}</p>
+    </div>
+
+    <p class="product-item maker">{{product.proizvodjac}}</p>
+    <p class="product-item price">{{product.cena}}</p>
+
+    <button class="btn btn-sm cart-btn mt-1" *ngIf="kategorija != 1">Dodaj u korpu</button>
+    <button class="btn btn-sm cart-btn mt-1" *ngIf="kategorija == 1">Iznajmi knjigu</button>
+</div>

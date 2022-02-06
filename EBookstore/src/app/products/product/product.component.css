@@ -1,0 +1,42 @@
+.product {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    margin: 0;
+}
+
+.product:hover{
+    background-color: #e9ecef;
+    cursor: pointer;
+}
+
+.product-item{
+    display: block;
+    margin: 0;
+    width: 100%;
+}
+
+.name, .maker {
+    font-size: 1em;
+    font-weight: 450;
+}
+
+.price, .category {
+    font-size: 1.1em;
+    font-weight: 350;
+    letter-spacing: 1px;
+    color: blue;
+}
+
+.cart-btn{
+    background-color: #61a5c2;
+    color: black;
+    border-radius: 0;
+}
+
+.cart-btn:hover{
+    background-color: #468faf;
+    color: white;
+}
