@@ -20,6 +20,10 @@ const schema = mongoose.Schema({
         type: String,
         required: [true, "Prezime je obavezno!"],
     },
+    adresa: {
+        type: String,
+        required: [true, "Adresa je obavezna!"],
+    },
     email: {
         type: String,
         required: [true, "Email adresa je obavezna!"],

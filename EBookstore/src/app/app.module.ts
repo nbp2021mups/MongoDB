@@ -9,6 +9,7 @@ import { RegistrationPageComponent } from './registration-page/registration-page
 import { HeaderComponent } from './header/header.component';
 import { ProductComponent } from './products/product/product.component';
 import { ProductListComponent } from './products/product-list/product-list.component';
+import { ProductPageComponent } from './products/product-page/product-page.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -25,7 +26,8 @@ import {MatRadioModule} from '@angular/material/radio';
     RegistrationPageComponent,
     HeaderComponent,
     ProductComponent,
-    ProductListComponent
+    ProductListComponent,
+    ProductPageComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,7 @@
+<div class="container d-flex flex-column p-2 align-items-center">
+  <app-bookstore-single
+    class="w-100 m-2"
+    *ngFor="let bookstore of bookstores"
+    [bookstore]="bookstore"
+  ></app-bookstore-single>
+</div>
