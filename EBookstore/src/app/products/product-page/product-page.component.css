@@ -1,0 +1,10 @@
+.page-btn {
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
+}
+
+.pagenum {
+    display: inline;
+    font-size: 2.3vh;
+}

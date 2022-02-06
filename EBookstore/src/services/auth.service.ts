@@ -81,4 +81,8 @@ export class AuthService {
     
   }
 
+  registerBookstore(bookstoreData: FormData) {
+
+  }
+
 }
