@@ -27,14 +27,14 @@ export class LoginPageComponent implements OnInit {
 
     const username: string = this.form.get('username').value;
     const password: string = this.form.get('lozinka').value;
-    console.log(username,password);
+
     this.authService.login(username, password).subscribe(
       {
         next: (resp) =>{
-          this.router.navigate(['/home']);
+          //this.router.navigate(['/home']);
         },
         error: (err) =>{
-          this.error=err.error;
+          this.error=err.error.poruka;
           setTimeout(() => {
             this.error = '';
           }, 3000);

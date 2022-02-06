@@ -191,8 +191,8 @@ router.post("/login", async(req, res) => {
                         return res.send({
                             poruka: "Uspesno!",
                             sadrzaj: {
-                                ...user._doc,
-                                lozinka: null,
+                                id: user._id,
+                                username: user.username,
                                 role: user.pib ? "bookstore" : "user",
                                 token: jwt.sign({
                                         _id: user._id,

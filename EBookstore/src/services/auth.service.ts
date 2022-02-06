@@ -6,10 +6,14 @@ import { Router } from '@angular/router';
 import { User } from 'src/models/user.model';
 
 interface LoginData {
-  id: number;
-  username: string;
-  token: string;
-  expiration: number;
+    poruka: string,
+    sadrzaj : {
+        id: string,
+        username: string,
+        role: string,
+        token: string,
+        expiration: number
+    }
 }
 
 @Injectable({ providedIn: 'root' })
@@ -27,11 +31,12 @@ export class AuthService {
       })
       .pipe(
         tap((respData) => {
-            console.log(respData);
-            const expDate = new Date(new Date().getTime() + respData.expiration * 60 * 1000);
-            /* this.user.next(user);
-            this.autoLogout(respData.expiration * 60 * 1000);
-            localStorage.setItem('logged-user', JSON.stringify(user)); */
+            const expDate = new Date(new Date().getTime() + respData.sadrzaj.expiration * 60 * 1000);
+            const user = new User(respData.sadrzaj.id, respData.sadrzaj.username, respData.sadrzaj.role, 
+                respData.sadrzaj.token, expDate);
+            this.user.next(user);
+            this.autoLogout(respData.sadrzaj.expiration * 60 * 1000);
+            localStorage.setItem('logged-user', JSON.stringify(user));
         }));
   }
 
@@ -47,8 +52,9 @@ export class AuthService {
 
   autoLogin() {
     const loggedUser: {
-      id: number;
+      id: string;
       username: string;
+      role: string;
       _token: string;
       _tokenExpDate: Date;
     } = JSON.parse(localStorage.getItem('logged-user'));
@@ -56,10 +62,12 @@ export class AuthService {
       return;
     }
 
-    /* this.user.next(user);
+    const user = new User(loggedUser.id,loggedUser.username, loggedUser.role, loggedUser._token,new Date(loggedUser._tokenExpDate));
+  
+    this.user.next(user);
     const expTimer =
       new Date(loggedUser._tokenExpDate).getTime() - new Date().getTime();
-    this.autoLogout(expTimer); */
+    this.autoLogout(expTimer);
   }
 
   autoLogout(timer: number) {
@@ -67,4 +75,10 @@ export class AuthService {
       this.logout();
     }, timer);
   }
+
+
+  registerUser(userData: FormData) {
+    
+  }
+
 }
