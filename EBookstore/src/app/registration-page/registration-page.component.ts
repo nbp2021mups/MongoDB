@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { mimeType } from '../mime-type-validator/mime-type-validator';
 
+
 @Component({
   selector: 'app-registration-page',
   templateUrl: './registration-page.component.html',
@@ -32,8 +33,8 @@ export class RegistrationPageComponent implements OnInit {
       ]),
       telefon : new FormControl('',[
         Validators.required,
-        Validators.minLength(7),
-        Validators.maxLength(8)
+        Validators.minLength(8),
+        Validators.maxLength(9)
       ]),
       adresa: new FormControl('', Validators.required),
       slika: new FormControl(null, {
@@ -45,13 +46,30 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   onSubmit() {
-    const fName = this.form.get('ime').value;
-    const lName = this.form.get('prezime').value;
+
     const email = this.form.get('email').value;
     const username = this.form.get('username').value;
     const password = this.form.get('lozinka').value;
-    const desc = this.form.get('opis').value;
-    const image = this.form.value.slika;
+    const telefon = this.form.get('telefon').value;
+
+    if (this.selectedType=='customer'){
+      const fName = this.form.get('ime').value;
+      const lName = this.form.get('prezime').value;
+      const adresss = this.form.get('adresa').value;
+
+
+
+    }
+    else{
+      const name = this.form.get('naziv').value;
+      const pib = this.form.get('pib').value;
+      const image = this.form.value.slika;
+
+
+
+    }
+
+
 
 
   }
