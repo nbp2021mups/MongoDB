@@ -1,0 +1,29 @@
+<div class="card bg-dark text-white">
+  <img
+    src="http://localhost:3000/images/template.png"
+    class="card-img"
+    alt="Vas pretrazivac ne podrzava pozadinu!"
+  />
+  <div
+    class="company card-img-overlay d-flex flex-column justify-content-between"
+  >
+    <div>
+      <h2 class="card-title">{{ bookstore.naziv }}</h2>
+      <p class="card-text">
+        U ponudi {{ getGrammarly(bookstore.ponudjeniProizvodi.length) }}!
+      </p>
+    </div>
+    <div class="d-flex flex-row-reverse">
+      <div>
+        <h4 class="card-title">Kontakt</h4>
+        <label class="card-text">
+          telefon: <b>{{ bookstore.telefon }}</b>
+        </label>
+        <br />
+        <label class="card-text">
+          email: <b>{{ bookstore.email }}</b>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

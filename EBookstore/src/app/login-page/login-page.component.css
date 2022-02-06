@@ -1,0 +1,37 @@
+.btn-login {
+  background-color: transparent;
+}
+.btn-login:hover {
+  background-color: #b0f0f5;
+  opacity: 0.8;
+  color: rgb(42, 16, 66);
+  border: 1px solid #540a57;
+}
+.login {
+  height: 92%;
+  width: 100%;
+
+  background-image: url(https://mcdn.wallpapersafari.com/medium/83/78/IGHYr9.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+mat-card {
+  height: 600px;
+  width: 400px;
+}
+
+.bg {
+  /* position: fixed;
+  top: 100;
+  left: 0; */
+
+  /* Preserve aspect ratio */
+  /* min-width: 100%;
+  min-height: 90%; */
+
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+}
