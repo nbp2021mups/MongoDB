@@ -1,0 +1,57 @@
+.form,
+.main-div {
+  width: 100%;
+  /*  height: 100%; */
+}
+
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+
+.label-pol {
+  margin: 0px 20px;
+}
+
+.main-div {
+  margin-top: 50px;
+}
+
+input[type="file"] {
+  visibility: hidden;
+  width: 0px;
+}
+
+.slika-conteiner {
+  display: flex;
+  flex-direction: row;
+}
+
+.slika {
+  width: 60%;
+  height: 60%;
+  margin: 2% 0;
+  align-self: center;
+}
+
+.div-info {
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: rgba(233, 198, 217, 50%);
+}
+
+.btn-add-product:hover {
+  color: black;
+  border-color: black;
+  background-color: #ade8f4;
+}
+
+.cena::-webkit-outer-spin-button,
+.cena::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.cena[type="number"] {
+  -moz-appearance: textfield;
+}

@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProductBasicSubdocument } from 'src/models/product-basic-subdocument.model';
 import { User } from 'src/models/user.model';
 import { AuthService } from 'src/services/auth.service';
-import { Cart } from './cart';
+import { Cart } from '../../models/cart/cart';
 
 @Component({
   selector: 'app-cart',

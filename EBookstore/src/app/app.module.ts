@@ -23,6 +23,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { BookstoreListComponent } from './components/bookstore-list/bookstore-list.component';
 import { BookstoreSingleComponent } from './components/bookstore-single/bookstore-single.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { AddProductComponent } from './products/add-product/add-product.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ProductOrderComponent } from './components/product-order/product-order.component';
 
@@ -39,6 +40,7 @@ import { ProductOrderComponent } from './components/product-order/product-order.
     BookstoreSingleComponent,
     CartComponent,
     HomePageComponent,
+    AddProductComponent,
     ProductOrderComponent
   ],
   imports: [

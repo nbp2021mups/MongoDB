@@ -5,6 +5,7 @@ export class Bookstore {
   public naziv: string;
   public email: string;
   public telefon: string;
+  public slika: string;
   public ponudjeniProizvodi: Array<string>;
 
   public constructor(
@@ -14,6 +15,7 @@ export class Bookstore {
     naziv: string,
     email: string,
     telefon: string,
+    slika: string,
     ponudjeniProizvodi: Array<string>
   ) {
     this.pib = pib;
@@ -22,6 +24,7 @@ export class Bookstore {
     this.naziv = naziv;
     this.email = email;
     this.telefon = telefon;
+    this.slika = slika;
     this.ponudjeniProizvodi = ponudjeniProizvodi;
   }
 }
