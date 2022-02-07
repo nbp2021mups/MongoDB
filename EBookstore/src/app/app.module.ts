@@ -40,7 +40,8 @@ import { ProductOrderComponent } from './components/product-order/product-order.
     BookstoreSingleComponent,
     CartComponent,
     HomePageComponent,
-    AddProductComponent
+    AddProductComponent,
+    ProductOrderComponent
   ],
   imports: [
     BrowserModule,
