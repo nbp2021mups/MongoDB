@@ -30,6 +30,28 @@ router.get("/search", (req, res) => {
             .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
+router.get("/findByCompany/:company", (req, res) => {
+    try {
+        ProductModel.find({proizvodjac: req.params.company})
+            .select(req.query.select)
+            .skip(req.query.skip)
+            .limit(req.query.count)
+            .then((result) => {
+                return res.send({ poruka: "Uspesno!", sadrzaj: result });
+            })
+            .catch((err) => {
+                console.log(err);
+                return res
+                    .status(409)
+                    .send({ poruka: "Nastala je greska!", sadrzaj: err.message });
+            });
+    } catch (ex) {
+        console.log(ex);
+        return res
+            .status(501)
+            .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
+    }
+});
 
 router.post("/", multer({ storage }).single("file"), async(req, res) => {
     try {
