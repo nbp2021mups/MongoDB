@@ -34,7 +34,7 @@
 .cart-btn{
     background-color: #61a5c2;
     color: black;
-    border-radius: 0;
+    border-radius: 2px;
 }
 
 .cart-btn:hover{

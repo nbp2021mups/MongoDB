@@ -21,3 +21,13 @@
     font-size: 2.5vh;
     font-weight: 450;
 }
+
+.btn-form{
+    border-color: #61a5c2;
+    color:#61a5c2;
+}
+
+.btn-form:hover{
+    background-color: #468faf;
+    color:white;
+}

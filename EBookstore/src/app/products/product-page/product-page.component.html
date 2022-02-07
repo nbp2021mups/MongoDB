@@ -1,9 +1,9 @@
 <!-- deo za pretragu -->
 
 <div class="container-fluid border p-2 mt-2 search">
-    <form (ngSubmit)="onSubmit()" [formGroup]="form" class=" d-flex flex-row" *ngIf="this.tipStranice=='proizvodi'">
+    <form (ngSubmit)="onSubmit()" [formGroup]="form" class=" d-flex flex-row flex-wrap" *ngIf="this.tipStranice=='proizvodi'">
     
-    <mat-radio-group class="d-flex flex-column col-sm-2" (change)="onIzborKategorije($event)"
+    <mat-radio-group class="d-flex flex-column col-md-2" (change)="onIzborKategorije($event)"
     formControlName="kategorija">
     <label class="labela">Kategorija</label>
       <mat-radio-button value="knjiga" class="mt-2" color="primary">Knjige</mat-radio-button>
@@ -11,9 +11,10 @@
       <mat-radio-button value="slagalica" class="mt-2" color="primary">Slagalice</mat-radio-button>
       <mat-radio-button value="ranac" class="mt-2" color="primary">Rančevi</mat-radio-button>
       <mat-radio-button value="privezak" class="mt-2" color="primary">Privesci</mat-radio-button>
+      <mat-radio-button value="sveska" class="mt-2" color="primary">Sveske</mat-radio-button>
     </mat-radio-group>   
 
-    <div class="col-sm-3 me-3 d-flex flex-column justify-content-start">
+    <div class="col-md-3 me-3 d-flex flex-column justify-content-start">
         <label class="labela">Pretraga</label>
 
         <mat-form-field appearance="standard" class="p-0">
@@ -33,18 +34,59 @@
             formControlName="proizvodjac"
             />
         </mat-form-field>
+
+        <mat-form-field appearance="standard" class="p-0" *ngIf="izabranaKategorija == 'knjiga'">
+            <mat-label>Autor</mat-label>
+            <input
+            matInput
+            type="string"
+            formControlName="autor"
+            />
+        </mat-form-field>
+
+        <mat-form-field appearance="standard" class="p-0" *ngIf="izabranaKategorija == 'knjiga'">
+            <mat-label>Zanr</mat-label>
+            <input
+            matInput
+            type="string"
+            formControlName="zanr"
+            />
+        </mat-form-field>
     </div>
 
-    <div class="col-sm-2 ms-4 d-flex flex-column justify-content-start">
+    <div class="col-md-2 ms-4 d-flex flex-column justify-content-start">
         <label class="labela">Cena</label>
 
-        <mat-checkbox class="mt-2" color="primary" formControlName="cena1">0 - 1000</mat-checkbox>
-        <mat-checkbox class="mt-2" color="primary" formControlName="cena2">1000 - 2000</mat-checkbox>
-        <mat-checkbox class="mt-2" color="primary" formControlName="cena3">2000 - 5000</mat-checkbox>
-        <mat-checkbox class="mt-2" color="primary" formControlName="cena4">5000+</mat-checkbox>
+        <mat-checkbox class="mt-2" color="primary" [formControlName]="cena.controlName" [value]="cena.value" (change)="onIzaberiCenu($event, cena.controlName)"  *ngFor ="let cena of cene">{{cena.text}}</mat-checkbox>
     </div>
 
-    <div class="col-sm-2 d-flex flex-column justify-content-start">
+    <div class="col-md-2 ms-4 d-flex flex-column justify-content-start" *ngIf="izabranaKategorija == 'drustvena igra'">
+        <label class="labela">Uzrast</label>
+
+        <mat-checkbox class="mt-2" color="primary" [formControlName]="uzrast.controlName" [value]="uzrast.value" (change)="onIzaberiUzrast($event, uzrast.controlName)" *ngFor ="let uzrast of uzrasti">{{uzrast.text}}</mat-checkbox>
+    </div>
+
+    <div class="col-md-2 ms-4 d-flex flex-column justify-content-start" *ngIf="izabranaKategorija == 'slagalica'">
+        <label class="labela">Broj delova</label>
+
+        <mat-checkbox class="mt-2" color="primary" [formControlName]="br.controlName" [value]="br.value" (change)="onIzaberiBrDelova($event, br.controlName)" *ngFor ="let br of brDelova">{{br.text}}</mat-checkbox>
+    </div>
+
+    <div class="col-md-2 ms-4 d-flex flex-column justify-content-start" *ngIf="izabranaKategorija == 'ranac' || izabranaKategorija == 'privezak'">
+        <label class="labela">Pol </label>
+
+        <mat-checkbox class="mt-2" color="primary" formControlName="muski" (change)="onMuskiClicked($event)">Muski</mat-checkbox>
+        <mat-checkbox class="mt-2" color="primary" formControlName="zenski" (change)="onZenskiClicked($event)">Zenski</mat-checkbox>
+    </div>
+
+    <div class="col-md-2 ms-4 d-flex flex-column justify-content-start" *ngIf="izabranaKategorija == 'sveska'">
+        <label class="labela">Format </label>
+
+        <mat-checkbox class="mt-2" color="primary" formControlName="a4" (change)="onA4Clicked($event)">A4</mat-checkbox>
+        <mat-checkbox class="mt-2" color="primary" formControlName="a5" (change)="onA5Clicked($event)">A5</mat-checkbox>
+    </div>
+
+    <div class="col-md-2 d-flex flex-column justify-content-start">
         <label class="labela">Sortiranje</label>
 
         <mat-form-field appearance="standard">
@@ -55,7 +97,9 @@
               <mat-option value="naziv-asc">Nazivu A..Z</mat-option>
               <mat-option value="naziv-desc">Nazivu Z..A</mat-option>
             </mat-select>
-          </mat-form-field>
+        </mat-form-field>
+
+        <button class="btn btn-outline-primary btn-form btn-lg mt-2" type="submit">Pretraga</button>
     </div>
 
     </form>
