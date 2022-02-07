@@ -42,6 +42,7 @@ const schema = new mongoose.Schema({
         type: String,
     },
     poreklo: {
+        _id: { id: false },
         ime: String,
         prezime: String,
         naziv: String,

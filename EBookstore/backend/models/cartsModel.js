@@ -17,6 +17,7 @@ const schema = mongoose.Schema({
         default: 0,
     },
     proizvodi: [{
+        _id: { id: false },
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "products",
@@ -45,6 +46,7 @@ const schema = mongoose.Schema({
             required: [true, "Proizvodjac proizvoda je obavezan!"],
         },
         poreklo: {
+            _id: { id: false },
             naziv: String,
             id: {
                 type: mongoose.Types.ObjectId,
