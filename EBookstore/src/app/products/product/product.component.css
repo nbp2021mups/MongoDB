@@ -5,6 +5,7 @@
     align-items: flex-start;
     flex-wrap: nowrap;
     margin: 0;
+    height: 405px;
 }
 
 .product:hover{
@@ -39,4 +40,8 @@
 .cart-btn:hover{
     background-color: #468faf;
     color: white;
+}
+
+.prod-image{
+    height: 200px;
 }

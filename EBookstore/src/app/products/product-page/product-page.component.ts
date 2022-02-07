@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { BookBasic } from 'src/models/book-basic.model';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ProductBasic } from 'src/models/product-basic.model';
+import { ProductsService } from 'src/services/products.service';
 
 @Component({
   selector: 'app-product-page',
@@ -9,24 +11,86 @@ import { ProductBasic } from 'src/models/product-basic.model';
 })
 export class ProductPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router, private prodService: ProductsService) { }
 
   brStranice: number;
   products: ProductBasic[] = [];
+  tipStranice: string;
+  velicinaStranice: number = 12;
+  form: FormGroup;
 
   ngOnInit(): void {
+
+    this.tipStranice = this.router.url.slice(1, this.router.url.length);
     this.brStranice = 0;
+
+    this.form = new FormGroup({
+      kategorija: new FormControl(),
+      naziv: new FormControl(),
+      proizvodjac: new FormControl(),
+      cena1: new FormControl(),
+      cena2: new FormControl(),
+      cena3: new FormControl(),
+      cena4: new FormControl(),
+      sortiranje: new FormControl()
+    });
     
-    const path = 'https://cdn.pixabay.com/photo/2015/06/02/12/59/book-794978_1280.jpg';
-    const product = new ProductBasic('1234', "Alhemicar", "Vulkan", 11, 1230, path, "ostalo");
-    const book = new BookBasic('1234', "Alhemicar", "Laguna", 11, 1230, path, "knjiga za iznajmljivanje", "Paulo Koeljo", "Psihologija");
-    this.products.push(product);
-    this.products.push(product);
-    this.products.push(book);
-    this.products.push(product);
-    this.products.push(product);
-    this.products.push(book);
-    this.products.push(book);
+    if(this.tipStranice == 'proizvodi') {
+      this.prodService.ucitajProizvode(this.brStranice * this.velicinaStranice, this.velicinaStranice).subscribe({
+        next: resp => {
+          this.products = resp;
+        },
+        error: err => { console.log(err);}
+      });
+    }
   }
 
+
+  prethodnaStrana() {
+    if(this,this.brStranice == 0)
+      return;
+
+    this.prodService.ucitajProizvode((this.brStranice - 1) * this.velicinaStranice, this.velicinaStranice).subscribe({
+      next: resp => {
+        this.products = resp;
+        this.brStranice--;
+        this.scrollTop();
+      },
+      error: err => { console.log(err);}
+    });
+  }
+
+
+  sledecaStrana() {
+    this.prodService.ucitajProizvode((this.brStranice + 1) * this.velicinaStranice, this.velicinaStranice).subscribe({
+      next: resp => {
+        this.products = resp;
+        this.brStranice++;
+        this.scrollTop();
+      },
+      error: err => { console.log(err);}
+    });
+  }
+
+
+  prvaStranica() {
+    return this.brStranice == 0;
+  }
+
+  poslednjaStranica() {
+    return this.products.length < this.velicinaStranice;
+  }
+
+  scrollTop() {
+    window.scrollTo(0, 0);
+  }
+
+  onIzborKategorije(event) {
+
+  }
+
+
+  onSubmit() {
+
+  }
 }

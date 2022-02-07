@@ -1,16 +1,81 @@
+<!-- deo za pretragu -->
+
+<div class="container-fluid border p-2 mt-2 search">
+    <form (ngSubmit)="onSubmit()" [formGroup]="form" class=" d-flex flex-row">
+    
+    <mat-radio-group class="d-flex flex-column col-sm-2" (change)="onIzborKategorije($event)"
+    formControlName="kategorija">
+    <label class="labela">Kategorija</label>
+      <mat-radio-button value="knjiga" class="mt-2" color="primary">Knjige</mat-radio-button>
+      <mat-radio-button value="drustvena igra" class="mt-2" color="primary">Društvene igre</mat-radio-button>
+      <mat-radio-button value="slagalica" class="mt-2" color="primary">Slagalice</mat-radio-button>
+      <mat-radio-button value="ranac" class="mt-2" color="primary">Rančevi</mat-radio-button>
+      <mat-radio-button value="privezak" class="mt-2" color="primary">Privesci</mat-radio-button>
+    </mat-radio-group>   
+
+    <div class="col-sm-3 me-3 d-flex flex-column justify-content-start">
+        <label class="labela">Pretraga</label>
+
+        <mat-form-field appearance="standard" class="p-0">
+            <mat-label>Naziv proizvoda</mat-label>
+            <input
+            matInput
+            type="string"
+            formControlName="naziv"
+            />
+        </mat-form-field>
+
+        <mat-form-field appearance="standard" class="p-0">
+            <mat-label>Proizvodjac</mat-label>
+            <input
+            matInput
+            type="string"
+            formControlName="proizvodjac"
+            />
+        </mat-form-field>
+    </div>
+
+    <div class="col-sm-2 ms-4 d-flex flex-column justify-content-start">
+        <label class="labela">Cena</label>
+
+        <mat-checkbox class="mt-2" color="primary" formControlName="cena1">0 - 1000</mat-checkbox>
+        <mat-checkbox class="mt-2" color="primary" formControlName="cena2">1000 - 2000</mat-checkbox>
+        <mat-checkbox class="mt-2" color="primary" formControlName="cena3">2000 - 5000</mat-checkbox>
+        <mat-checkbox class="mt-2" color="primary" formControlName="cena4">5000+</mat-checkbox>
+    </div>
+
+    <div class="col-sm-2 d-flex flex-column justify-content-start">
+        <label class="labela">Sortiranje</label>
+
+        <mat-form-field appearance="standard">
+            <mat-label>Sortiraj po...</mat-label>
+            <mat-select formControlName="sortiranje">
+              <mat-option value="cena-asc">Ceni rastuce</mat-option>
+              <mat-option value="cena-desc">Ceni opadajuce</mat-option>
+              <mat-option value="naziv-asc">Nazivu A..Z</mat-option>
+              <mat-option value="naziv-desc">Nazivu Z..A</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+
+    </form>
+</div>
+
+<!-- deo sa listom svih proizvoda -->
+
 <app-product-list [products]="this.products"></app-product-list>
 
-<div class="row justify-content-center mt-2">
+<div class="row justify-content-center my-2">
     <div class="col-1 p-0 text-center">
-        <button class="btn page-btn"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="25" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+        <button class="btn page-btn" (click)="prethodnaStrana()" [disabled]="prvaStranica()"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="25" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
             <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
         </svg></button>
     </div>
     <div class="col-1 p-0 mt-2 text-center">
-        <p class="pagenum">Stranica 1</p>
+        <p class="pagenum">{{"Stranica " + (this.brStranice + 1).toString()}}</p>
     </div>
     <div class="col-1 p-0 text-center">
-        <button class="btn page-btn"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="25" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+        <button class="btn page-btn" (click)="sledecaStrana()" [disabled]="poslednjaStranica()"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="25" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
             <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
         </svg></button>
     </div>

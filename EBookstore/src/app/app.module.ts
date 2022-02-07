@@ -23,6 +23,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { BookstoreListComponent } from './components/bookstore-list/bookstore-list.component';
 import { BookstoreSingleComponent } from './components/bookstore-single/bookstore-single.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { HomePageComponent } from './home-page/home-page.component';
     MatIconModule,
     MatRadioModule,
     HttpClientModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent],
