@@ -1,1 +1,51 @@
-<p>home-page works!</p>
+<div class="d-flex flex-column">
+  <div class="slika ">
+    <div class="div-1 front">
+      <h1>Dobrodošli na EKnjižaru</h1>
+      <p>
+        U želji da ponudimo ljubiteljima knjige što bogatije i raznovrsnije iskustvo, stvorili smo aplikaciju koja na jednom mestu
+        objedinjuje ponude iz svih knjižara i pruža mogućnost razmene knjiga sa korisnicima naše aplikacije
+      </p>
+
+    </div>
+
+
+   <!--  <img class="img-fluid" src="https://media.istockphoto.com/photos/pink-orange-backgrounds-watercolor-painting-abstract-picture-id514635080?k=20&m=514635080&s=170667a&w=0&h=HKZH0w79sKTyhOARSZppyGxGqMrFzhJrkZrj8WINK5c="> -->
+
+  </div>
+  <div class="d-flex flex-row flex-wrap justify-content-around div-row">
+    <div class="d-flex flex-column align-items-center border rounded p-2 col-12 col-lg-3 div-card">
+      <img class="bookstore img-fluid img-thumbnail" src="https://i.pinimg.com/originals/dc/4b/63/dc4b633bc7c3a2e00c51583768275606.jpg">
+
+      <p class="p-desc">EKnjižara poseduje u svojoj ponudi knjižare iz čitave zemlje, pa možete kupovati i iz knjižara koje nisu dostupne u Vašoj blizini.
+      </p>
+      <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="bookstores()">Knjižare u ponudi</button>
+
+    </div>
+    <div class="d-flex flex-column align-items-center border rounded p-2 col-12 col-lg-3 div-card">
+      <img class="bookstore img-fluid img-thumbnail" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTV8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60">
+
+      <p class="p-desc">Naša internet knjižara nudi laku i brzu narudžbinu i dostavu na adresu. Možete istraživati celokupnu ponudu novih knjiga iz svih dostupnih knjižara, ili pak iznajmiti knjigu od nekoga.</p>
+      <div>
+        <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="books()">Knjige u ponudi</button>
+        <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="rent()">Iznajmi knjigu</button>
+      </div>
+
+    </div>
+    <div class="d-flex flex-column align-items-center border rounded p-2 col-12 col-lg-3 div-card">
+      <img class="bookstore img-fluid img-thumbnail" src="https://media.glamourmagazine.co.uk/photos/61389bd93335302f7261b0df/3:2/w_1920,h_1280,c_limit/jig046_lif_inspirationalwomenjigsawpuzzle_01_hi_grande_sf_sq.jpg">
+
+      <p class="p-desc">Za one koji traže nešto osim knjiga, na našoj aplikaciji mogu pronaći proizvode iz školskog i gift programa.
+        Baš kao što naš slogan kaže: <i>sve dobre knjige su na jednom mestu</i>, a danas i više od toga.
+      </p>
+      <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="products()">Dostupni proizvodi proizvodi</button>
+
+    </div>
+  </div>
+
+
+</div>
+<div class="div-2 front">
+  <button type="button" class="btn btn-outline-info btn-lg m-2 front btn-reg" (click)="register()">Postani naš član</button>
+
+</div>
