@@ -24,6 +24,7 @@ import { BookstoreListComponent } from './components/bookstore-list/bookstore-li
 import { BookstoreSingleComponent } from './components/bookstore-single/bookstore-single.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { AddProductComponent } from './products/add-product/add-product.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     BookstoreListComponent,
     BookstoreSingleComponent,
     CartComponent,
-    HomePageComponent
+    HomePageComponent,
+    AddProductComponent
   ],
   imports: [
     BrowserModule,
