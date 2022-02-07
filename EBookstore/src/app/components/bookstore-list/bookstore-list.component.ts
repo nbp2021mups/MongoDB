@@ -9,21 +9,28 @@ import { Bookstore } from 'src/app/models/bookstore/Bookstore';
 })
 export class BookstoreListComponent implements OnInit {
   public bookstores: Array<Bookstore> = new Array<Bookstore>();
+  public hasMore: boolean = false;
+  public count: number = 2;
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
+    this.loadMore();
+  }
+
+  loadMore():void{
     this.http
-      .get('http://localhost:3000/companies/search', {
-        params: {
-          ['skip']: 0,
-          ['count']: 10,
-          ['filter']: '{}',
-          ['select']: 'pib naziv telefon email ponudjeniProizvodi',
-        },
-      })
-      .subscribe((data: { poruka: string; sadrzaj: Array<Bookstore> }) => {
-        this.bookstores = data.sadrzaj;
-      });
+    .get('http://localhost:3000/companies/search', {
+      params: {
+        ['skip']: this.bookstores.length,
+        ['count']: this.count,
+        ['filter']: '{}',
+        ['select']: 'pib naziv telefon email ponudjeniProizvodi',
+      },
+    })
+    .subscribe((data: { poruka: string; sadrzaj: Array<Bookstore> }) => {
+      this.bookstores = [...this.bookstores, ...data.sadrzaj];
+      this.hasMore = data.sadrzaj.length == this.count;
+    });
   }
 }

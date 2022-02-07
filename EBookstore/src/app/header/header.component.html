@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light header">
     <div class="container-fluid">
-      <a class="navbar-brand" routerLink="/pocetna">EKnjizara</a>
+      <a class="navbar-brand" routerLink="/pocetna">E-Knjižara</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -8,10 +8,10 @@
         <!-- levi deo -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" routerLink="/pocetna">Pocetna</a>
+            <a class="nav-link" routerLink="/pocetna">Početna</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="" *ngIf="!this.ulogovan || this.tip && this.tip=='user'">Knjizare</a>
+            <a class="nav-link" routerLink="/knjizare">Knjižare</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="/knjige">Knjige</a>
@@ -19,8 +19,8 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="/proizvodi">Proizvodi</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="" *ngIf="!this.ulogovan || this.tip && this.tip=='user'">Iznajmljivanje</a>
+          <li class="nav-item" *ngIf="!this.ulogovan || this.tip && this.tip=='user'">
+            <a class="nav-link" routerLink="" >Iznajmljivanje</a>
           </li>
         </ul>
 

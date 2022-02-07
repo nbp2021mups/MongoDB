@@ -17,8 +17,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { HttpClientModule } from '@angular/common/http';
+import { CartComponent } from './components/cart/cart.component';
+import { BookstoreListComponent } from './components/bookstore-list/bookstore-list.component';
+import { BookstoreSingleComponent } from './components/bookstore-single/bookstore-single.component';
 import { HomePageComponent } from './home-page/home-page.component';
 
 @NgModule({
@@ -30,6 +33,9 @@ import { HomePageComponent } from './home-page/home-page.component';
     ProductComponent,
     ProductListComponent,
     ProductPageComponent,
+    BookstoreListComponent,
+    BookstoreSingleComponent,
+    CartComponent,
     HomePageComponent
   ],
   imports: [
@@ -44,9 +50,9 @@ import { HomePageComponent } from './home-page/home-page.component';
     MatSelectModule,
     MatIconModule,
     MatRadioModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

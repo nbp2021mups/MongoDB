@@ -6,9 +6,11 @@ const bcrypt = require("bcrypt");
 const storage = require("../storage");
 const multer = require("multer");
 
+const { CartModel } = require("../models/cartsModel");
 const { CompanyModel } = require("../models/companiesModel");
 const { UserModel } = require("../models/usersModel");
 const fs = require("fs");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 router.post("/register-user", async(req, res) => {
     try {
@@ -22,13 +24,16 @@ router.post("/register-user", async(req, res) => {
         });
 
         if (!korisnik) {
-
+            const _id = new ObjectId();
             new UserModel({
                     ...req.body,
-                    lozinka: await bcrypt.hash(req.body.lozinka, 12),
+                    lozinka: bcrypt.hashSync(req.body.lozinka, 12),
+                    korpa: {
+                        id: _id
+                    }
                 })
                 .save()
-                .then((result) =>
+                .then((result) => {
                     res.send({
                         poruka: "Uspešno ste se registrovali, prijavite se na aplikaciju.",
                         sadrzaj: {
@@ -45,19 +50,25 @@ router.post("/register-user", async(req, res) => {
                             ),
                             expiration: 60,
                         },
-                    })
-                )
+                    });
+                    new CartModel({
+                        _id,
+                        korisnik: result._id
+                    }).save().then(res).catch(ex => {
+                        console.log(ex)
+                    });
+                })
                 .catch((err) => {
                     console.log(err);
                     let sadrzajOdgovora;
-                    if(err.message.includes('email'))
-                      sadrzajOdgovora=`Email adresa "${req.body.email}" je zauzeta!`;
+                    if (err.message.includes('email'))
+                        sadrzajOdgovora = `Email adresa "${req.body.email}" je zauzeta!`;
                     else if (err.message.includes('username'))
-                      sadrzajOdgovora=`Korisnicko ime "${req.body.username}" je zauzeto!`;
+                        sadrzajOdgovora = `Korisnicko ime "${req.body.username}" je zauzeto!`;
                     else if ((err.message.includes('telefon')))
-                      sadrzajOdgovora=`Telefon "${req.body.telefon}" je zauzet!`;
+                        sadrzajOdgovora = `Telefon "${req.body.telefon}" je zauzet!`;
                     else
-                    sadrzajOdgovora='Doslo je do greske, pokusajte ponovo sa registracijom.';
+                        sadrzajOdgovora = 'Doslo je do greske, pokusajte ponovo sa registracijom.';
 
                     res.status(409).send({
                         poruka: "Nastala je greska!",
@@ -91,7 +102,7 @@ router.post(
     "/register-company",
     multer({ storage }).single("image"),
     async(req, res) => {
-      console.log(req.body)
+        console.log(req.body)
         try {
             if (!req.file)
                 return res.status(409).send({
@@ -138,17 +149,18 @@ router.post(
                         })
                     )
                     .catch((err) => {
+                        if (req.file)
+                            fs.unlinkSync(req.file.path);
                         console.log(err);
-                        //fs.unlinkSync(req.file.filename);
                         let sadrzajOdgovora;
-                        if(err.message.includes('email'))
-                          sadrzajOdgovora=`Email adresa "${req.body.email}" je zauzeta!`;
+                        if (err.message.includes('email'))
+                            sadrzajOdgovora = `Email adresa "${req.body.email}" je zauzeta!`;
                         else if (err.message.includes('username'))
-                          sadrzajOdgovora=`Korisnicko ime "${req.body.username}" je zauzeto!`;
+                            sadrzajOdgovora = `Korisnicko ime "${req.body.username}" je zauzeto!`;
                         else if ((err.message.includes('telefon')))
-                          sadrzajOdgovora=`Telefon "${req.body.telefon}" je zauzet!`;
+                            sadrzajOdgovora = `Telefon "${req.body.telefon}" je zauzet!`;
                         else
-                        sadrzajOdgovora='Doslo je do greske, pokusajte ponovo sa registracijom.';
+                            sadrzajOdgovora = 'Doslo je do greske, pokusajte ponovo sa registracijom.';
 
                         res.status(409).send({
                             poruka: "Nastala je greska!",
@@ -156,7 +168,8 @@ router.post(
                         });
                     });
             } else {
-                //fs.unlinkSync(req.file.filename);
+                if (req.file)
+                    fs.unlinkSync(req.file.path);
                 if (korisnik.username == req.body.username)
                     return res.status(409).send({
                         poruka: "Nastala je greska!",
@@ -174,7 +187,8 @@ router.post(
                     });
             }
         } catch (ex) {
-            //fs.unlinkSync(req.file.filename);
+            if (req.file)
+                fs.unlinkSync(req.file.path);
             console.log(ex);
             return res.status(501).send({
                 poruka: "Nastala je greska na serverskoj strani!",

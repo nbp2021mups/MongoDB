@@ -4,4 +4,5 @@
     *ngFor="let bookstore of bookstores"
     [bookstore]="bookstore"
   ></app-bookstore-single>
+  <button type="button" class="btn btn-primary btn-lg btn-block" *ngIf="hasMore" (click)="loadMore()">Učitaj još</button>
 </div>
