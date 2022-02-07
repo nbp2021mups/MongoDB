@@ -2,6 +2,10 @@
     background-color: transparent;
     box-shadow: none;
     border: none;
+    color: #343a40;
+}
+.page-btn:hover {
+    color: black;
 }
 
 .pagenum {

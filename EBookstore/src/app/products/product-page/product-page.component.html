@@ -1,7 +1,7 @@
 <!-- deo za pretragu -->
 
 <div class="container-fluid border p-2 mt-2 search">
-    <form (ngSubmit)="onSubmit()" [formGroup]="form" class=" d-flex flex-row">
+    <form (ngSubmit)="onSubmit()" [formGroup]="form" class=" d-flex flex-row" *ngIf="this.tipStranice=='proizvodi'">
     
     <mat-radio-group class="d-flex flex-column col-sm-2" (change)="onIzborKategorije($event)"
     formControlName="kategorija">
@@ -65,7 +65,7 @@
 
 <app-product-list [products]="this.products"></app-product-list>
 
-<div class="row justify-content-center my-2">
+<div class="row justify-content-center my-3">
     <div class="col-1 p-0 text-center">
         <button class="btn page-btn" (click)="prethodnaStrana()" [disabled]="prvaStranica()"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="25" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
             <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
