@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import {MatRadioModule} from '@angular/material/radio';
 import { HttpClientModule } from '@angular/common/http';
+import { HomePageComponent } from './home-page/home-page.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { HttpClientModule } from '@angular/common/http';
     HeaderComponent,
     ProductComponent,
     ProductListComponent,
-    ProductPageComponent
+    ProductPageComponent,
+    HomePageComponent
   ],
   imports: [
     BrowserModule,
