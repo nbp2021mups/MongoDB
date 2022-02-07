@@ -24,6 +24,7 @@ const schema = new mongoose.Schema({
             "Psihologija",
             "Stucna literatura",
             "Zdravlje",
+            "Knjige za decu"
         ],
     },
     izdata: {

@@ -33,15 +33,16 @@ router.get("/search", (req, res) => {
 
 router.post("/", multer({ storage }).single("file"), async(req, res) => {
     try {
+        req.body.poreklo = JSON.parse(req.body.poreklo);
         if (!req.body.poreklo ||
             !req.body.poreklo.id ||
             (!req.body.poreklo.naziv &&
                 (!req.body.poreklo.ime || !req.body.poreklo.prezime))
         ) {
-            if (req.file) fs.unlinkSync(req.file.filename);
+            if (req.file) fs.unlinkSync(req.file.path);
             return res.status(409).send({
                 poruka: "Nastala je greska!",
-                sadrzaj: "Morate proslediti ispravno poruklo proizvoda!",
+                sadrzaj: "Morate proslediti ispravno poreklo proizvoda!",
             });
         }
 
@@ -49,7 +50,7 @@ router.post("/", multer({ storage }).single("file"), async(req, res) => {
         if (req.body.poreklo.naziv) {
             const update = await CompanyModel.updateOne({ _id: req.body.poreklo.id }, { $push: { ponudjeniProizvodi: _id } });
             if (update.modifiedCount == 0) {
-                if (req.file) fs.unlinkSync(req.file.filename);
+                if (req.file) fs.unlinkSync(req.file.path);
                 return res.status(409).send({
                     poruka: "Nastala je greska!",
                     sadrzaj: "Ne postoji knjizara sa prosledjenim identifikatorom!",
@@ -72,14 +73,14 @@ router.post("/", multer({ storage }).single("file"), async(req, res) => {
                 return res.send({ poruka: "Uspesno!", sadrzaj: response });
             })
             .catch((err) => {
-                if (req.file) fs.unlinkSync(req.file.filename);
+                if (req.file) fs.unlinkSync(req.file.path);
                 console.log(err);
                 return res
                     .status(409)
                     .send({ poruka: "Nastala je greska!", sadrzaj: err.message });
             });
     } catch (ex) {
-        if (req.file) fs.unlinkSync(req.file.filename);
+        if (req.file) fs.unlinkSync(req.file.path);
         console.log(ex);
         return res
             .status(501)

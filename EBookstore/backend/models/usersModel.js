@@ -6,7 +6,7 @@ const schema = mongoose.Schema({
         type: String,
         unique: [true, "Username mora biti jedinstven!"],
         required: [true, "Username je obavezan!"],
-        index: true,
+        index: [true, "Username mora biti jedinstven!"],
     },
     lozinka: {
         type: String,
@@ -39,6 +39,11 @@ const schema = mongoose.Schema({
         index: true,
     },
     korpa: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "carts",
+            required: [true, "ID korpe je obavezan!"]
+        },
         cena: {
             type: Number,
             min: [0, "Cena ne moze biti negativna vrednost!"],
@@ -49,38 +54,11 @@ const schema = mongoose.Schema({
             min: [0, "Broj proizvoda ne moze da bude negativna vrednost!"],
             default: 0,
         },
-        proizvodi: [{
-            id: {
-                type: mongoose.Types.ObjectId,
-                required: [true, "Mora se navesti ID proizvoda!"],
-            },
-            naziv: {
-                type: String,
-                required: [true, "Naziv proizvoda je obavezan!"],
-            },
-            cena: {
-                type: Number,
-                required: [true, "Cena mora biti navedena!"],
-                min: [0, "Cena ne sme biti negativna vrednost!"],
-            },
-            slika: {
-                type: String,
-                default: "template.jpg",
-            },
-            kategorija: {
-                type: String,
-                required: [true, "Kategorija proizvoda je obavezna!"],
-                enum: [
-                    "knjiga",
-                    "ranac",
-                    "sveska",
-                    "slagalica",
-                    "drustvena igra",
-                    "privezak",
-                ],
-            },
-        }, ],
     },
+    narudzbine: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "orders"
+    }]
 });
 
 const UserModel = mongoose.model("user", schema);

@@ -6,9 +6,11 @@ const bcrypt = require("bcrypt");
 const storage = require("../storage");
 const multer = require("multer");
 
+const { CartModel } = require("../models/cartsModel");
 const { CompanyModel } = require("../models/companiesModel");
 const { UserModel } = require("../models/usersModel");
 const fs = require("fs");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 router.post("/register-user", async(req, res) => {
     try {
@@ -21,12 +23,16 @@ router.post("/register-user", async(req, res) => {
         });
 
         if (!korisnik) {
+            const _id = new ObjectId();
             new UserModel({
                     ...req.body,
                     lozinka: bcrypt.hashSync(req.body.lozinka, 12),
+                    korpa: {
+                        id: _id
+                    }
                 })
                 .save()
-                .then((result) =>
+                .then((result) => {
                     res.send({
                         poruka: "Uspesno!",
                         sadrzaj: {
@@ -43,12 +49,18 @@ router.post("/register-user", async(req, res) => {
                             ),
                             expiration: 60,
                         },
-                    })
-                )
+                    });
+                    new CartModel({
+                        _id,
+                        korisnik: result._id
+                    }).save().then(res).catch(ex => {
+                        console.log(ex)
+                    });
+                })
                 .catch((err) => {
                     console.log(err);
                     res.status(409).send({
-                        poruka: "Nastala je Nastala je greska!",
+                        poruka: "Nastala je greska!",
                         sadrzaj: err.message,
                     });
                 });
@@ -125,14 +137,16 @@ router.post(
                         })
                     )
                     .catch((err) => {
-                        fs.unlinkSync(req.file.filename);
+                        if (req.file)
+                            fs.unlinkSync(req.file.filename);
                         console.log(err);
                         res
                             .status(409)
                             .send({ poruka: "Nastala je greska!", sadrzaj: err.message });
                     });
             } else {
-                fs.unlinkSync(req.file.filename);
+                if (req.file)
+                    fs.unlinkSync(req.file.filename);
                 if (korisnik.username == req.body.username)
                     return res.status(409).send({
                         poruka: "Nastala je greska!",
@@ -150,7 +164,8 @@ router.post(
                     });
             }
         } catch (ex) {
-            fs.unlinkSync(req.file.filename);
+            if (req.file)
+                fs.unlinkSync(req.file.filename);
             console.log(ex);
             return res.status(501).send({
                 poruka: "Nastala je greska na serverskoj strani!",

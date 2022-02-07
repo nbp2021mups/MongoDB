@@ -3,17 +3,19 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProductPageComponent } from './products/product-page/product-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
+import { BookstoreListComponent } from './components/bookstore-list/bookstore-list.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'knjige', component: ProductPageComponent},
-  { path: 'proizvodi', component: ProductPageComponent},
-  { path: 'prijavljivanje', component: LoginPageComponent},
-  { path: 'registracija', component: RegistrationPageComponent}
+  { path: '', redirectTo: '/pocetna', pathMatch: 'full' },
+  { path: 'knjige', component: ProductPageComponent },
+  { path: 'proizvodi', component: ProductPageComponent },
+  { path: 'prijavljivanje', component: LoginPageComponent },
+  { path: 'registracija', component: RegistrationPageComponent },
+  { path: 'knjizare', component: BookstoreListComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -19,6 +19,10 @@ const schema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
     },
+    kompanija: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "companies",
+    },
     potvrdjena: {
         type: Boolean,
         default: false,
