@@ -22,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CartComponent } from './components/cart/cart.component';
 import { BookstoreListComponent } from './components/bookstore-list/bookstore-list.component';
 import { BookstoreSingleComponent } from './components/bookstore-single/bookstore-single.component';
+import { HomePageComponent } from './home-page/home-page.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { BookstoreSingleComponent } from './components/bookstore-single/bookstor
     BookstoreListComponent,
     BookstoreSingleComponent,
     CartComponent,
+    HomePageComponent
   ],
   imports: [
     BrowserModule,

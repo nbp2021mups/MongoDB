@@ -32,7 +32,7 @@ export class AuthService {
       .pipe(
         tap((respData) => {
             const expDate = new Date(new Date().getTime() + respData.sadrzaj.expiration * 60 * 1000);
-            const user = new User(respData.sadrzaj.id, respData.sadrzaj.username, respData.sadrzaj.role, 
+            const user = new User(respData.sadrzaj.id, respData.sadrzaj.username, respData.sadrzaj.role,
                 respData.sadrzaj.token, expDate);
             this.user.next(user);
             this.autoLogout(respData.sadrzaj.expiration * 60 * 1000);
@@ -63,7 +63,7 @@ export class AuthService {
     }
 
     const user = new User(loggedUser.id,loggedUser.username, loggedUser.role, loggedUser._token,new Date(loggedUser._tokenExpDate));
-  
+
     this.user.next(user);
     const expTimer =
       new Date(loggedUser._tokenExpDate).getTime() - new Date().getTime();
@@ -78,11 +78,23 @@ export class AuthService {
 
 
   registerUser(userData: FormData) {
-    
+    console.log(userData.get('username'), userData.get('lozinka'))
+
+    return this.http.post<any>("http://localhost:3000/auth/register-user", {
+      email : userData.get('email'),
+      username : userData.get('username'),
+      lozinka : userData.get('lozinka'),
+      telefon : userData.get('telefon'),
+      ime : userData.get('ime'),
+      prezime : userData.get('prezime'),
+      adresa : userData.get('adresa'),
+    });
+
+
   }
 
   registerBookstore(bookstoreData: FormData) {
-
+    return this.http.post<any>("http://localhost:3000/auth/register-company", bookstoreData);
   }
 
 }

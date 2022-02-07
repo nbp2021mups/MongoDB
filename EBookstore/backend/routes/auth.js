@@ -14,6 +14,7 @@ const ObjectId = require("mongoose").Types.ObjectId;
 
 router.post("/register-user", async(req, res) => {
     try {
+
         const korisnik = await CompanyModel.findOne({
             $or: [
                 { username: req.body.username },
@@ -34,7 +35,7 @@ router.post("/register-user", async(req, res) => {
                 .save()
                 .then((result) => {
                     res.send({
-                        poruka: "Uspesno!",
+                        poruka: "Uspešno ste se registrovali, prijavite se na aplikaciju.",
                         sadrzaj: {
                             ...result._doc,
                             lozinka: null,
@@ -59,9 +60,19 @@ router.post("/register-user", async(req, res) => {
                 })
                 .catch((err) => {
                     console.log(err);
+                    let sadrzajOdgovora;
+                    if (err.message.includes('email'))
+                        sadrzajOdgovora = `Email adresa "${req.body.email}" je zauzeta!`;
+                    else if (err.message.includes('username'))
+                        sadrzajOdgovora = `Korisnicko ime "${req.body.username}" je zauzeto!`;
+                    else if ((err.message.includes('telefon')))
+                        sadrzajOdgovora = `Telefon "${req.body.telefon}" je zauzet!`;
+                    else
+                        sadrzajOdgovora = 'Doslo je do greske, pokusajte ponovo sa registracijom.';
+
                     res.status(409).send({
                         poruka: "Nastala je greska!",
-                        sadrzaj: err.message,
+                        sadrzaj: sadrzajOdgovora,
                     });
                 });
         } else if (korisnik.username == req.body.username)
@@ -89,8 +100,9 @@ router.post("/register-user", async(req, res) => {
 
 router.post(
     "/register-company",
-    multer({ storage }).single("file"),
+    multer({ storage }).single("image"),
     async(req, res) => {
+        console.log(req.body)
         try {
             if (!req.file)
                 return res.status(409).send({
@@ -138,15 +150,26 @@ router.post(
                     )
                     .catch((err) => {
                         if (req.file)
-                            fs.unlinkSync(req.file.filename);
+                            fs.unlinkSync(req.file.path);
                         console.log(err);
-                        res
-                            .status(409)
-                            .send({ poruka: "Nastala je greska!", sadrzaj: err.message });
+                        let sadrzajOdgovora;
+                        if (err.message.includes('email'))
+                            sadrzajOdgovora = `Email adresa "${req.body.email}" je zauzeta!`;
+                        else if (err.message.includes('username'))
+                            sadrzajOdgovora = `Korisnicko ime "${req.body.username}" je zauzeto!`;
+                        else if ((err.message.includes('telefon')))
+                            sadrzajOdgovora = `Telefon "${req.body.telefon}" je zauzet!`;
+                        else
+                            sadrzajOdgovora = 'Doslo je do greske, pokusajte ponovo sa registracijom.';
+
+                        res.status(409).send({
+                            poruka: "Nastala je greska!",
+                            sadrzaj: sadrzajOdgovora,
+                        });
                     });
             } else {
                 if (req.file)
-                    fs.unlinkSync(req.file.filename);
+                    fs.unlinkSync(req.file.path);
                 if (korisnik.username == req.body.username)
                     return res.status(409).send({
                         poruka: "Nastala je greska!",
@@ -165,7 +188,7 @@ router.post(
             }
         } catch (ex) {
             if (req.file)
-                fs.unlinkSync(req.file.filename);
+                fs.unlinkSync(req.file.path);
             console.log(ex);
             return res.status(501).send({
                 poruka: "Nastala je greska na serverskoj strani!",

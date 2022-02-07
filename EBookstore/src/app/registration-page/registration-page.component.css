@@ -45,7 +45,18 @@ input[type="file"] {
   .reg {
     height: 100%;
   }
-  .register{
+  .register {
     transform: translate(-50%, -35%);
   }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
