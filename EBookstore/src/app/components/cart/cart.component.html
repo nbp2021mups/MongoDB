@@ -1,1 +1,21 @@
-<p>cart works!</p>
+<div class="card m-5">
+  <div class="card-header">
+    <h1>Vaša korpa</h1>
+    <label style="font-size: large;"><b>Ukupno proizvoda: </b>{{ cart.brojProizvoda }}</label><br/>
+    <div class="d-flex flex-row-reverse" *ngIf="cart.proizvodi.length != 0">
+      <div class="col-md-2 d-flex flex-column justify-content-center">
+        <button class="btn btn-info w-100" type="button" (click)= "order()"><h2>Naruči</h2></button>
+        <label class="text-center" style="font-size: large;"><b>Cena narudžbine: </b>{{ cart.cena | number : '1.2-2' }} dinara</label><br/>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <label *ngIf="cart.proizvodi.length == 0" class="text-center w-100">Nemate proizvoda u korpi</label>
+    <app-product-order *ngFor="let product of cart.proizvodi; index as ind;"
+    [product]="product"
+    (amount)="changeAmount($event, ind)"
+    (remove)="removeProduct(ind)">
+    </app-product-order>
+    <button *ngIf="hasMore" class="btn btn-outline-primary w-100" type="button" (click)= "loadMore()">Učitaj još</button>
+  </div>
+</div>

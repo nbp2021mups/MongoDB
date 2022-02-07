@@ -11,7 +11,6 @@ export class BookstoreSingleComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.bookstore);
   }
 
   getGrammarly(value: number): string {

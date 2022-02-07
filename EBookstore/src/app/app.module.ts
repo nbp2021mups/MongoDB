@@ -23,7 +23,8 @@ import { CartComponent } from './components/cart/cart.component';
 import { BookstoreListComponent } from './components/bookstore-list/bookstore-list.component';
 import { BookstoreSingleComponent } from './components/bookstore-single/bookstore-single.component';
 import { HomePageComponent } from './home-page/home-page.component';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ProductOrderComponent } from './components/product-order/product-order.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     BookstoreListComponent,
     BookstoreSingleComponent,
     CartComponent,
-    HomePageComponent
+    HomePageComponent,
+    ProductOrderComponent
   ],
   imports: [
     BrowserModule,

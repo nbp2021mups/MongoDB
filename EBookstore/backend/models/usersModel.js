@@ -39,6 +39,7 @@ const schema = mongoose.Schema({
         index: true,
     },
     korpa: {
+        _id: { id: false },
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "carts",
