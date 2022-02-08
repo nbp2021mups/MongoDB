@@ -150,7 +150,7 @@ export class AddProductComponent implements OnInit {
 
         this.productService.addProduct(productData).subscribe({
           next:resp=>{
-            this.router.navigate(['proizvodi']);
+            this.router.navigate(['proizvodi', user.id]);
           },
           error : err=>{
             console.log(err)
