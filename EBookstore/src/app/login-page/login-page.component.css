@@ -10,8 +10,7 @@
 .login {
   height: 92%;
   width: 100%;
-
-  background-image: url(https://mcdn.wallpapersafari.com/medium/83/78/IGHYr9.jpg);
+  background-image: url("./../../assets/resources/img1.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   position: absolute;
