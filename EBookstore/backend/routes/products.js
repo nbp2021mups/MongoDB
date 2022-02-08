@@ -118,6 +118,18 @@ router.post("/", multer({ storage }).single("image"), async(req, res) => {
     }
 });
 
+router.get("/:productId", async (req, res)=>{
+  try{
+    const product=await ProductModel.findById(req.params.productId);
+    return res.send(product);
+  }
+  catch{
+    console.log(ex);
+    return res.status(501).send("Nastala je greska na serverskoj strani!");
+
+  }
+})
+
 router.put("/", (req, res) => {
     try {
         ProductModel.updateOne(req.body.filter, req.body.update)

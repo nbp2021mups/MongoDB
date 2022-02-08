@@ -55,7 +55,7 @@ export class ProductsService {
     }
 
 
-    
+
 
     ucitajProizvodeKnjizare(idKnjizare: string, skip: number, count: number) {
         return this.http.get<any>('http://localhost:3000/products/search', {
@@ -107,6 +107,15 @@ export class ProductsService {
     addProduct(productData: FormData){
         console.log(productData.get('cena'))
         return this.http.post<any>("http://localhost:3000/products", productData);
+    }
+
+    getProductById(id: String){
+      return this.http.get<any>('localhost:3000/products/'+id).pipe(map(response=>{
+        const kategorija= response.kategorija;
+        if (kategorija=='knjiga'){
+          //return new
+        }
+      }))
     }
 
 }
