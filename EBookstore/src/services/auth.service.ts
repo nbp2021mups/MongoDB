@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { User } from 'src/models/user.model';
+import { LoggedUser } from 'src/models/loggedUser.model';
+import { BookstoreUser } from 'src/models/bookstoreUser.model';
 
 interface LoginData {
     poruka: string,
@@ -12,7 +14,10 @@ interface LoginData {
         username: string,
         role: string,
         token: string,
-        expiration: number
+        expiration: number,
+        ime? : string,
+        prezime? : string,
+        naziv?: string
     }
 }
 
@@ -32,8 +37,16 @@ export class AuthService {
       .pipe(
         tap((respData) => {
             const expDate = new Date(new Date().getTime() + respData.sadrzaj.expiration * 60 * 1000);
-            const user = new User(respData.sadrzaj.id, respData.sadrzaj.username, respData.sadrzaj.role,
-                respData.sadrzaj.token, expDate);
+            let user: User = null;
+            if(respData.sadrzaj.role == 'user'){
+              user = new LoggedUser(respData.sadrzaj.id, respData.sadrzaj.username, respData.sadrzaj.role,
+                respData.sadrzaj.token, expDate, respData.sadrzaj.ime, respData.sadrzaj.prezime);
+            } else {
+              user = new BookstoreUser(respData.sadrzaj.id, respData.sadrzaj.username, respData.sadrzaj.role,
+                respData.sadrzaj.token, expDate, respData.sadrzaj.naziv);
+            }
+           /*  const user = new User(respData.sadrzaj.id, respData.sadrzaj.username, respData.sadrzaj.role,
+                respData.sadrzaj.token, expDate); */
             this.user.next(user);
             this.autoLogout(respData.sadrzaj.expiration * 60 * 1000);
             localStorage.setItem('logged-user', JSON.stringify(user));
@@ -56,13 +69,21 @@ export class AuthService {
       username: string;
       role: string;
       _token: string;
-      _tokenExpDate: Date;
+      _tokenExpDate: Date,
+      ime?: string,
+      prezime?: string,
+      naziv?: string
+
     } = JSON.parse(localStorage.getItem('logged-user'));
     if (!loggedUser) {
       return;
     }
 
-    const user = new User(loggedUser.id,loggedUser.username, loggedUser.role, loggedUser._token,new Date(loggedUser._tokenExpDate));
+    let user: User = null;
+    if(loggedUser.role == 'user')
+      user = new LoggedUser(loggedUser.id,loggedUser.username, loggedUser.role, loggedUser._token,new Date(loggedUser._tokenExpDate), loggedUser.ime, loggedUser.prezime);
+    else
+      user = new BookstoreUser(loggedUser.id,loggedUser.username, loggedUser.role, loggedUser._token,new Date(loggedUser._tokenExpDate), loggedUser.naziv);
 
     this.user.next(user);
     const expTimer =

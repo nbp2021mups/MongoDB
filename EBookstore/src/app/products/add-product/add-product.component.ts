@@ -5,6 +5,7 @@ import { mimeType } from '../../mime-type-validator/mime-type-validator';
 import { ProductsService } from 'src/services/products.service';
 
 import { Router } from '@angular/router';
+import { AuthService } from 'src/services/auth.service';
 
 @Component({
   selector: 'app-add-product',
@@ -19,7 +20,7 @@ export class AddProductComponent implements OnInit {
   selectedCategory: string;
   imagePreview: string = '';
 
-  constructor(private productService : ProductsService, private router : Router) { }
+  constructor(private productService : ProductsService, private router : Router, private authService: AuthService) { }
 
   ngOnInit(): void {
 
@@ -59,100 +60,104 @@ export class AddProductComponent implements OnInit {
   }
 
   onSubmit(){
-    const productData : FormData = new FormData();
 
-    const kategorija=this.form.get('kategorija').value;
-    productData.append('kategorija', kategorija);
-    const naziv=this.form.get('naziv').value;
-    productData.append('naziv', naziv);
-    const proizvodjac=this.form.get('proizvodjac').value;
-    productData.append('proizvodjac', proizvodjac);
-    const kolicina=this.form.get('kolicina').value;
-    productData.append('kolicina', kolicina);
-    const opis=this.form.get('opis').value;
-    productData.append('opis', opis);
+    this.authService.user.subscribe(user => {
 
-    const cena=this.form.get('cena').value;
-    productData.append('cena', cena);
+      if(user != null && user.role == 'bookstore') {
 
-    const image = this.form.value.slika;
-    productData.append('image', image);
+        const productData : FormData = new FormData();
 
-    const poreklo={
-      /* "id":"61fe7d4f9d7d267396d07d02",
-      "naziv":"Laguna" */
-    }
+        const kategorija=this.form.get('kategorija').value;
+        productData.append('kategorija', kategorija);
+        const naziv=this.form.get('naziv').value;
+        productData.append('naziv', naziv);
+        const proizvodjac=this.form.get('proizvodjac').value;
+        productData.append('proizvodjac', proizvodjac);
+        const kolicina=this.form.get('kolicina').value;
+        productData.append('kolicina', kolicina);
+        const opis=this.form.get('opis').value;
+        productData.append('opis', opis);
 
-    productData.append("poreklo",JSON.stringify(poreklo));
+        const cena=this.form.get('cena').value;
+        productData.append('cena', cena);
 
+        const image = this.form.value.slika;
+        productData.append('image', image);
 
-    if(kategorija=='knjiga'){
-      const isbn=this.form.get('isbn').value;
-      productData.append('isbn', isbn);
-      const autor=this.form.get('autor').value;
-      productData.append('autor', autor);
-      const zanr=this.form.get('zanr').value;
-      productData.append('zanr', zanr);
-
-      const godIzdanja=this.form.get('godIzdanja').value;
-      if(godIzdanja)
-        productData.append('izdata', godIzdanja);
-      const brStrana=this.form.get('brStrana').value;
-      if(brStrana)
-        productData.append('brojStrana', brStrana);
-
-    }
-    else if(kategorija=='ranac'){
-      const pol=this.form.get('pol').value;
-      console.log(pol);
-      productData.append('pol', pol);
-    }
-    else if(kategorija=='privezak'){
-      const materijal=this.form.get('materijal').value;
-      console.log(materijal);
-      productData.append('materijal', materijal);
-    }
-    else if(kategorija=='sveska'){
-      const format=this.form.get('format').value;
-      productData.append('format', format);
-      const brListova=this.form.get('brListova').value;
-      if (brListova)
-        productData.append('brojListova', brListova);
-    }
-    else if(kategorija=='drustvena igra'){
-      const uzrastOd=this.form.get('uzrastOd').value;
-      productData.append('uzrastOd', uzrastOd);
-      const uzrastDo=this.form.get('uzrastDo').value;
-      productData.append('uzrastDo', uzrastDo);
-
-      const brIgraca=this.form.get('brIgraca').value;
-      if (brIgraca)
-        productData.append('brojIgraca', brIgraca);
-
-      const trajanje=this.form.get('trajanje').value;
-      if (trajanje)
-        productData.append('trajanje', trajanje);
-    }
-    else if(kategorija=='slagalica'){
-      const brDelova=this.form.get('brDelova').value;
-      productData.append('brojDelova', brDelova);
+        const poreklo={
+          id: user.id,
+          naziv: Object(user).naziv
+        }
+        productData.append("poreklo",JSON.stringify(poreklo));
 
 
-      const dimenzije=this.form.get('dimenzije').value;
-      if (dimenzije)
-        productData.append('dimenzije', dimenzije);
+        if(kategorija=='knjiga'){
+          const isbn=this.form.get('isbn').value;
+          productData.append('isbn', isbn);
+          const autor=this.form.get('autor').value;
+          productData.append('autor', autor);
+          const zanr=this.form.get('zanr').value;
+          productData.append('zanr', zanr);
+
+          const godIzdanja=this.form.get('godIzdanja').value;
+          if(godIzdanja)
+            productData.append('izdata', godIzdanja);
+          const brStrana=this.form.get('brStrana').value;
+          if(brStrana)
+            productData.append('brojStrana', brStrana);
+
+        }
+        else if(kategorija=='ranac'){
+          const pol=this.form.get('pol').value;
+          console.log(pol);
+          productData.append('pol', pol);
+        }
+        else if(kategorija=='privezak'){
+          const materijal=this.form.get('materijal').value;
+          console.log(materijal);
+          productData.append('materijal', materijal);
+        }
+        else if(kategorija=='sveska'){
+          const format=this.form.get('format').value;
+          productData.append('format', format);
+          const brListova=this.form.get('brListova').value;
+          if (brListova)
+            productData.append('brojListova', brListova);
+        }
+        else if(kategorija=='drustvena igra'){
+          const uzrastOd=this.form.get('uzrastOd').value;
+          productData.append('uzrastOd', uzrastOd);
+          const uzrastDo=this.form.get('uzrastDo').value;
+          productData.append('uzrastDo', uzrastDo);
+
+          const brIgraca=this.form.get('brIgraca').value;
+          if (brIgraca)
+            productData.append('brojIgraca', brIgraca);
+
+          const trajanje=this.form.get('trajanje').value;
+          if (trajanje)
+            productData.append('trajanje', trajanje);
+        }
+        else if(kategorija=='slagalica'){
+          const brDelova=this.form.get('brDelova').value;
+          productData.append('brojDelova', brDelova);
 
 
-    }
+          const dimenzije=this.form.get('dimenzije').value;
+          if (dimenzije)
+            productData.append('dimenzije', dimenzije);
+        }
 
-    this.productService.addProduct(productData).subscribe({
-      next:resp=>{
-        this.router.navigate(['proizvodi']);
-      },
-      error : err=>{
-        console.log(err)
-      }
-    })
+        this.productService.addProduct(productData).subscribe({
+          next:resp=>{
+            this.router.navigate(['proizvodi']);
+          },
+          error : err=>{
+            console.log(err)
+          }
+        });
+
+      }});
 
   }
 
