@@ -37,9 +37,12 @@ front {
 }
 
 .p-desc {
-  height: 20%;
+  height: 25%;
   padding-top: 2px;
   text-align: center;
+  font-size: 2vh;
+  font-weight: 350;
+  letter-spacing: 1px;
 }
 
 .div-2 {
