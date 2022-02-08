@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { ProductBasic } from 'src/models/product-basic.model';
+import { AuthService } from 'src/services/auth.service';
 import { ProductsService } from 'src/services/products.service';
 
 @Component({
@@ -9,20 +11,22 @@ import { ProductsService } from 'src/services/products.service';
   templateUrl: './product-page.component.html',
   styleUrls: ['./product-page.component.css']
 })
-export class ProductPageComponent implements OnInit {
+export class ProductPageComponent implements OnInit, OnDestroy {
 
-  constructor(private router: Router, private prodService: ProductsService) { }
+  constructor(private router: Router, private prodService: ProductsService, private authService: AuthService, private route: ActivatedRoute) { }
 
   brStranice: number;
   products: ProductBasic[] = [];
   tipStranice: string;
   velicinaStranice: number = 12;
   izabranaKategorija : string;
+  routeSub: Subscription;
   form: FormGroup;
   muski: boolean = false;
   zenski: boolean = false;
   a4: boolean = false;
   a5: boolean = false;
+  idKnjizare: string = null;
 
   cene = [{controlName: 'cena1', value: '0-1000', text : '0-1000', checked: false},
           {controlName: 'cena2', value: '1000-2000', text : '1000-2000', checked: false},
@@ -43,7 +47,12 @@ export class ProductPageComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.tipStranice = this.router.url.slice(1, this.router.url.length);
+    this.tipStranice = this.router.url.slice(1,2);
+    this.tipStranice = this.tipStranice == 'p' ? 'proizvodi' : 'knjige';
+    
+    if(this.tipStranice == 'knjige'){
+      this.izabranaKategorija = 'knjiga';
+    }
     this.brStranice = 0;
 
     this.form = new FormGroup({
@@ -56,48 +65,43 @@ export class ProductPageComponent implements OnInit {
       muski: new FormControl(),
       zenski: new FormControl(),
       a4: new FormControl(),
-      a5: new FormControl()
+      a5: new FormControl(),
+      materijal: new FormControl()
     });
 
     this.cene.forEach(cena => {this.form.addControl(cena.controlName, new FormControl())});
     this.uzrasti.forEach(uzrast => {this.form.addControl(uzrast.controlName, new FormControl())});
     this.brDelova.forEach(br => {this.form.addControl(br.controlName, new FormControl())});
     
-    if(this.tipStranice == 'proizvodi') {
-      this.prodService.ucitajProizvode(this.brStranice * this.velicinaStranice, this.velicinaStranice).subscribe({
-        next: resp => {
-          this.products = resp;
-        },
-        error: err => { console.log(err);}
-      });
-    }
+    this.routeSub = this.route.params.subscribe(params => {
+      if(Object.keys(params).length > 0){
+        this.idKnjizare = params['idKnjizare'];
+        this.ucitajPodatkeZaKnjizaru(this.idKnjizare, this.brStranice);
+      } else {
+        this.idKnjizare = null;
+        this.ucitajPodatke(this.brStranice);
+      }
+    });
   }
 
 
   prethodnaStrana() {
-    if(this,this.brStranice == 0)
-      return;
-
-    this.prodService.ucitajProizvode((this.brStranice - 1) * this.velicinaStranice, this.velicinaStranice).subscribe({
-      next: resp => {
-        this.products = resp;
-        this.brStranice--;
-        this.scrollTop();
-      },
-      error: err => { console.log(err);}
-    });
+    if(!this.idKnjizare)
+      this.ucitajPodatke(this.brStranice - 1);
+    else
+      this.ucitajPodatkeZaKnjizaru(this.idKnjizare, this.brStranice - 1);
+    this.brStranice--;
+    window.scrollTo(0, 0);
   }
 
 
   sledecaStrana() {
-    this.prodService.ucitajProizvode((this.brStranice + 1) * this.velicinaStranice, this.velicinaStranice).subscribe({
-      next: resp => {
-        this.products = resp;
-        this.brStranice++;
-        this.scrollTop();
-      },
-      error: err => { console.log(err);}
-    });
+    if(!this.idKnjizare)
+      this.ucitajPodatke(this.brStranice + 1);
+    else
+      this.ucitajPodatkeZaKnjizaru(this.idKnjizare, this.brStranice + 1);
+    this.brStranice++;
+    window.scrollTo(0, 0);
   }
 
 
@@ -143,7 +147,6 @@ export class ProductPageComponent implements OnInit {
   onMuskiClicked(event) {
     this.muski = event.checked;
   }
-
   onZenskiClicked(event) {
     this.zenski = event.checked;
   }
@@ -153,6 +156,59 @@ export class ProductPageComponent implements OnInit {
   onA5Clicked(event) {
     this.a5 = event.checked;
   }
+
+
+
+  ucitajPodatke(brStranice: number) {
+    this.authService.user.subscribe(user => {
+      //ako niko nije ulogovan, ili je ulogovan korisnik
+      if(user == null || user.role == 'user'){
+        if(this.tipStranice == 'proizvodi') {
+          this.prodService.ucitajProizvode(brStranice * this.velicinaStranice, this.velicinaStranice).subscribe({
+            next: resp => {
+              this.products = resp;
+            },
+            error: err => { console.log(err);}
+          });
+        //ukoliko smo na stranici koja sadrzi samo knjige
+        } else {
+          this.prodService.ucitajKnjige(brStranice * this.velicinaStranice, this.velicinaStranice).subscribe({
+            next: resp => {
+              this.products = resp;
+            },
+            error: err => { console.log(err);}
+          });
+        }
+      }
+    }).unsubscribe();
+  }
+
+
+
+  ucitajPodatkeZaKnjizaru(idKnjizare: string, brStranice: number) {
+      this.authService.user.subscribe(user => {
+        if(user != null && user.role == 'bookstore' && user.id != idKnjizare){
+          return;
+        }
+        if(this.tipStranice == 'proizvodi') {
+          this.prodService.ucitajProizvodeKnjizare(idKnjizare, brStranice * this.velicinaStranice, this.velicinaStranice).subscribe({
+            next: resp => {
+              this.products = resp;
+            },
+            error: err => { console.log(err);}
+          });
+        //ukoliko smo na stranici koja sadrzi samo knjige
+        } else {
+          this.prodService.ucitajKnjigeKnjizare(idKnjizare, brStranice * this.velicinaStranice, this.velicinaStranice).subscribe({
+            next: resp => {
+              this.products = resp;
+            },
+            error: err => { console.log(err);}
+          });
+        }
+      }).unsubscribe();
+    }
+
 
 
   onSubmit() {
@@ -194,13 +250,21 @@ export class ProductPageComponent implements OnInit {
         }
       });
       console.log('delovi : ', brDelova);
-    } else if (kategorija == 'ranac' || kategorija == 'privezak') {
+    } else if (kategorija == 'ranac') {
       console.log('pol : ', this.muski, this.zenski);
+    } else if (kategorija == 'privezak'){
+      const materijal = this.form.get('materijal').value;
+      console.log('materijal : ', materijal);
     } else if (kategorija == 'sveska') {
       console.log('format : ', this.a4, this.a5);
     }
 
     console.log('cene : ', cene);
     console.log('sortiranje : ', sort);
+  }
+
+
+  ngOnDestroy(): void {
+      this.routeSub.unsubscribe();
   }
 }

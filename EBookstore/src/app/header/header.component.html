@@ -11,13 +11,19 @@
             <a class="nav-link" routerLink="/pocetna">Početna</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/knjizare">Knjižare</a>
+            <a class="nav-link" routerLink="/knjizare" *ngIf="tip == null || tip == 'user'">Knjižare</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/knjige">Knjige</a>
+            <a class="nav-link" routerLink="/knjige" *ngIf="tip == null || tip == 'user'">Sve knjige</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/proizvodi">Proizvodi</a>
+            <a class="nav-link" routerLink="/proizvodi" *ngIf="tip == null || tip == 'user'">Svi proizvodi</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/knjige', this.id]" *ngIf="tip == 'bookstore'">Vase knjige</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/proizvodi', this.id]" *ngIf="tip == 'bookstore'">Vasi proizvodi</a>
           </li>
           <li class="nav-item" *ngIf="!this.ulogovan || this.tip && this.tip=='user'">
             <a class="nav-link" routerLink="" >Iznajmljivanje</a>

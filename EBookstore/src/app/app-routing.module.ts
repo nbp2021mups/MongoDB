@@ -11,14 +11,17 @@ import { AddProductComponent } from './products/add-product/add-product.componen
 
 const routes: Routes = [
   { path: '', redirectTo: '/pocetna', pathMatch: 'full' },
-  {path : 'pocetna', component : HomePageComponent },
+  { path : 'pocetna', component : HomePageComponent },
   { path: 'knjige', component: ProductPageComponent },
+  { path: 'knjige/:idKnjizare', component: ProductPageComponent },
   { path: 'proizvodi', component: ProductPageComponent },
+  { path: 'proizvodi/:idKnjizare', component: ProductPageComponent },
   { path: 'prijavljivanje', component: LoginPageComponent },
   { path: 'registracija', component: RegistrationPageComponent },
   { path: 'knjizare', component: BookstoreListComponent },
   { path: 'novi-proizvod', component: AddProductComponent },
-  { path: 'korpa', component: CartComponent, canActivate: [AuthGuard] }
+  { path: 'korpa', component: CartComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: 'pocetna' },
 ]
 
 

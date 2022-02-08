@@ -25,13 +25,14 @@ export class BookstoreListComponent implements OnInit {
         ['skip']: this.bookstores.length,
         ['count']: this.count,
         ['filter']: '{}',
-        ['select']: 'pib naziv telefon email ponudjeniProizvodi slika',
+        ['select']: '_id pib naziv telefon email ponudjeniProizvodi slika',
       },
     })
     .subscribe((data: { poruka: string; sadrzaj: Array<Bookstore> }) => {
       console.log(data);
       this.bookstores = [...this.bookstores, ...data.sadrzaj];
       this.hasMore = data.sadrzaj.length == this.count;
+      console.log(this.bookstores);
     });
   }
 }

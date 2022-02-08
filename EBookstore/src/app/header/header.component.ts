@@ -11,6 +11,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ulogovan: boolean;
   tip: string;
+  id: string;
   private loggedUserSub: Subscription;
 
   constructor(private authService: AuthService) { }
@@ -18,11 +19,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loggedUserSub = this.authService.user.subscribe(user => {
       if(user){
+        this.id = user.id;
         this.ulogovan = true;
         this.tip = user.role;
       } else {
         this.ulogovan = false;
         this.tip = null;
+        this.id = null;
       }
     });
   }

@@ -31,7 +31,7 @@ export class LoginPageComponent implements OnInit {
     this.authService.login(username, password).subscribe(
       {
         next: (resp) =>{
-          //this.router.navigate(['/home']);
+          this.router.navigate(['/pocetna']);
         },
         error: (err) =>{
           this.error=err.error.poruka;

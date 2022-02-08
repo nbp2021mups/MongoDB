@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProductBasic } from 'src/models/product-basic.model';
+import { AuthService } from 'src/services/auth.service';
 
 enum Kategorija {
   'Knjiga',
@@ -18,8 +19,9 @@ export class ProductComponent implements OnInit {
   @Input()
   product: ProductBasic;  //ovo moze biti bilo koji proizvod
   kategorija: Kategorija;
+  personal: boolean;
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     if(this.product.kategorija == 'knjiga'){
@@ -29,6 +31,15 @@ export class ProductComponent implements OnInit {
     } else {
       this.kategorija = Kategorija.Ostalo;
     }
+
+    this.authService.user.subscribe(user => {
+      if(!user){
+        this.personal = false;
+        return;
+      }
+      
+      this.personal = (user.id == this.product.poreklo);
+    }).unsubscribe();
   }
 
 

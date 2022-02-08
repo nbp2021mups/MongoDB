@@ -15,6 +15,8 @@
     <p class="product-item maker">{{product.proizvodjac}}</p>
     <p class="product-item price">{{product.cena}}</p>
 
-    <button class="btn btn-sm cart-btn mt-1" *ngIf="kategorija != 1">Dodaj u korpu</button>
-    <button class="btn btn-sm cart-btn mt-1" *ngIf="kategorija == 1">Iznajmi knjigu</button>
+    <button class="btn btn-sm cart-btn mt-1" *ngIf="kategorija != 1 && !personal">Dodaj u korpu</button>
+    <button class="btn btn-sm cart-btn mt-1" *ngIf="kategorija == 1 && !personal">Iznajmi knjigu</button>
+
+    <button class="btn btn-sm cart-btn mt-1" *ngIf="personal">Obrisi proizvod</button>
 </div>
