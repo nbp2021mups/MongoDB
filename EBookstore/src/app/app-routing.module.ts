@@ -8,6 +8,7 @@ import { BookstoreListComponent } from './components/bookstore-list/bookstore-li
 import { CartComponent } from './components/cart/cart.component';
 import { AuthGuard } from 'src/services/auth-guard.service';
 import { AddProductComponent } from './products/add-product/add-product.component';
+import { EditProductComponent } from './products/edit-product/edit-product.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/pocetna', pathMatch: 'full' },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'knjizare', component: BookstoreListComponent },
   { path: 'novi-proizvod', component: AddProductComponent },
   { path: 'korpa', component: CartComponent, canActivate: [AuthGuard] },
+  { path: 'izmena/:idProizvoda', component: EditProductComponent},
   { path: '**', redirectTo: 'pocetna' },
 ]
 

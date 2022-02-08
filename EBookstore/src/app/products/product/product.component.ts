@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProductBasic } from 'src/models/product-basic.model';
 import { AuthService } from 'src/services/auth.service';
 
@@ -21,7 +22,7 @@ export class ProductComponent implements OnInit {
   kategorija: Kategorija;
   personal: boolean;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     if(this.product.kategorija == 'knjiga'){
@@ -45,5 +46,10 @@ export class ProductComponent implements OnInit {
 
   onProductClicked() {
     alert('radi');
+  }
+
+
+  onIzmenaClicked() {
+    this.router.navigate(['/izmena', this.product._id]);
   }
 }
