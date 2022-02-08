@@ -5,7 +5,7 @@
 .register {
   height: 92%;
   width: 100%;
-  background-image: url(https://media.istockphoto.com/photos/pink-orange-backgrounds-watercolor-painting-abstract-picture-id514635080?k=20&m=514635080&s=170667a&w=0&h=HKZH0w79sKTyhOARSZppyGxGqMrFzhJrkZrj8WINK5c=);
+  background-image: url("./../../assets/resources/img1.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   position: absolute;

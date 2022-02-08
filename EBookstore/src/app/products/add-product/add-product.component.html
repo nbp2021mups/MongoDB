@@ -131,7 +131,9 @@
           <mat-label>Godina izdanja</mat-label>
           <input
             matInput
-            type="string"
+            type="number"
+            max="2022"
+            min="1900"
             formControlName="godIzdanja"
           />
         </mat-form-field>
@@ -160,8 +162,8 @@
           <mat-label>Format</mat-label>
           <mat-select
           formControlName="format">
-            <mat-option value="a4">A4</mat-option>
-            <mat-option value="a5">A5</mat-option>
+            <mat-option value="A4">A4</mat-option>
+            <mat-option value="A5">A5</mat-option>
           </mat-select>
           <mat-error *ngIf="form.get('format').invalid"
             >Molimo Vas da izaberete format</mat-error
@@ -174,7 +176,7 @@
           <mat-label>Broj listova</mat-label>
           <input
             matInput
-            type="input"
+            type="number"
             min="1"
             formControlName="brListova"
           />
@@ -194,6 +196,8 @@
             type="string"
             formControlName="dimenzije"
           />
+          <label matSuffix>cm</label>
+          <mat-hint>Unesite u formatu "širina"x"visina", na primer:150x300</mat-hint>
         </mat-form-field>
 
         <mat-form-field
@@ -202,7 +206,7 @@
           <mat-label>Broj delova</mat-label>
           <input
             matInput
-            type="input"
+            type="number"
             min="500"
             formControlName="brDelova"
           />
@@ -213,19 +217,34 @@
 
       </div>
 
-      <!-- ranac ili privezak -->
+      <!-- ranac -->
       <div class="d-flex flex-row flex-wrap"
-      *ngIf="selectedCategory=='ranac' || selectedCategory=='privezak'">
-       <!--  <mat-form-field
-        class="p-2 col-12 col-lg-6"
-        appearance="standard"> -->
+      *ngIf="selectedCategory=='ranac'">
           <mat-label class="align-self-end label-pol">Pol</mat-label>
-          <mat-radio-group class="align-self-center">
-            <mat-radio-button value="muski" class="mt-3" checked="">Muški</mat-radio-button>
+          <mat-radio-group class="align-self-center" formControlName="pol">
+            <mat-radio-button value="muski" class="mt-3" >Muški</mat-radio-button>
             <mat-radio-button value="zenski" class="mt-3">Ženski</mat-radio-button>
           </mat-radio-group>
-        <!-- </mat-form-field> -->
 
+      </div>
+
+      <!-- privezak -->
+      <div class="d-flex flex-row flex-wrap"
+      *ngIf="selectedCategory=='privezak'">
+        <mat-form-field
+        class="p-2 col-12 col-lg-8"
+        appearance="standard">
+          <mat-label>Materijal</mat-label>
+          <input
+          matInput
+          type="string"
+          formControlName="materijal"
+          />
+
+          <mat-error *ngIf="form.get('materijal').invalid"
+            >Molimo Vas da izaberete materijal</mat-error
+          >
+        </mat-form-field>
 
       </div>
 
@@ -234,18 +253,35 @@
       <div class="d-flex flex-row flex-wrap"
       *ngIf="selectedCategory=='drustvena igra'">
         <mat-form-field
-        class="p-2 col-12 col-lg-4"
+        class="p-2 col-12 col-lg-2"
         appearance="standard">
-          <mat-label>Uzrast</mat-label>
+          <mat-label>Za uzrast od</mat-label>
           <input
             matInput
-            type="string"
-            formControlName="uzrast"
+            type="number"
+            min="1"
+            max="100"
+            formControlName="uzrastOd"
           />
-          <mat-error *ngIf="form.get('uzrast').invalid"
+          <mat-error *ngIf="form.get('uzrastOd').invalid"
             >Molimo Vas da unesete uzrast</mat-error
           >
-          <mat-hint>Uzrast u formatu 'od'-'do' godina</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field
+        class="p-2 col-12 col-lg-2"
+        appearance="standard">
+          <mat-label>Za uzrast do</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            max="100"
+            formControlName="uzrastDo"
+          />
+          <mat-error *ngIf="form.get('uzrastOd').invalid"
+            >Molimo Vas da unesete uzrast</mat-error
+          >
         </mat-form-field>
 
         <mat-form-field
@@ -254,10 +290,11 @@
           <mat-label>Prosečno trajanje</mat-label>
           <input
             matInput
-            type="input"
+            type="number"
             min="1"
             formControlName="trajanje"
           />
+          <label matSuffix>min</label>
           <mat-hint>Unesite trajanje u minutima</mat-hint>
         </mat-form-field>
 
@@ -267,7 +304,7 @@
           <mat-label>Broj igrača</mat-label>
           <input
             matInput
-            type="input"
+            type="number"
             min="1"
             max="20"
             formControlName="brIgraca"

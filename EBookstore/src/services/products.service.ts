@@ -102,4 +102,11 @@ export class ProductsService {
             return ret;
         }));
     }
+
+
+    addProduct(productData: FormData){
+        console.log(productData.get('cena'))
+        return this.http.post<any>("http://localhost:3000/products", productData);
+    }
+
 }
