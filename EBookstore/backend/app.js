@@ -6,6 +6,8 @@ const booksRoute = require("./routes/books");
 const companiesRoute = require("./routes/companies");
 const productsRoute = require("./routes/products");
 const usersRoute = require("./routes/users");
+const ordersRoute = require("./routes/orders");
+const urosRoute = require("./routes/uros");
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -30,5 +32,7 @@ app.use("/books", booksRoute);
 app.use("/companies", companiesRoute);
 app.use("/products", productsRoute);
 app.use("/users", usersRoute);
+app.use("/orders", ordersRoute);
+app.use("/uros", urosRoute);
 
 module.exports = app;
