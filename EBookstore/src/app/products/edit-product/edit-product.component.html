@@ -1,1 +1,391 @@
-<p>edit-product works!</p>
+<div class="d-flex align-items-center main-div">
+  <form
+      class="py-3 px-2 d-flex flex-row justify-content-center form flex-wrap-reverse"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+    >
+
+    <div class="d-flex flex-column p-2 col-12 col-lg-6 div-info justify-content-around">
+      <mat-form-field appearance="standard" class="me-1 w-50">
+        <mat-label>Kategorija proizvoda</mat-label>
+        <input
+        [readonly]="this.rdonly"
+        matInput
+        type="string"
+        formControlName="kategorija"
+      />
+      </mat-form-field>
+
+      <div class="d-flex flex-row flex-wrap">
+        <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard">
+          <mat-label>Naziv</mat-label>
+          <input
+            matInput
+            type="string"
+            formControlName="naziv"
+          />
+          <mat-error *ngIf="form.get('naziv').invalid"
+            >Molimo Vas da unesete naziv</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard">
+          <mat-label>Proizvođač</mat-label>
+          <input
+            matInput
+            type="string"
+            formControlName="proizvodjac"
+          />
+          <mat-error *ngIf="form.get('proizvodjac').invalid"
+            >Molimo Vas da unesete proizvođača</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard">
+          <mat-label>Količina</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            formControlName="kolicina"
+          />
+          <mat-error *ngIf="form.get('kolicina').invalid"
+            >Molimo Vas da unesete količinu</mat-error
+          >
+        </mat-form-field>
+
+      </div>
+
+      <!-- knjiga -->
+      <div class="d-flex flex-row flex-wrap"
+      *ngIf="selectedCategory=='knjiga'">
+        <mat-form-field
+        class="p-2 col-12 col-lg-6"
+        appearance="standard">
+          <mat-label>ISBN</mat-label>
+          <input
+            matInput
+            type="string"
+            formControlName="isbn"
+          />
+          <mat-error *ngIf="form.get('isbn').invalid"
+            >Molimo Vas da unesete ISBN knjige</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field
+        class="p-2 col-12 col-lg-6"
+        appearance="standard">
+          <mat-label>Autor</mat-label>
+          <input
+            matInput
+            type="string"
+            formControlName="autor"
+          />
+          <mat-error *ngIf="form.get('autor').invalid"
+            >Molimo Vas da unesete autora knjige</mat-error
+          >
+        </mat-form-field>
+
+      </div>
+
+      <!-- knjiga -->
+      <div class="d-flex flex-row flex-wrap"
+      *ngIf="selectedCategory=='knjiga'">
+        <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard">
+          <mat-label>Žanr knjige</mat-label>
+          <mat-select
+          formControlName="zanr">
+            <mat-option value="Drama">Drama</mat-option>
+            <mat-option value="Komedija">Komedija</mat-option>
+            <mat-option value="Triler">Triler</mat-option>
+            <mat-option value="Naucna fantastika">Naučna fantastika</mat-option>
+            <mat-option value="Psihologija">Psihologija</mat-option>
+            <mat-option value="Strucna literatura">Stručna literatura</mat-option>
+            <mat-option value="Zdravlje">Zdravlje</mat-option>
+            <mat-option value="Knjige za decu">Knjige za decu</mat-option>
+            <mat-option value="Roman">Roman</mat-option>
+            <mat-option value="Klasik">Klasik</mat-option>
+            <mat-option value="Novela">Novela</mat-option>
+            <mat-option value="Horor">Horor</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('zanr').invalid">Molimo Vas izaberite žanr</mat-error>
+        </mat-form-field>
+
+        <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard">
+          <mat-label>Godina izdanja</mat-label>
+          <input
+            matInput
+            type="number"
+            max="2022"
+            min="1900"
+            formControlName="izdata"
+          />
+        </mat-form-field>
+
+        <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard">
+          <mat-label>Broj strana</mat-label>
+          <input
+            matInput
+            type="number"
+            min="20"
+            max="5000"
+            formControlName="brojStrana"
+          />
+        </mat-form-field>
+
+      </div>
+
+      <!-- sveska -->
+      <div class="d-flex flex-row flex-wrap"
+      *ngIf="selectedCategory=='sveska'">
+        <mat-form-field
+        class="p-2 col-12 col-lg-6"
+        appearance="standard">
+          <mat-label>Format</mat-label>
+          <mat-select
+          formControlName="format">
+            <mat-option value="A4">A4</mat-option>
+            <mat-option value="A5">A5</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('format').invalid"
+            >Molimo Vas da izaberete format</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field
+        class="p-2 col-12 col-lg-6"
+        appearance="standard">
+          <mat-label>Broj listova</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            formControlName="brojListova"
+          />
+        </mat-form-field>
+
+      </div>
+
+      <!-- slagalica -->
+      <div class="d-flex flex-row flex-wrap"
+      *ngIf="selectedCategory=='slagalica'">
+        <mat-form-field
+        class="p-2 col-12 col-lg-6"
+        appearance="standard">
+          <mat-label>Dimenzije</mat-label>
+          <input
+            matInput
+            type="string"
+            formControlName="dimenzije"
+          />
+          <label matSuffix>cm</label>
+          <mat-hint>Unesite u formatu "širina"x"visina", na primer:150x300</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field
+        class="p-2 col-12 col-lg-6"
+        appearance="standard">
+          <mat-label>Broj delova</mat-label>
+          <input
+            matInput
+            type="number"
+            min="500"
+            formControlName="brojDelova"
+          />
+          <mat-error *ngIf="form.get('brojDelova').invalid"
+          >Molimo Vas da unesete broj delova</mat-error>
+        </mat-form-field>
+
+
+      </div>
+
+      <!-- ranac -->
+      <div class="d-flex flex-row flex-wrap"
+      *ngIf="selectedCategory=='ranac'">
+          <mat-label class="align-self-end label-pol">Pol</mat-label>
+          <mat-radio-group class="align-self-center" formControlName="pol">
+            <mat-radio-button value="muski" class="mt-3" >Muški</mat-radio-button>
+            <mat-radio-button value="zenski" class="mt-3">Ženski</mat-radio-button>
+          </mat-radio-group>
+
+      </div>
+
+      <!-- privezak -->
+      <div class="d-flex flex-row flex-wrap"
+      *ngIf="selectedCategory=='privezak'">
+        <mat-form-field
+        class="p-2 col-12 col-lg-8"
+        appearance="standard">
+          <mat-label>Materijal</mat-label>
+          <input
+          matInput
+          type="string"
+          formControlName="materijal"
+          />
+
+          <mat-error *ngIf="form.get('materijal').invalid"
+            >Molimo Vas da izaberete materijal</mat-error
+          >
+        </mat-form-field>
+
+      </div>
+
+      <!-- drustvena igra -->
+
+      <div class="d-flex flex-row flex-wrap"
+      *ngIf="selectedCategory=='drustvena igra'">
+        <mat-form-field
+        class="p-2 col-12 col-lg-2"
+        appearance="standard">
+          <mat-label>Za uzrast od</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            max="100"
+            formControlName="uzrastOd"
+          />
+          <mat-error *ngIf="form.get('uzrastOd').invalid"
+            >Molimo Vas da unesete uzrast</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field
+        class="p-2 col-12 col-lg-2"
+        appearance="standard">
+          <mat-label>Za uzrast do</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            max="100"
+            formControlName="uzrastDo"
+          />
+          <mat-error *ngIf="form.get('uzrastOd').invalid"
+            >Molimo Vas da unesete uzrast</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard">
+          <mat-label>Prosečno trajanje</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            formControlName="trajanje"
+          />
+          <label matSuffix>min</label>
+          <mat-hint>Unesite trajanje u minutima</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field
+        class="p-2 col-12 col-lg-4"
+        appearance="standard">
+          <mat-label>Broj igrača</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            max="20"
+            formControlName="brojIgraca"
+          />
+        </mat-form-field>
+
+
+      </div>
+
+      <div class="d-flex flex-row flex-wrap">
+        <mat-form-field
+        class="p-2 col-12 col-lg-8"
+        appearance="standard">
+          <mat-label>Opis</mat-label>
+          <textarea
+          style="resize: none;"
+          matInput
+          type="string"
+          name="opis"
+          rows="3"
+          maxlength="250"
+          formControlName="opis"
+        ></textarea>
+          <mat-error *ngIf="form.get('opis').invalid"
+            >Molimo Vas da unesete opis proizvoda</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field
+        class="p-2 col-12 col-lg-4 mt-2"
+        appearance="standard">
+          <mat-label>Cena</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            formControlName="cena"
+            class='cena'
+          />
+          <label matSuffix>RSD</label>
+          <mat-error *ngIf="form.get('cena').invalid"
+            >Molimo Vas da unesete cenu</mat-error
+          >
+        </mat-form-field>
+
+      </div>
+      <div class="d-flex justify-content-center">
+        <button
+        class="btn btn-outline-primary btn-reg-page mt-2 btn-add-product"
+        type="submit"
+        [disabled]="form.get('kategorija').invalid || form.get('naziv').invalid || form.get('proizvodjac').invalid || form.get('kolicina').invalid ||
+        form.get('opis').invalid || form.get('cena').invalid || form.get('slika').invalid ||
+        (selectedCategory=='knjiga' && (form.get('isbn').invalid || form.get('autor').invalid || form.get('zanr').invalid))||
+        (selectedCategory=='sveska' && form.get('format').invalid ) ||
+        (selectedCategory=='drustvena igra' && form.get('uzrast').invalid) ||
+        (selectedCategory=='drustvena igra' && form.get('brojDelova').invalid)">
+        Sačuvaj promene</button>
+      </div>
+
+
+    </div>
+    <div class="p-2 col-12 col-lg-5">
+      <div class="container d-flex">
+        <button
+          class="btn btn-outline-primary btn-reg-page btn-add-product p-2 m-auto btn-lg"
+          type="button"
+          (click)="filePicker.click()"
+        >
+          Promeni sliku proizvoda
+        </button>
+        <input
+          type="file"
+          name="image"
+          #filePicker
+          (change)="onImagePicked($event)"
+        />
+      </div>
+      <!-- *ngIf="imagePreview !== '' && imagePreview && form.get('slika').valid" -->
+      <div class="slika-conteiner">
+        <img
+          [src]="imagePreview"
+          class="slika mx-auto d-block img-fluid"
+
+        />
+      </div>
+    </div>
+
+  </form>
+</div>

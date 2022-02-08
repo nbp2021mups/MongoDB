@@ -4,10 +4,10 @@ export class PrivezakFull extends ProductFull {
     public materijal: string;
 
 
-    constructor(_id: string, naziv: string, proizvodjac: string, kolicina: number, cena: number, 
+    constructor(_id: string, naziv: string, proizvodjac: string, kolicina: number, cena: number,
         slika: string, kategorija: string, opis: string, poreklo, materijal: string) {
 
-        super(_id, naziv, proizvodjac, kolicina, cena, slika, kategorija, poreklo, opis);
+        super(_id, naziv, proizvodjac, kolicina, cena, slika, kategorija, opis, poreklo);
         this.materijal = materijal;
     }
 }

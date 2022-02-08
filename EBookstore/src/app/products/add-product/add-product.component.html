@@ -359,8 +359,8 @@
         form.get('opis').invalid || form.get('cena').invalid || form.get('slika').invalid ||
         (selectedCategory=='knjiga' && (form.get('isbn').invalid || form.get('autor').invalid || form.get('zanr').invalid))||
         (selectedCategory=='sveska' && form.get('format').invalid ) ||
-        (selectedCategory=='drustvena igra' && form.get('uzrast').invalid) ||
-        (selectedCategory=='drustvena igra' && form.get('brDelova').invalid)">
+        (selectedCategory=='drustvena igra' && (form.get('uzrastOd').invalid || form.get('uzrastDo').invalid)) ||
+        (selectedCategory=='slagalica' && form.get('brDelova').invalid)">
         Dodaj proizvod</button>
       </div>
 
