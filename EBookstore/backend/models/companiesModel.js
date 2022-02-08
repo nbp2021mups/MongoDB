@@ -40,6 +40,10 @@ const schema = new mongoose.Schema({
         type: String,
         default: "http://localhost:3000/images/template-company.png",
     },
+    ponudjeniProizvodi: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "products"
+    }]
 });
 
 const CompanyModel = mongoose.model("company", schema);

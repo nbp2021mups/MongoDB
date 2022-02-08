@@ -54,8 +54,11 @@ router.get("/findByCompany/:company", (req, res) => {
     }
 });
 
-router.post("/", multer({ storage }).single("file"), async(req, res) => {
+router.post("/", multer({ storage }).single("image"), async(req, res) => {
     try {
+        /* const poreklo=JSON.parse(req.body.poreklo);
+        delete req.body.poreklo; */
+
         req.body.poreklo = JSON.parse(req.body.poreklo);
         if (!req.body.poreklo ||
             !req.body.poreklo.id ||
@@ -68,6 +71,8 @@ router.post("/", multer({ storage }).single("file"), async(req, res) => {
                 sadrzaj: "Morate proslediti ispravno poreklo proizvoda!",
             });
         }
+
+        console.log(req.body)
 
         const session = await mongoose.startSession();
         session.startTransaction();

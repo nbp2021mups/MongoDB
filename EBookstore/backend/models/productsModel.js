@@ -40,6 +40,7 @@ const schema = new mongoose.Schema({
     },
     opis: {
         type: String,
+        required: [true, "Opis je obavezan!"]
     },
     poreklo: {
         _id: { id: false },

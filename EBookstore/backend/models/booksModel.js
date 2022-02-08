@@ -37,10 +37,10 @@ const schema = new mongoose.Schema({
     brojStrana: {
         type: Number,
     },
-    tagovi: {
+    /* tagovi: {
         type: [String],
         default: [],
-    },
+    }, */
 });
 
 const BookModel = mongoose.model("book", schema);
