@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { OrderBasic } from 'src/models/order-basic.model';
 import { ProductBasicSubdocument } from 'src/models/product-basic-subdocument.model';
 import { User } from 'src/models/user.model';
 import { AuthService } from 'src/services/auth.service';
@@ -37,7 +38,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.loadCart();
       },
       error: err => console.log(err)
-    });
+    }).unsubscribe();
   }
 
   loadCart(): void {
@@ -98,9 +99,17 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   async order(): Promise<void>{
-    this.http.put('http://localhost:3000/users/order/' + this.cart._id, { ...this.changes })
+    const c = this.changes.done ? this.changes : null;
+    this.http.post('http://localhost:3000/orders',
+    {
+      ...c,
+      cartID: this.cart._id
+    })
     .subscribe({
-      next: response => {
+      next: (response: { poruka: string, sadrzaj: OrderBasic }) => {
+        this.cart.brojProizvoda = 0;
+        this.cart.cena = 0;
+        this.cart.proizvodi = new Array<ProductBasicSubdocument>();
         this.changes = { done: false, obrisani: new Map<string, boolean>(), promenjeni: new Map<string, number>() };
     },
       error: err => console.log(err)
