@@ -45,3 +45,9 @@
 .prod-image{
     height: 200px;
 }
+
+.span-stanje {
+    border: 1px solid #e61628;
+    border-radius: 1px;
+    text-align: center;
+}

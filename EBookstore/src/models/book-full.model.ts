@@ -6,11 +6,10 @@ export class BookFull extends ProductFull {
     public brStrana: number;
     public isbn: string;
     public godIzdavanja: number;
-    public tagovi: string[] = [];
 
     constructor(_id: string, naziv: string, proizvodjac: string, kolicina: number, cena: number,
         slika: string, kategorija: string, opis: string, poreklo, autor: string, zanr: string, brStrana: number,
-        isbn: string, godIzdavanja: number, tagovi: string[]) {
+        isbn: string, godIzdavanja: number) {
 
         super(_id, naziv, proizvodjac, kolicina, cena, slika, kategorija, opis, poreklo);
 
@@ -19,7 +18,6 @@ export class BookFull extends ProductFull {
         this.brStrana = brStrana;
         this.isbn = isbn;
         this.godIzdavanja = godIzdavanja;
-        this.tagovi = tagovi;
     }
 
 }

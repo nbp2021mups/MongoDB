@@ -8,31 +8,68 @@ router.get("/search/:idKnjizare/:skip/:count", async (req, res) => {
     try{
         let filter = {};
 
+        //opsti filteri
         if(req.query.kategorija) {
             filter['kategorija'] = req.query.kategorija;
         }
         if(req.query.naziv) {
-            filter['naziv'] = req.query.naziv;
+            filter['naziv'] = {$regex : req.query.naziv};
         }
         if(req.query.proizvodjac) {
-            filter['proizvodjac'] = req.query.proizvodjac;
+            filter['proizvodjac'] ={$regex : req.query.proizvodjac};
         }
         if(req.query.cene) {
-            let minCena = 999999; let maxCena = 0;
             const cene = JSON.parse(req.query.cene);
-            cene.forEach(cena => {
-                cena = cena.split("-");
-                if(cena[0] < minCena){
-                    minCena = cena[0];
-                }
-                if(cena[1] != '' && cena[1] > maxCena) {
-                    maxCena = cena[1];
-                }
+            const nizCena = [];
+
+            cene.forEach(c => {
+                cenaV = c.split("-");
+                nizCena.push({cena : {$gte : parseInt(cenaV[0]), $lte : parseInt(cenaV[1])}});
             });
-            filter['cena'] = {$gte : minCena, $lte: maxCena};
+            filter.$or = nizCena;
         }
 
-        //sutra dodaj ostale i dodaj regex
+        //ukoliko je izabrana kategorija 'knjige' imamo dodatne filtere
+        if(req.query.kategorija && req.query.kategorija == 'knjiga') {
+            if(req.query.autor){
+                filter['autor'] = {$regex : req.query.autor};
+            }
+            if(req.query.zanr){
+                filter['zanr'] = {$in : JSON.parse(req.query.zanr)}
+            }
+        //ukoliko je izabrana kategorija 'drustvena-igra'
+        } else if(req.query.kategorija && req.query.kategorija == 'drustvena igra') {
+            if(req.query.uzrast){
+                const uzrasti = JSON.parse(req.query.uzrast);
+                const nizUzrasta = [];
+
+                uzrasti.forEach(u => {
+                    u = u.split("-");
+                    nizUzrasta.push({uzrastOd : {$gte : parseInt(u[0])}, uzrastDo : { $lte : parseInt(u[1])}});
+                });
+                filter.$or = nizUzrasta;
+            }
+        //ukoliko je izabrana 'slagalica'
+        } else if(req.query.kategorija && req.query.kategorija == 'slagalica') {
+            if(req.query.brDelova){
+                filter['brojDelova'] = {$in : JSON.parse(req.query.brDelova)};
+            }
+        //ukoliko je izabran ranac
+        } else if(req.query.kategorija && req.query.kategorija == 'ranac') {
+            if(req.query.pol) {
+                filter['pol'] = {$in : JSON.parse(req.query.pol)};
+            }
+        //ukoliko je izabrana sveska
+        } else if(req.query.kategorija && req.query.kategorija == 'sveska') {
+            if(req.query.format) {
+                filter['format'] = {$in : JSON.parse(req.query.format)};
+            }
+        } else if(req.query.kategorija && req.query.kategorija == 'privezak') {
+            if(req.query.materijal){
+                filter['materijal'] = {$regex : req.query.materijal};
+            }
+        }
+
         console.log(filter);
 
 

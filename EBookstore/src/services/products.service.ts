@@ -127,7 +127,7 @@ export class ProductsService {
         const opis = response.opis;
         if (kategorija=='knjiga'){
           return new BookFull(id, naziv, proizvodjac, kolicina, cena, slika
-            , kategorija, opis, response.poreklo, response.autor, response.zanr, response.brojStrana, response.isbn, response.izdata, null);
+            , kategorija, opis, response.poreklo, response.autor, response.zanr, response.brojStrana, response.isbn, response.izdata);
         }
         else if (kategorija=='ranac'){
           return new RanacFull(id, naziv, proizvodjac, kolicina, cena, slika
