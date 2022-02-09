@@ -31,6 +31,7 @@ import { ProductInfoPageComponent } from './product-info-page/product-info-page.
 import { OrderSingleComponent } from './components/order-single/order-single.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { OrderUserComponent } from './components/order-user/order-user.component';
+import { WarningDialogComponent } from './warning-dialog/warning-dialog.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { OrderUserComponent } from './components/order-user/order-user.component
     ProductInfoPageComponent,
     OrderSingleComponent,
     OrdersComponent,
-    OrderUserComponent
+    OrderUserComponent,
+    WarningDialogComponent
   ],
   imports: [
     BrowserModule,
