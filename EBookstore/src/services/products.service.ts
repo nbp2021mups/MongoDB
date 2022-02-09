@@ -2,7 +2,13 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { map } from "rxjs/operators";
 import { BookBasic } from "src/models/book-basic.model";
+import { BookFull } from "src/models/book-full.model";
+import { DrustvenaIgraFull } from "src/models/drustvenaIgra-full.model";
+import { PrivezakFull } from "src/models/privezak-full.model";
 import { ProductBasic } from "src/models/product-basic.model";
+import { RanacFull } from "src/models/ranac-full.model";
+import { SlagalicaFull } from "src/models/slagalica-full.model";
+import { SveskaFull } from "src/models/sveska-full.model";
 
 @Injectable({providedIn: 'root'})
 export class ProductsService {
@@ -110,10 +116,38 @@ export class ProductsService {
     }
 
     getProductById(id: String){
-      return this.http.get<any>('localhost:3000/products/'+id).pipe(map(response=>{
+      return this.http.get<any>('http://localhost:3000/products/'+id).pipe(map(response=>{
+        const id= response._id;
         const kategorija= response.kategorija;
+        const naziv = response.naziv;
+        const proizvodjac= response.proizvodjac;
+        const kolicina=response.kolicina;
+        const cena =response.cena;
+        const slika = response.slika;
+        const opis = response.opis;
         if (kategorija=='knjiga'){
-          //return new
+          return new BookFull(id, naziv, proizvodjac, kolicina, cena, slika
+            , kategorija, opis, response.poreklo, response.autor, response.zanr, response.brojStrana, response.isbn, response.izdata, null);
+        }
+        else if (kategorija=='ranac'){
+          return new RanacFull(id, naziv, proizvodjac, kolicina, cena, slika
+            , kategorija, opis, response.poreklo, response.pol);
+        }
+        else if (kategorija=='privezak'){
+          return new PrivezakFull(id, naziv, proizvodjac, kolicina, cena, slika
+            , kategorija, opis, response.poreklo, response.materijal);
+        }
+        else if (kategorija=='sveska'){
+          return new SveskaFull(id, naziv, proizvodjac, kolicina, cena, slika
+            , kategorija, opis, response.poreklo, response.format, response.brojListova);
+        }
+        else if (kategorija=='drustvena igra'){
+          return new DrustvenaIgraFull(id, naziv, proizvodjac, kolicina, cena, slika
+            , kategorija, opis, response.poreklo, response.trajanje, response.brojIgraca, String(response.uzrastOd)+"-"+String(response.uzrastDo));
+        }
+        else if (kategorija=='slagalica'){
+          return new SlagalicaFull(id, naziv, proizvodjac, kolicina, cena, slika
+            , kategorija, opis, response.poreklo, response.dimenzije, response.brojDelova);
         }
       }))
     }

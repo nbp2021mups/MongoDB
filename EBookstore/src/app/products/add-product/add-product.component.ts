@@ -109,7 +109,6 @@ export class AddProductComponent implements OnInit {
         }
         else if(kategorija=='ranac'){
           const pol=this.form.get('pol').value;
-          console.log(pol);
           productData.append('pol', pol);
         }
         else if(kategorija=='privezak'){
