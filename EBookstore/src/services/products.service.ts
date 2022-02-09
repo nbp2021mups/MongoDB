@@ -152,4 +152,9 @@ export class ProductsService {
       }))
     }
 
+    updateProduct(id:String, formData : FormData){
+      return this.http.patch('http://localhost:3000/products/'+id, formData, {responseType: 'text'});
+
+    }
+
 }

@@ -15,6 +15,7 @@ router.get("/search", (req, res) => {
             .select(req.query.select)
             .skip(req.query.skip)
             .limit(req.query.count)
+            .sort(req.query.field)
             .then((result) => {
                 return res.send({ poruka: "Uspesno!", sadrzaj: result });
             })
@@ -31,12 +32,13 @@ router.get("/search", (req, res) => {
             .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
-router.get("/findByCompany/:company", (req, res) => {
+router.get("/findByCompany/:companyId", (req, res) => {
     try {
-        ProductModel.find({proizvodjac: req.params.company})
+        ProductModel.find({"poreklo.id" : req.params.companyId})
             .select(req.query.select)
             .skip(req.query.skip)
             .limit(req.query.count)
+            .sort(req.query.field)
             .then((result) => {
                 return res.send({ poruka: "Uspesno!", sadrzaj: result });
             })
@@ -54,9 +56,21 @@ router.get("/findByCompany/:company", (req, res) => {
     }
 });
 
-router.post("/", multer({ storage }).single("image"), async(req, res) => {
-    try {
+router.get("/:productId", async (req, res)=>{
+  try{
+    const product=await ProductModel.findById(req.params.productId);
+    return res.send(product);
+  }
+  catch{
+    console.log(ex);
+    return res.status(501).send("Nastala je greska na serverskoj strani!");
 
+  }
+})
+
+
+router.post("/", multer({ storage }).single("file"), async(req, res) => {
+    try {
         req.body.poreklo = JSON.parse(req.body.poreklo);
         if (!req.body.poreklo ||
             !req.body.poreklo.id ||
@@ -118,18 +132,6 @@ router.post("/", multer({ storage }).single("image"), async(req, res) => {
     }
 });
 
-router.get("/:productId", async (req, res)=>{
-  try{
-    const product=await ProductModel.findById(req.params.productId);
-    return res.send(product);
-  }
-  catch{
-    console.log(ex);
-    return res.status(501).send("Nastala je greska na serverskoj strani!");
-
-  }
-})
-
 router.put("/", (req, res) => {
     try {
         ProductModel.updateOne(req.body.filter, req.body.update)
@@ -149,6 +151,34 @@ router.put("/", (req, res) => {
             .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
+
+router.patch("/:productId", multer({ storage }).single("image"), async (req,res)=>{
+  try{
+    const newValues= JSON.parse(req.body.newValues);
+    if (req.file) {
+      const url = req.protocol + "://" + req.get("host");
+      let imgPath = url + "/images/" + req.file.filename;
+      newValues.slika=imgPath;
+    }
+    console.log(newValues)
+    await ProductModel.findByIdAndUpdate(req.params.productId, newValues);
+    if(req.body.oldImg){
+      const path ="./backend" +req.body.oldImg.substring(req.body.oldImg.indexOf("/images"));
+
+      fs.unlink(path, (err) => {
+          if (err)
+            console.log(err);
+      });
+
+    }
+    return res.send("Proizvod je uspešno ažiriran.")
+
+  }catch (ex){
+    console.log(ex);
+    return res.status(501).send("Došlo je do greške prilikom izmene proizvoda, pokušajte ponovo.");
+  }
+
+})
 
 router.delete("/", (req, res) => {
     try {

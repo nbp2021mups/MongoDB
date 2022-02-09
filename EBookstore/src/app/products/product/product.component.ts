@@ -44,7 +44,7 @@ export class ProductComponent implements OnInit {
 
 
   onProductClicked() {
-    alert('radi');
+    this.router.navigate(['/proizvod', this.product._id])
   }
 
 

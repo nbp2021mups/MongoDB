@@ -9,6 +9,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { AuthGuard } from 'src/services/auth-guard.service';
 import { AddProductComponent } from './products/add-product/add-product.component';
 import { EditProductComponent } from './products/edit-product/edit-product.component';
+import { ProductInfoPageComponent } from './product-info-page/product-info-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/pocetna', pathMatch: 'full' },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'novi-proizvod', component: AddProductComponent },
   { path: 'korpa', component: CartComponent, canActivate: [AuthGuard] },
   { path: 'izmena/:idProizvoda', component: EditProductComponent},
+  { path: 'proizvod/:idProizvoda', component: ProductInfoPageComponent},
   { path: '**', redirectTo: 'pocetna' },
 ]
 

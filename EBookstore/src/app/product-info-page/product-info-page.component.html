@@ -1,0 +1,14 @@
+<div class="d-flex align-items-center main-div flex-row justify-content-center flex-wrap-reverse" *ngIf="this.product">
+  <div class="d-flex flex-column p-2 col-12 col-lg-6 div-info justify-content-around">
+    <h1>Kategorija:{{product.kategorija}}</h1>
+  </div>
+
+  <div class="p-2 col-12 col-lg-5">
+    <div class="slika-conteiner">
+      <img
+        [src]="product.slika"
+        class="slika mx-auto d-block img-fluid img-thumbnail"
+      />
+    </div>
+  </div>
+</div>
