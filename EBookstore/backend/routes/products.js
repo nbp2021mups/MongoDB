@@ -15,6 +15,7 @@ router.get("/search", (req, res) => {
             .select(req.query.select)
             .skip(req.query.skip)
             .limit(req.query.count)
+            .sort(req.query.field)
             .then((result) => {
                 return res.send({ poruka: "Uspesno!", sadrzaj: result });
             })
@@ -31,12 +32,13 @@ router.get("/search", (req, res) => {
             .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
-router.get("/findByCompany/:company", (req, res) => {
+router.get("/findByCompany/:companyId", (req, res) => {
     try {
-        ProductModel.find({proizvodjac: req.params.company})
+        ProductModel.find({"poreklo.id" : req.params.companyId})
             .select(req.query.select)
             .skip(req.query.skip)
             .limit(req.query.count)
+            .sort(req.query.field)
             .then((result) => {
                 return res.send({ poruka: "Uspesno!", sadrzaj: result });
             })
@@ -53,10 +55,8 @@ router.get("/findByCompany/:company", (req, res) => {
             .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
-
-router.post("/", multer({ storage }).single("image"), async(req, res) => {
+router.post("/", multer({ storage }).single("file"), async(req, res) => {
     try {
-
         req.body.poreklo = JSON.parse(req.body.poreklo);
         if (!req.body.poreklo ||
             !req.body.poreklo.id ||
@@ -117,18 +117,6 @@ router.post("/", multer({ storage }).single("image"), async(req, res) => {
             .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
-
-router.get("/:productId", async (req, res)=>{
-  try{
-    const product=await ProductModel.findById(req.params.productId);
-    return res.send(product);
-  }
-  catch{
-    console.log(ex);
-    return res.status(501).send("Nastala je greska na serverskoj strani!");
-
-  }
-})
 
 router.put("/", (req, res) => {
     try {
