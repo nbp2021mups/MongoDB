@@ -15,6 +15,7 @@ router.get("/search", (req, res) => {
             .select(req.query.select)
             .skip(req.query.skip)
             .limit(req.query.count)
+            .sort(req.query.field)
             .then((result) => {
                 return res.send({ poruka: "Uspesno!", sadrzaj: result });
             })
@@ -37,6 +38,7 @@ router.get("/findByCompany/:companyId", (req, res) => {
             .select(req.query.select)
             .skip(req.query.skip)
             .limit(req.query.count)
+            .sort(req.query.field)
             .then((result) => {
                 return res.send({ poruka: "Uspesno!", sadrzaj: result });
             })
