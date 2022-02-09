@@ -150,6 +150,34 @@ router.put("/", (req, res) => {
     }
 });
 
+router.patch("/:productId", multer({ storage }).single("image"), async (req,res)=>{
+  try{
+    const newValues= JSON.parse(req.body.newValues);
+    if (req.file) {
+      const url = req.protocol + "://" + req.get("host");
+      let imgPath = url + "/images/" + req.file.filename;
+      newValues.slika=imgPath;
+    }
+    console.log(newValues)
+    await ProductModel.findByIdAndUpdate(req.params.productId, newValues);
+    if(req.body.oldImg){
+      const path ="./backend" +req.body.oldImg.substring(req.body.oldImg.indexOf("/images"));
+
+      fs.unlink(path, (err) => {
+          if (err)
+            console.log(err);
+      });
+
+    }
+    return res.send("Proizvod je uspešno ažiriran.")
+
+  }catch (ex){
+    console.log(ex);
+    return res.status(501).send("Došlo je do greške prilikom izmene proizvoda, pokušajte ponovo.");
+  }
+
+})
+
 router.delete("/", (req, res) => {
     try {
         ProductModel.deleteOne(JSON.parse(req.query.filter))

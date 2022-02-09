@@ -11,6 +11,7 @@ import { PrivezakFull } from 'src/models/privezak-full.model';
 import { SveskaFull } from 'src/models/sveska-full.model';
 import { DrustvenaIgraFull } from 'src/models/drustvenaIgra-full.model';
 import { SlagalicaFull } from 'src/models/slagalica-full.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-product',
@@ -28,8 +29,9 @@ export class EditProductComponent implements OnInit, OnDestroy {
   paramsSub: Subscription;
   idProizvoda: string;
   rdonly = true;
+  currentImage: string;
 
-  constructor(private route: ActivatedRoute, private productService: ProductsService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private productService: ProductsService) { }
 
   ngOnInit(): void {
     this.paramsSub = this.route.params.subscribe(params => {
@@ -72,6 +74,7 @@ export class EditProductComponent implements OnInit, OnDestroy {
       next: resp=>{
         console.log(resp)
         this.selectedCategory=resp.kategorija;
+        this.currentImage=resp.slika;
         this.imagePreview=resp.slika;
         this.form.patchValue({
           kategorija : this.selectedCategory,
@@ -146,11 +149,31 @@ export class EditProductComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(){
-    /* if (this.imagePreview!=this.person.imagePath){
+    const toUpdate=this.getDirtyValues(this.form)
+    let newImage=null;
+    const formData : FormData = new FormData();
+    if (this.imagePreview!=this.currentImage){
       newImage=this.form.value.slika;
-      body["oldImage"]=this.person.imagePath;
-    } */
-    console.log(this.getDirtyValues(this.form));
+      formData.append("oldImg", this.currentImage);
+    }
+    if(Object.keys(toUpdate).length==0 && newImage==null){
+      this.router.navigate(["pocetna"]);
+      return;
+    }
+
+    formData.append("newValues", JSON.stringify(toUpdate));
+    formData.append("image", newImage);
+
+    this.productService.updateProduct(this.idProizvoda, formData).subscribe({
+      next: resp=>{
+        console.log(resp);
+        //this.router.navigate(["pocetna"]);
+      },
+      error: err=>{
+        console.log(err)
+      }
+    })
+
   }
 
   onImagePicked(event: Event) {
