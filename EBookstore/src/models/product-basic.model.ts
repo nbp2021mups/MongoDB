@@ -6,8 +6,7 @@ export class ProductBasic {
     public cena: number;
     public slika: string;   //putanja do slike na serveru
     public kategorija: string;
-    //public poreklo: {_idPorekla: string, ime?: string, prezime?: string, naziv?: string};
-    public poreklo: string;
+    public poreklo: {id: string, ime?: string, prezime?: string, naziv?: string};
 
     constructor(_id: string, naziv: string, proizvodjac: string, kolicina: number, cena: number, slika: string, kategorija: string, poreklo) {
         this._id = _id;
@@ -17,11 +16,10 @@ export class ProductBasic {
         this.cena = cena;
         this.slika = slika;
         this.kategorija = kategorija;
-        /* if(kategorija == 'knjiga-za-iznajmljivanje') {
-            this.poreklo = {_idPorekla: poreklo._idPorekla, ime: poreklo.ime, prezime: poreklo.prezime};
+        if(kategorija == 'knjiga za iznajmljivanje') {
+            this.poreklo = {id: poreklo.id, ime: poreklo.ime, prezime: poreklo.prezime};
         } else {
-            this.poreklo = {_idPorekla: poreklo._idPorekla, naziv: poreklo.naziv};
-        } */
-        this.poreklo = poreklo;
+            this.poreklo = {id: poreklo.id, naziv: poreklo.naziv};
+        }
     }
 }

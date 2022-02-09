@@ -5,12 +5,12 @@ export class BookFull extends ProductFull {
     public zanr: string;
     public brStrana: number;
     public isbn: string;
-    public godIzdavanja: Date;
+    public godIzdavanja: number;
     public tagovi: string[] = [];
 
-    constructor(_id: string, naziv: string, proizvodjac: string, kolicina: number, cena: number, 
+    constructor(_id: string, naziv: string, proizvodjac: string, kolicina: number, cena: number,
         slika: string, kategorija: string, opis: string, poreklo, autor: string, zanr: string, brStrana: number,
-        isbn: string, godIzdavanja: Date, tagovi: string[]) {
+        isbn: string, godIzdavanja: number, tagovi: string[]) {
 
         super(_id, naziv, proizvodjac, kolicina, cena, slika, kategorija, opis, poreklo);
 
@@ -18,7 +18,7 @@ export class BookFull extends ProductFull {
         this.zanr = zanr;
         this.brStrana = brStrana;
         this.isbn = isbn;
-        this.godIzdavanja = new Date(godIzdavanja);
+        this.godIzdavanja = godIzdavanja;
         this.tagovi = tagovi;
     }
 

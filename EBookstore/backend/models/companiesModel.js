@@ -42,7 +42,7 @@ const schema = new mongoose.Schema({
     },
     ponudjeniProizvodi: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "products"
+      ref: "product"
     }]
 });
 

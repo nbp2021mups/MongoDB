@@ -8,14 +8,68 @@
 }
 
 .slika {
-  width: 60%;
-  height: 60%;
+  /* min-height: 60%;
+  max-width: 60%;
+  min-height: 60%;
+  max-height: 60%; */
+  height: 500px;
+  width: 400px;
+  /* width: 60%;
+  height: 60% */
   margin: 2% 0;
   align-self: center;
 }
 
-.div-info {
-  border: 1px solid black;
+h2 {
+  color: #111;
+  font-family: "Open Sans", sans-serif;
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 32px;
+  margin: 0 0 25px;
+  /* text-align: center; */
+}
+
+p {
+  color: #18010b;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  line-height: 24px;
+  margin: 0 0 10px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.small-info {
+  padding-bottom: 15px;
+}
+.small-info p {
+  margin: 2px;
+  color: #7a7878e1;
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+.cena {
+  margin: 15px 0px;
+  color: #e63946;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 18px;
+  line-height: 26px;
+}
+
+.nijeDostupan {
+  font-size: 24px;
+  color: #130506;
+  font-family: "Helvetica Neue", sans-serif;
+  border: 1px solid #e61628;
   border-radius: 5px;
-  background-color: rgba(233, 198, 217, 50%);
+  padding: 10px;
+  text-align: center;
+}
+
+button:hover {
+  background-color: #ade8f4;
+  color: #030101;
+  border-color: #030101;
 }
