@@ -32,6 +32,19 @@ export class ProductPageComponent implements OnInit, OnDestroy {
           {controlName: 'cena2', value: '1000-2000', text : '1000-2000', checked: false},
           {controlName: 'cena3', value: '2000-5000', text : '2000-5000', checked: false},
           {controlName: 'cena4', value: '5000-', text : '5000+', checked: false}];
+
+  zanrovi = [{value: 'Drama', text: 'Drama'},
+          {value: 'Komedija', text: 'Komedija'},
+          {value: 'Triler', text: 'Triler'},
+          {value: 'Naucna fantastika', text: 'Naucna fantastika'},
+          {value: 'Psihologija', text: 'Psihologija'},
+          {value: 'Strucna literatura', text: 'Strucna literatura'},
+          {value: 'Zdravlje', text: 'Zdravlje'},
+          {value: 'Knjige za decu', text: 'Knjige za decu'},
+          {value: 'Roman', text: 'Roman'},
+          {value: 'Klasik', text: 'Klasik'},
+          {value: 'Novela', text: 'Novela'},
+          {value: 'Horor', text: 'Horor'}];
   
   uzrasti = [{controlName: 'uzrast1', value: '0-5', text : 'do 5 godina', checked: false},
           {controlName: 'uzrast2', value: '5-8', text : '5 - 8 godina', checked: false},
@@ -261,6 +274,18 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
     console.log('cene : ', cene);
     console.log('sortiranje : ', sort);
+
+
+    //prikupljeni podaci, sada saljemo request
+
+    //formiramo query parametre
+
+    
+    if(this.idKnjizare) {
+
+    } else {
+
+    }
   }
 
 

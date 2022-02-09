@@ -62,16 +62,12 @@ router.post("/add-to-cart", async(req, res) => {
         session.startTransaction();
 
         try {
-
-            const product = await ProductModel.findOneAndUpdate({ _id: req.body.proizvodID }, {
-                $inc: {
-                    kolicina: -req.body.kolicina
-                }
-            }, { new: true, session }).select('cena kolicina naziv slika proizvodjac poreklo kategorija');
+            const product = await ProductModel.findOne({ _id: req.body.proizvodID })
+                .select('cena kolicina naziv slika proizvodjac poreklo kategorija');
 
             if (!product)
                 throw "Ne postoji proizvod sa zadatim identifikatorom!";
-            else if (product.kolicina < 0)
+            else if (product.kolicina < req.body.kolicina)
                 throw "Nema dovoljno proizvoda za narudzbinu!";
 
             const user = await UserModel.findOneAndUpdate({ _id: req.body.userID }, { $inc: { "korpa.brojProizvoda": req.body.kolicina, "korpa.cena": req.body.kolicina * product.cena } }, { new: true, session }).select('korpa');
@@ -102,8 +98,10 @@ router.post("/add-to-cart", async(req, res) => {
                 });
 
             await cart.save({ session });
+
             await session.commitTransaction();
             await session.endSession();
+
             return res.send({ msg: "Uspesno!", sadrzaj: {} });
 
         } catch (sadrzaj) {
@@ -139,36 +137,27 @@ router.put("/update-cart/:cartID", async(req, res) => {
             req.body.promenjeni = new Map(Object.entries(req.body.promenjeni));
             req.body.obrisani = new Map(Object.entries(req.body.obrisani));
 
-            if (req.body.obrisani.size > 0 && req.body.promenjeni.size == 0) {
-                cart.proizvodi = cart.proizvodi.filter((p) => {
-                    return !req.body.obrisani.get(String(p.id));
-                });
-            }
+            if (req.body.obrisani.size > 0)
+                cart.proizvodi = cart.proizvodi.filter((p) => !req.body.obrisani.get(String(p.id)));
 
             if (req.body.promenjeni.size > 0) {
-                const products = await ProductModel.find({ _id: { $in: [...req.body.promenjeni.keys()] } }, null, { session }).select('kolicina');
+                const products = await ProductModel.find({ _id: { $in: [...req.body.promenjeni.keys()] } }).select('kolicina');
 
                 if (!products.every(p => {
                         const kolicina = req.body.promenjeni.get(String(p._id));
-                        if (p.kolicina < kolicina)
-                            return false;
-                        p.kolicina -= kolicina;
-                        return true;
+                        return p.kolicina - kolicina >= 0;
                     }))
                     throw "Nema dovoljno proizvoda za dodavanje u korpu!";
 
-                await ProductModel.bulkSave(products, { session });
-
-                cart.proizvodi = cart.proizvodi.filter(p => {
+                cart.proizvodi.forEach(p => {
                     const kolicina = req.body.promenjeni.get(String(p.id));
                     if (kolicina)
                         p.kolicina += kolicina;
-                    return !req.body.obrisani.get(String(p.id));
                 })
             }
 
             await cart.save({ session });
-            const u = await UserModel.updateOne({ _id: cart.korisnik }, { korpa: { cena: cart.cena, brojProizvoda: cart.brojProizvoda, id: cart._id } }, { session, new: true }).select('korpa');
+            const u = await UserModel.updateOne({ _id: cart.korisnik }, { korpa: { cena: cart.cena, brojProizvoda: cart.brojProizvoda, id: cart._id } }, { session, new: true });
 
             if (u.modifiedCount < 1)
                 throw "Korisnikova korpa nije sinhronizovana!";

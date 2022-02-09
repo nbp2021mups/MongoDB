@@ -44,14 +44,21 @@
             />
         </mat-form-field>
 
-        <mat-form-field appearance="standard" class="p-0" *ngIf="izabranaKategorija == 'knjiga'">
+       <!--  <mat-form-field appearance="standard" class="p-0" *ngIf="izabranaKategorija == 'knjiga'">
             <mat-label>Zanr</mat-label>
             <input
             matInput
             type="string"
             formControlName="zanr"
             />
+        </mat-form-field> -->
+        <mat-form-field appearance="standard" *ngIf="izabranaKategorija == 'knjiga'">
+            <mat-label>Izaberite zanrove</mat-label>
+            <mat-select formControlName="zanr" multiple>
+              <mat-option *ngFor = "let zanr of this.zanrovi" [value]="zanr.value">{{zanr.text}}</mat-option>
+            </mat-select>
         </mat-form-field>
+
 
         <mat-form-field appearance="standard" class="p-0" *ngIf="izabranaKategorija == 'privezak'">
             <mat-label>Materijal</mat-label>
