@@ -69,8 +69,33 @@ router.get("/:productId", async (req, res)=>{
 })
 
 
-router.post("/", multer({ storage }).single("file"), async(req, res) => {
+router.post("/", multer({ storage }).single("image"), async(req, res) => {
     try {
+      const kategorija=req.body.kategorija;
+      if(kategorija=='knjiga'){
+        if(req.body.brojStrana)
+          req.body.brojStrana=parseInt(req.body.brojStrana);
+        if(req.body.izdata)
+          req.body.izdata=parseInt(req.body.izdata);
+      }
+      else if (kategorija=='sveska'){
+        if(req.body.brojListova)
+          req.body.brojListova=parseInt(req.body.brojListova);
+      }
+      else if (kategorija=='drustvena igra'){
+
+        req.body.uzrastOd=parseInt(req.body.uzrastOd);
+        req.body.uzrastDo=parseInt(req.body.uzrastDo);
+        if(req.body.brojIgraca)
+          req.body.brojIgraca=parseInt(req.body.brojIgraca);
+        if(req.body.trajanje)
+          req.body.trajanje=parseInt(req.body.trajanje);
+      }
+      else if (kategorija=='slagalica'){
+        req.body.brojDelova=parseInt(req.body.brojDelova);
+      }
+
+
         req.body.poreklo = JSON.parse(req.body.poreklo);
         if (!req.body.poreklo ||
             !req.body.poreklo.id ||
@@ -176,6 +201,44 @@ router.patch("/:productId", multer({ storage }).single("image"), async (req,res)
   }catch (ex){
     console.log(ex);
     return res.status(501).send("Došlo je do greške prilikom izmene proizvoda, pokušajte ponovo.");
+  }
+
+})
+
+router.delete('/:productId/company/:idPorekla', async (req, res)=>{
+  try{
+    await ProductModel.findByIdAndDelete(req.params.productId);
+    await CompanyModel.findByIdAndUpdate(req.params.idPorekla, {$pull:{ponudjeniProizvodi:req.params.productId}});
+    const path ="./backend" + req.body.imagePath.substring(req.body.imagePath.indexOf("/images"));
+
+      fs.unlink(path, (err) => {
+          if (err)
+            console.log(err);
+      });
+    return res.send("Uspesno obrisan proizvod");
+
+  }catch (ex){
+    console.log(ex);
+    return res.status(501).send("Doslo je do greske prilikom brisanja proizvoda, pokusajte ponovo!");
+  }
+
+})
+
+router.delete('/:productId/user/:idPorekla', async (req, res)=>{
+  try{
+    await ProductModel.findByIdAndDelete(req.params.productId);
+    await UserModel.findByIdAndUpdate(req.params.idPorekla, {$pull:{ponudjeneKnjige:req.params.productId}});
+    const path ="./backend" + req.body.imagePath.substring(req.body.imagePath.indexOf("/images"));
+
+      fs.unlink(path, (err) => {
+          if (err)
+            console.log(err);
+      });
+    return res.send("Uspesno obrisan proizvod");
+
+  }catch (ex){
+    console.log(ex);
+    return res.status(501).send("Doslo je do greske prilikom brisanja proizvoda, pokusajte ponovo!");
   }
 
 })

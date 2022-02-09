@@ -167,10 +167,11 @@ export class EditProductComponent implements OnInit, OnDestroy {
     this.productService.updateProduct(this.idProizvoda, formData).subscribe({
       next: resp=>{
         console.log(resp);
-        //this.router.navigate(["pocetna"]);
+        this.router.navigate(['/proizvod', this.idProizvoda]);
       },
       error: err=>{
         console.log(err)
+        this.router.navigate(['/proizvod', this.idProizvoda]);
       }
     })
 
