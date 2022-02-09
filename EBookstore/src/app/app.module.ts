@@ -27,6 +27,7 @@ import { AddProductComponent } from './products/add-product/add-product.componen
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ProductOrderComponent } from './components/product-order/product-order.component';
 import { EditProductComponent } from './products/edit-product/edit-product.component';
+import { ProductInfoPageComponent } from './product-info-page/product-info-page.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { EditProductComponent } from './products/edit-product/edit-product.compo
     HomePageComponent,
     AddProductComponent,
     ProductOrderComponent,
-    EditProductComponent
+    EditProductComponent,
+    ProductInfoPageComponent
   ],
   imports: [
     BrowserModule,

@@ -55,6 +55,20 @@ router.get("/findByCompany/:companyId", (req, res) => {
             .send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj: ex });
     }
 });
+
+router.get("/:productId", async (req, res)=>{
+  try{
+    const product=await ProductModel.findById(req.params.productId);
+    return res.send(product);
+  }
+  catch{
+    console.log(ex);
+    return res.status(501).send("Nastala je greska na serverskoj strani!");
+
+  }
+})
+
+
 router.post("/", multer({ storage }).single("file"), async(req, res) => {
     try {
         req.body.poreklo = JSON.parse(req.body.poreklo);
