@@ -1,8 +1,4 @@
-<div class="d-flex align-items-center main-div flex-row justify-content-center flex-wrap-reverse" *ngIf="this.product">
-  <div class="d-flex flex-column p-2 col-12 col-lg-6 div-info justify-content-around">
-    <h1>Kategorija:{{product.kategorija}}</h1>
-  </div>
-
+<div class="d-flex align-items-center main-div flex-row justify-content-center flex-wrap" *ngIf="this.product">
   <div class="p-2 col-12 col-lg-5">
     <div class="slika-conteiner">
       <img
@@ -11,4 +7,35 @@
       />
     </div>
   </div>
+  <div class="d-flex flex-column p-2 col-12 col-lg-5 div-info justify-content-around">
+    <h2>{{product.naziv}}</h2>
+    <div class="small-info">
+      <p>Kategorija : {{product.kategorija}}</p>
+      <p *ngIf="product.kategorija=='knjiga'">{{product.zanr | uppercase}}</p>
+      <p *ngIf="product.kategorija=='knjiga'">ISBN: {{product.isbn}}</p>
+      <p *ngIf="product.kategorija=='ranac'">{{product.pol | uppercase}}</p>
+      <p *ngIf="product.kategorija=='sveska'">{{product.format}}</p>
+    </div>
+    <p *ngIf="product.kategorija=='knjiga'">Autor: {{product.autor}}</p>
+    <p *ngIf="product.kategorija=='knjiga'">Izdavač: {{product.proizvodjac}}</p>
+    <p *ngIf="product.kategorija=='knjiga'">Godina izdanja: {{product.godIzdavanja}}.</p>
+    <p *ngIf="product.kategorija!='knjiga'">Proizvođač: {{product.proizvodjac}}</p>
+    <p *ngIf="product.kategorija=='knjiga'">Broj strana: {{product.brStrana}}</p>
+
+    <p *ngIf="product.kategorija=='privezak'">Materijal: {{product.materijal}}</p>
+    <p *ngIf="product.kategorija=='sveska' && product.brListova">Broj listova: {{product.brListova}}</p>
+    <p *ngIf="product.kategorija=='drustvena igra' && product.trajanje">Prosečno trajanje: {{product.trajanje}}</p>
+    <p *ngIf="product.kategorija=='drustvena igra' && product.brIgraca">Maksimalan broj igrača: {{product.brIgraca}}</p>
+    <p *ngIf="product.kategorija=='drustvena igra'">Za uzrast: {{product.uzrast}} godina</p>
+    <p *ngIf="product.kategorija=='slagalica'">Broj delova: {{product.brDelova}}</p>
+    <p *ngIf="product.kategorija=='slagalica' && product.dimenzije">Dimenzije: {{product.dimenzije}} cm</p>
+    <p>{{product.opis}}</p>
+    <p class="cena">Cena: {{product.cena}} RSD</p>
+    <button class="btn btn-outline-primary btn-lg"*ngIf="product.kolicina>0">Dodaj u korpu<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-cart korpa" viewBox="0 0 16 16">
+      <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+    </svg></button>
+    <p class="nijeDostupan" *ngIf="product.kolicina<1">Proizvod trenutno nije na stanju.</p>
+  </div>
+
+
 </div>
