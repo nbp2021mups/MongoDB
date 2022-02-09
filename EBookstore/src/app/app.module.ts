@@ -28,6 +28,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ProductOrderComponent } from './components/product-order/product-order.component';
 import { EditProductComponent } from './products/edit-product/edit-product.component';
 import { ProductInfoPageComponent } from './product-info-page/product-info-page.component';
+import { OrderSingleComponent } from './components/order-single/order-single.component';
+import { OrdersComponent } from './components/orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,9 @@ import { ProductInfoPageComponent } from './product-info-page/product-info-page.
     AddProductComponent,
     ProductOrderComponent,
     EditProductComponent,
-    ProductInfoPageComponent
+    ProductInfoPageComponent,
+    OrderSingleComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,

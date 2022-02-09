@@ -9,6 +9,7 @@ import { ProductBasicSubdocument } from 'src/models/product-basic-subdocument.mo
 export class ProductOrderComponent implements OnInit {
 
   @Input() public product: ProductBasicSubdocument;
+  @Input() public displayOnly: boolean = false;
   @Output() amount = new EventEmitter<number>();
   @Output() remove = new EventEmitter<string>();
 
