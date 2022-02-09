@@ -388,6 +388,8 @@
           class="slika mx-auto d-block img-fluid"
           *ngIf="imagePreview !== '' && imagePreview && form.get('slika').valid"
         />
+        <div class="border border-info slika mx-auto d-block img-fluid ram"
+        *ngIf="imagePreview == '' || !imagePreview || !form.get('slika').valid"></div>
       </div>
     </div>
 

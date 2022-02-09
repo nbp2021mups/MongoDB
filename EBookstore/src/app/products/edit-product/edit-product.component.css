@@ -34,9 +34,10 @@ input[type="file"] {
 }
 
 .div-info {
-  border: 1px solid black;
+  border: 1px solid rgb(121, 118, 118);
+  padding: 50px !important;
   border-radius: 5px;
-  background-color: rgba(233, 198, 217, 50%);
+  background-color: #f1dca7;
 }
 
 .btn-add-product:hover {
