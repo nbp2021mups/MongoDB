@@ -6,9 +6,10 @@ export class OrderBasic {
   public brojProizvoda: number;
   public proizvodi: Array<ProductBasicSubdocument>;
   public potvrdjena: {
-      vrednost: boolean,
-      od: Array<String>,
-      ukupno: Array<String>
+      vrednost?: number,
+      od?: Array<String>,
+      ukupno?: Array<String>,
+      userOrder?: string
   };
   public korisnik: string;
   public kompanija: string;
@@ -18,9 +19,10 @@ export class OrderBasic {
     cena?: number,
     brojProizvoda?: number,
     potvrdjena?: {
-        vrednost: boolean,
-        od: Array<String>,
-        ukupno: Array<String>
+      vrednost?: number,
+      od?: Array<String>,
+      ukupno?: Array<String>,
+      userOrder?: string
     },
     kompanija?: string,
     korisnik?: string,

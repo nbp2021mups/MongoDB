@@ -24,7 +24,7 @@ const routes: Routes = [
   { path: 'knjizare', component: BookstoreListComponent },
   { path: 'novi-proizvod', component: AddProductComponent },
   { path: 'korpa', component: CartComponent, canActivate: [AuthGuard] },
-  { path: 'narudzbine', component: OrdersComponent, canActivate: [AuthGuard] },
+  { path: 'narudzbine', component: OrdersComponent },
   { path: 'izmena/:idProizvoda', component: EditProductComponent},
   { path: 'proizvod/:idProizvoda', component: ProductInfoPageComponent},
   { path: '**', redirectTo: 'pocetna' },

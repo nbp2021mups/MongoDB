@@ -12,7 +12,7 @@ import { AuthService } from 'src/services/auth.service';
 export class OrdersComponent implements OnInit {
 
   public orders: Array<OrderBasic> = new Array<OrderBasic>();
-  public category: string;
+  public filter: { kategorija: string, korisnik?: string, kompanija?: string };
   public loggedUser: User;
   public hasMore: boolean = false;
 
@@ -21,9 +21,13 @@ export class OrdersComponent implements OnInit {
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.authService.user.subscribe({next: (user) => {
+    this.authService.user.subscribe({
+      next: (user) => {
         this.loggedUser = user;
-        this.category = this.loggedUser.role;
+        if(this.loggedUser.role == 'bookstore')
+          this.filter = { kompanija: this.loggedUser.id, kategorija: "kompanija" };
+        else
+          this.filter = { korisnik: this.loggedUser.id, kategorija: "korisnik" };
         this.loadMore();
       },
       error: err => console.log(err)
@@ -33,11 +37,11 @@ export class OrdersComponent implements OnInit {
   loadMore(): void {
     this.http.get('http://localhost:3000/orders/', {
           params: {
-            ['filter']: JSON.stringify({ korisnik: this.loggedUser.id, kategorija: 'korisnik' }),
+            ['filter']: JSON.stringify(this.filter),
             ['skip']: 0,
             ['limit']: this.count,
             ['select']: 'cena brojProizvoda potvrdjena korisnik kompanija datum',
-            ['sort']: JSON.stringify({ datum: 1 })
+            ['sort']: JSON.stringify({ datum: -1 })
           }
         }).subscribe({ next: (data: {poruka:string, sadrzaj: Array<OrderBasic>}) => {
             this.orders = [...this.orders, ...data.sadrzaj];

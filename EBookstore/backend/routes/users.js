@@ -98,8 +98,10 @@ router.post("/add-to-cart", async(req, res) => {
                 });
 
             await cart.save({ session });
+
             await session.commitTransaction();
             await session.endSession();
+
             return res.send({ msg: "Uspesno!", sadrzaj: {} });
 
         } catch (sadrzaj) {
@@ -143,9 +145,15 @@ router.put("/update-cart/:cartID", async(req, res) => {
 
                 if (!products.every(p => {
                         const kolicina = req.body.promenjeni.get(String(p._id));
-                        return p.kolicina >= kolicina;
+                        return p.kolicina - kolicina >= 0;
                     }))
                     throw "Nema dovoljno proizvoda za dodavanje u korpu!";
+
+                cart.proizvodi.forEach(p => {
+                    const kolicina = req.body.promenjeni.get(String(p.id));
+                    if (kolicina)
+                        p.kolicina += kolicina;
+                })
             }
 
             await cart.save({ session });

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { OrderBasic } from 'src/models/order-basic.model';
 import { ProductBasicSubdocument } from 'src/models/product-basic-subdocument.model';
+import { UserOrder } from 'src/models/user-order.model';
 
 @Component({
   selector: 'app-order-single',
@@ -12,6 +13,7 @@ export class OrderSingleComponent implements OnInit {
 
   @Input() order: OrderBasic = new OrderBasic();
   @Input() category: string = 'user';
+
   public count: number = 5;
   public hasMoreProducts: boolean = false;
 
@@ -19,6 +21,9 @@ export class OrderSingleComponent implements OnInit {
   public displayProducts: boolean = false;
 
   public loadedProducts: boolean = false;
+  public loadedUser: boolean = false;
+
+  public user: UserOrder = null;
 
   constructor(private http: HttpClient) { }
 
@@ -27,10 +32,23 @@ export class OrderSingleComponent implements OnInit {
 
   toggleProducts() : void {
     this.displayProducts = !this.displayProducts;
-    if( this.displayProducts && !this.loadedProducts)
+    if(this.displayProducts && !this.loadedProducts)
     {
       this.loadedProducts = true;
       this.loadMoreProducts();
+    }
+  }
+
+  toggleUser() : void {
+    this.displayUser = !this.displayUser;
+    if(this.displayUser && !this.loadedUser)
+    {
+      this.loadedUser = true;
+      this.http.get('http://localhost:3000/orders/get-user-info/' + this.order.korisnik)
+      .subscribe({
+        next: (data: { poruka: string, sadrzaj: UserOrder }) => this.user = data.sadrzaj,
+        error: err => console.log(err)
+    });
     }
   }
 
@@ -52,8 +70,22 @@ export class OrderSingleComponent implements OnInit {
     });
   }
 
-  confirmOrder(): void {
-
+  acceptOrder(): void {
+    this.http.patch("http://localhost:3000/orders/accept", { orderID: this.order._id })
+    .subscribe({
+      next: response => {
+        console.log(response);
+        this.order.potvrdjena.vrednost = 1;
+      },
+      error: response => console.log(response)
+    });
   }
 
+  declineOrder() : void {
+    this.http.patch("http://localhost:3000/orders/decline", { orderID: this.order._id })
+    .subscribe({
+      next: response => console.log(response),
+      error: response => console.log(response)
+    });
+  }
 }

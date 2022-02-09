@@ -9,10 +9,50 @@ const { ProductModel } = require("../models/productsModel");
 const mongoose = require("mongoose");
 
 //potvrdivanje narudzbine
-router.patch("/accept/:idOrder", async(req, res) => {
+router.patch("/accept", async(req, res) => {
     try {
-        await OrderModel.findByIdAndUpdate(req.params.idOrder, { $set: { potvrdjena: true } });
-        return res.send("Porudžbina je prihvaćena uspešno.")
+        const session = await mongoose.startSession();
+        session.startTransaction();
+
+        try {
+            const order = await OrderModel.findOneAndUpdate({ _id: req.body.orderID }, { $set: { "potvrdjena.vrednost": 1 } }, { session });
+            if (!order)
+                throw "Ne postoji narudzbina sa prosledjenim identifikatorom!";
+
+            let products = await ProductModel.find({ _id: { $in: [...order.proizvodi.map(p => p.id)] } }).select('kolicina');
+            if (products.length != order.proizvodi.length)
+                throw "Nema svih proizvoda!";
+
+            products = products.reduce((acc, el) => ({...acc, [String(el._id)]: el }), {});
+
+            if (!order.proizvodi.every(p => {
+                    products[String(p.id)].kolicina -= p.kolicina;
+                    return products[String(p.id)].kolicina >= 0;
+                }))
+                throw "Nema dovoljno proizvoda!";
+
+            await ProductModel.bulkSave([...Object.values(products)], { session });
+
+            const userOrder = await OrderModel.findOneAndUpdate({ _id: order.potvrdjena.userOrder }, { $pull: { "potvrdjena.ukupno": order.kompanija }, $push: { "potvrdjena.od": order.kompanija } }, { new: true, session });
+            if (userOrder.potvrdjena.ukupno.length == 0) {
+                userOrder.potvrdjena.vrednost = 1;
+                await userOrder.save({ session });
+                // await OrderModel.deleteMany({ _id: { $in: userOrder.od }});
+            }
+
+            await session.commitTransaction();
+            await session.endSession();
+
+            return res.send({ poruka: "Uspesno!", sadrzaj: order })
+
+        } catch (sadrzaj) {
+            await session.abortTransaction();
+            await session.endSession();
+
+            console.log(sadrzaj);
+            return res.status(401).send({ poruka: "Nastala je greska! ", sadrzaj });
+        }
+
     } catch (ex) {
         console.log(ex);
         return res.status(501).send("Došlo je do greške prilikom prihvatanja porudžbine, pokušajte ponovo.");
@@ -20,9 +60,14 @@ router.patch("/accept/:idOrder", async(req, res) => {
 });
 
 //odbijanje narudzbine
-router.patch("/decline/:idOrder", async(req, res) => {
+router.patch("/decline", async(req, res) => {
     try {
-
+        OrderModel.findOneAndUpdate({ _id: orderID }, { $set: { "potvrdjena.vrednost": -1 } }, { new: true })
+            .then(sadrzaj => res.send({ msg: "Uspesno!", sadrzaj }))
+            .catch(sadrzaj => {
+                console.log(sadrzaj);
+                res.status(409).send({ msg: "Nastala je greska!", sadrzaj });
+            })
     } catch (ex) {
         console.log(ex);
         return res.status(501).send("Došlo je do greške prilikom odbijanja porudžbine, pokušajte ponovo.");
@@ -40,6 +85,21 @@ router.get("/", async(req, res) => {
             .catch(sadrzaj => {
                 console.log(sadrzaj);
                 res.status(409).send({ poruka: "Nastala je greska!", sadrzaj });
+            });
+    } catch (sadrzaj) {
+        console.log(sadrzaj);
+        return res.status(501).send({ poruka: "Došlo je do greške na serverskoj strani!", sadrzaj });
+    }
+});
+
+router.get("/get-user-info/:userID", async(req, res) => {
+    try {
+        UserModel.findOne({ _id: req.params.userID })
+            .select('ime prezime email telefon adresa')
+            .then(sadrzaj => res.send({ poruka: "Uspesno!", sadrzaj }))
+            .catch(sadrzaj => {
+                console.log(sadrzaj);
+                return res.status(409).send({ poruka: "Nastala je greska!", sadrzaj });
             });
     } catch (sadrzaj) {
         console.log(sadrzaj);
@@ -97,6 +157,7 @@ router.post("/", async(req, res) => {
             }
 
             const orders = new Map();
+            const _id = new mongoose.Types.ObjectId();
 
             cart.proizvodi.forEach(p => {
                 if (!req.body.obrisani.has(String(p.id))) {
@@ -113,10 +174,10 @@ router.post("/", async(req, res) => {
                             brojProizvoda: 0,
                             proizvodi: [],
                             potvrdjena: {
-                                vrednost: false,
-                                od: [],
-                                ukupno: [p.poreklo.id]
-                            }
+                                vrednost: 0,
+                                userOrder: _id
+                            },
+                            datum: new Date()
                         }));
 
                     const o = orders.get(String(p.poreklo.id));
@@ -129,16 +190,18 @@ router.post("/", async(req, res) => {
             await OrderModel.bulkSave([...orders.values()], { session });
 
             const order = await new OrderModel({
+                _id,
                 korisnik: cart.korisnik,
                 cena: cart.cena,
                 brojProizvoda: cart.brojProizvoda,
                 proizvodi: cart.proizvodi,
                 kategorija: 'korisnik',
                 potvrdjena: {
-                    vrednost: false,
+                    vrednost: 0,
                     od: [],
                     ukupno: [...orders.keys()]
-                }
+                },
+                datum: new Date()
             }).save({ session });
 
             cart.cena = 0;

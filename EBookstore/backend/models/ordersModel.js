@@ -76,8 +76,8 @@ const schema = mongoose.Schema({
     potvrdjena: {
         _id: { id: false },
         vrednost: {
-            type: Boolean,
-            default: false
+            type: Number,
+            default: 0
         },
         od: [{
             type: mongoose.Schema.Types.ObjectId,
@@ -86,7 +86,11 @@ const schema = mongoose.Schema({
         ukupno: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "companies",
-        }]
+        }],
+        userOrder: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "orders",
+        }
     },
     datum: {
         type: Date,

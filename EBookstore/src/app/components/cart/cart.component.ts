@@ -38,7 +38,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.loadCart();
       },
       error: err => console.log(err)
-    });
+    }).unsubscribe();
   }
 
   loadCart(): void {
