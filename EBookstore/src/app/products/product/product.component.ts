@@ -38,8 +38,7 @@ export class ProductComponent implements OnInit {
         this.personal = false;
         return;
       }
-      
-      this.personal = (user.id == this.product.poreklo);
+      this.personal = (user.id == this.product.poreklo.id);
     }).unsubscribe();
   }
 

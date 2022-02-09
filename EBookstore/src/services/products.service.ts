@@ -29,9 +29,9 @@ export class ProductsService {
             products.forEach(prod => {
                 if(prod.kategorija == 'knjiga') {
                     ret.push(new BookBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika,
-                        prod.kategorija, prod.autor, prod.zanr, prod.poreklo.id));
+                        prod.kategorija, prod.autor, prod.zanr, prod.poreklo));
                 } else {
-                    ret.push(new ProductBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika, prod.kategorija, prod.poreklo.id));
+                    ret.push(new ProductBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika, prod.kategorija, prod.poreklo));
                 }
             });
             return ret;
@@ -54,7 +54,7 @@ export class ProductsService {
             const ret = [];
             knjige.forEach(knjiga => {
                 ret.push(new BookBasic(knjiga._id, knjiga.naziv, knjiga.proizvodjac, knjiga.kolicina, knjiga.cena,
-                    knjiga.slika, knjiga.kategorija, knjiga.autor, knjiga.zanr, knjiga.poreklo.id));
+                    knjiga.slika, knjiga.kategorija, knjiga.autor, knjiga.zanr, knjiga.poreklo));
             });
             return ret;
         }));
@@ -78,9 +78,9 @@ export class ProductsService {
             products.forEach(prod => {
                 if(prod.kategorija == 'knjiga') {
                     ret.push(new BookBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika,
-                        prod.kategorija, prod.autor, prod.zanr, prod.poreklo.id));
+                        prod.kategorija, prod.autor, prod.zanr, prod.poreklo));
                 } else {
-                    ret.push(new ProductBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika, prod.kategorija, prod.poreklo.id));
+                    ret.push(new ProductBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika, prod.kategorija, prod.poreklo));
                 }
             });
             return ret;
@@ -103,7 +103,7 @@ export class ProductsService {
             const ret = [];
             knjige.forEach(knjiga => {
                 ret.push(new BookBasic(knjiga._id, knjiga.naziv, knjiga.proizvodjac, knjiga.kolicina, knjiga.cena,
-                    knjiga.slika, knjiga.kategorija, knjiga.autor, knjiga.zanr, knjiga.poreklo.id));
+                    knjiga.slika, knjiga.kategorija, knjiga.autor, knjiga.zanr, knjiga.poreklo));
             });
             return ret;
         }));
