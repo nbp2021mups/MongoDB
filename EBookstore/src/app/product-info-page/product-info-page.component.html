@@ -18,9 +18,9 @@
     </div>
     <p *ngIf="product.kategorija=='knjiga'">Autor: {{product.autor}}</p>
     <p *ngIf="product.kategorija=='knjiga'">Izdavač: {{product.proizvodjac}}</p>
-    <p *ngIf="product.kategorija=='knjiga'">Godina izdanja: {{product.godIzdavanja}}.</p>
+    <p *ngIf="product.kategorija=='knjiga' && product.godIzdavanja">Godina izdanja: {{product.godIzdavanja}}.</p>
     <p *ngIf="product.kategorija!='knjiga'">Proizvođač: {{product.proizvodjac}}</p>
-    <p *ngIf="product.kategorija=='knjiga'">Broj strana: {{product.brStrana}}</p>
+    <p *ngIf="product.kategorija=='knjiga' && product.brStrana">Broj strana: {{product.brStrana}}</p>
 
     <p *ngIf="product.kategorija=='privezak'">Materijal: {{product.materijal}}</p>
     <p *ngIf="product.kategorija=='sveska' && product.brListova">Broj listova: {{product.brListova}}</p>
