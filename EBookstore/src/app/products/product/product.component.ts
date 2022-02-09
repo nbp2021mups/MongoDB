@@ -38,14 +38,14 @@ export class ProductComponent implements OnInit {
         this.personal = false;
         return;
       }
-      
+
       this.personal = (user.id == this.product.poreklo);
     }).unsubscribe();
   }
 
 
   onProductClicked() {
-    alert('radi');
+    this.router.navigate(['/proizvod', this.product._id])
   }
 
 

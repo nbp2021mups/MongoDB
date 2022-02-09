@@ -1,0 +1,21 @@
+.main-div {
+  width: 100%;
+}
+
+.slika-conteiner {
+  display: flex;
+  flex-direction: row;
+}
+
+.slika {
+  width: 60%;
+  height: 60%;
+  margin: 2% 0;
+  align-self: center;
+}
+
+.div-info {
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: rgba(233, 198, 217, 50%);
+}

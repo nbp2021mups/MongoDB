@@ -134,7 +134,7 @@ export class EditProductComponent implements OnInit, OnDestroy {
 
       },
       error: err=>{
-
+        console.log(err);
       }
     })
   }
