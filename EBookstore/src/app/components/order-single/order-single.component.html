@@ -51,8 +51,8 @@
 
       <div class="d-flex flex-row justify-start-0">
 
-        <button *ngIf="category == 'kompanija'" class="btn btn-primary m-1" (click)="toggleUser()">{{ displayUser ? 'Sakrij' : 'Prikaži' }} korinika</button>
-        <button class="btn btn-primary m-1" (click)="toggleProducts()">{{ displayProducts ? 'Sakrij' : 'Prikaži' }} proizvode</button>
+        <button *ngIf="category == 'kompanija'" class="btn btn-outline-primary m-1 order-btn" (click)="toggleUser()">{{ displayUser ? 'Sakrij' : 'Prikaži' }} korisnika</button>
+        <button class="btn btn-outline-primary m-1 order-btn" (click)="toggleProducts()">{{ displayProducts ? 'Sakrij' : 'Prikaži' }} proizvode</button>
 
       </div>
 
@@ -67,7 +67,7 @@
         <div class="overflow-auto" style="max-height: 60vh">
           <app-product-order *ngFor="let product of order.proizvodi" [product]="product" [displayOnly]="true"></app-product-order>
         </div>
-        <button *ngIf="hasMoreProducts" class="btn btn-primary" (click)="loadMoreProducts()">Učitaj još</button>
+        <button *ngIf="hasMoreProducts" class="btn btn-outline-primary order-btn" (click)="loadMoreProducts()">Učitaj još</button>
 
       </div>
 

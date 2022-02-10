@@ -11,6 +11,7 @@ import { AddProductComponent } from './products/add-product/add-product.componen
 import { EditProductComponent } from './products/edit-product/edit-product.component';
 import { ProductInfoPageComponent } from './product-info-page/product-info-page.component';
 import { OrdersComponent } from './components/orders/orders.component';
+import { AddUsersBookComponent } from './add-users-book/add-users-book.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/pocetna', pathMatch: 'full' },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'narudzbine', component: OrdersComponent },
   { path: 'izmena/:idProizvoda', component: EditProductComponent},
   { path: 'proizvod/:idProizvoda', component: ProductInfoPageComponent},
+  { path: 'nova-knjiga-iznajmljivanje', component: AddUsersBookComponent},
   { path: '**', redirectTo: 'pocetna' },
 ]
 

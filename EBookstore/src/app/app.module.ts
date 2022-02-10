@@ -31,6 +31,10 @@ import { ProductInfoPageComponent } from './product-info-page/product-info-page.
 import { OrderSingleComponent } from './components/order-single/order-single.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { OrderUserComponent } from './components/order-user/order-user.component';
+import { WarningDialogComponent } from './warning-dialog/warning-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AddUsersBookComponent } from './add-users-book/add-users-book.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +55,10 @@ import { OrderUserComponent } from './components/order-user/order-user.component
     ProductInfoPageComponent,
     OrderSingleComponent,
     OrdersComponent,
-    OrderUserComponent
+    OrderUserComponent,
+    WarningDialogComponent,
+    AddUsersBookComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -66,7 +73,9 @@ import { OrderUserComponent } from './components/order-user/order-user.component
     MatIconModule,
     MatRadioModule,
     HttpClientModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -59,6 +59,10 @@ const schema = mongoose.Schema({
     narudzbine: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "orders"
+    }],
+    iznajmljuje: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "product"
     }]
 });
 

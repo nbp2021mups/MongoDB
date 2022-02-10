@@ -129,4 +129,20 @@ export class ProductsService {
 
     }
 
+    deleteUserProduct(id:String, image:String, idPorekla: String){
+      return this.http.delete('http://localhost:3000/products/'+id+'/user/'+idPorekla,
+      {responseType: 'text',
+      body:{
+        imagePath: image
+      }});
+    }
+
+    deleteCompanyProduct(id:String, image:String, idPorekla: String){
+      return this.http.delete('http://localhost:3000/products/'+id+'/company/'+idPorekla,
+      {responseType: 'text',
+      body:{
+        imagePath: image
+      }});
+    }
+
 }

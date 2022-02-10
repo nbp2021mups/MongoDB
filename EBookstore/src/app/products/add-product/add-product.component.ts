@@ -26,8 +26,6 @@ export class AddProductComponent implements OnInit {
 
   ngOnInit(): void {
 
-
-
     this.form = new FormGroup({
       kategorija: new FormControl('', Validators.required),
       naziv: new FormControl('', Validators.required),
@@ -138,6 +136,8 @@ export class AddProductComponent implements OnInit {
           const trajanje=this.form.get('trajanje').value;
           if (trajanje)
             productData.append('trajanje', trajanje);
+          console.log(productData.get('trajanje'), typeof(productData.get('trajanje')));
+          console.log(productData.get('kolicina'), typeof(productData.get('kolicina')))
         }
         else if(kategorija=='slagalica'){
           const brDelova=this.form.get('brDelova').value;
@@ -149,12 +149,14 @@ export class AddProductComponent implements OnInit {
             productData.append('dimenzije', dimenzije);
         }
 
+
         this.productService.addProduct(productData).subscribe({
           next:resp=>{
             this.router.navigate(['proizvodi', user.id]);
           },
           error : err=>{
             console.log(err)
+            this.router.navigate(['proizvodi', user.id]);
           }
         });
 

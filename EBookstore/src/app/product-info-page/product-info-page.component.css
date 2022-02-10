@@ -68,8 +68,14 @@ p {
   text-align: center;
 }
 
-button:hover {
+.button-product:hover {
   background-color: #ade8f4;
   color: #030101;
   border-color: #030101;
+}
+svg {
+  color: #0275d8;
+}
+svg:hover {
+  color: #31a0b6;
 }

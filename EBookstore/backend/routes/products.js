@@ -34,7 +34,7 @@ router.get("/search", (req, res) => {
 });
 router.get("/findByCompany/:companyId", (req, res) => {
     try {
-        ProductModel.find({"poreklo.id" : req.params.companyId})
+        ProductModel.find({ "poreklo.id": req.params.companyId })
             .select(req.query.select)
             .skip(req.query.skip)
             .limit(req.query.count)
@@ -56,27 +56,48 @@ router.get("/findByCompany/:companyId", (req, res) => {
     }
 });
 
-router.get("/:productId", async (req, res)=>{
-  try{
-    const product=await ProductModel.findById(req.params.productId);
-    return res.send(product);
-  }
-  catch{
-    console.log(ex);
-    return res.status(501).send("Nastala je greska na serverskoj strani!");
+router.get("/:productId", async(req, res) => {
+    try {
+        const product = await ProductModel.findById(req.params.productId);
+        return res.send(product);
+    } catch {
+        console.log(ex);
+        return res.status(501).send("Nastala je greska na serverskoj strani!");
 
-  }
+    }
 })
 
 
-router.post("/", multer({ storage }).single("file"), async(req, res) => {
+router.post("/", multer({ storage }).single("image"), async(req, res) => {
     try {
+        const kategorija = req.body.kategorija;
+        if (kategorija == 'knjiga' || kategorija =='knjiga na izdavanje') {
+            if (req.body.brojStrana)
+                req.body.brojStrana = parseInt(req.body.brojStrana);
+            if (req.body.izdata)
+                req.body.izdata = parseInt(req.body.izdata);
+        } else if (kategorija == 'sveska') {
+            if (req.body.brojListova)
+                req.body.brojListova = parseInt(req.body.brojListova);
+        } else if (kategorija == 'drustvena igra') {
+
+            req.body.uzrastOd = parseInt(req.body.uzrastOd);
+            req.body.uzrastDo = parseInt(req.body.uzrastDo);
+            if (req.body.brojIgraca)
+                req.body.brojIgraca = parseInt(req.body.brojIgraca);
+            if (req.body.trajanje)
+                req.body.trajanje = parseInt(req.body.trajanje);
+        } else if (kategorija == 'slagalica') {
+            req.body.brojDelova = parseInt(req.body.brojDelova);
+        }
+
+
         req.body.poreklo = JSON.parse(req.body.poreklo);
+        console.log(req.body)
         if (!req.body.poreklo ||
             !req.body.poreklo.id ||
-            (!req.body.poreklo.naziv &&
-                (!req.body.poreklo.ime || !req.body.poreklo.prezime))
-        ) {
+            (!req.body.poreklo.naziv && (!req.body.poreklo.ime || !req.body.poreklo.prezime)) ||
+            (req.body.poreklo.ime && req.body.poreklo.prezime && req.body.poreklo.naziv)) {
             if (req.file) fs.unlinkSync(req.file.path);
             return res.status(409).send({
                 poruka: "Nastala je greska!",
@@ -103,7 +124,7 @@ router.post("/", multer({ storage }).single("file"), async(req, res) => {
             let update;
             if (req.body.poreklo.naziv)
                 update = await CompanyModel.updateOne({ _id: req.body.poreklo.id }, { $push: { ponudjeniProizvodi: product._id } });
-            else if (req.body.kategorija == "knjiga za iznajmljivanje")
+            else if (req.body.kategorija == "knjiga na izdavanje")
                 update = await UserModel.updateOne({ _id: req.body.poreklo.id }, { $push: { iznajmljuje: product._id } });
             else
                 throw "Korisnici mogu samo knjige da postavljaju na iznajmljivanje!";
@@ -152,31 +173,69 @@ router.put("/", (req, res) => {
     }
 });
 
-router.patch("/:productId", multer({ storage }).single("image"), async (req,res)=>{
-  try{
-    const newValues= JSON.parse(req.body.newValues);
-    if (req.file) {
-      const url = req.protocol + "://" + req.get("host");
-      let imgPath = url + "/images/" + req.file.filename;
-      newValues.slika=imgPath;
+router.patch("/:productId", multer({ storage }).single("image"), async(req, res) => {
+    try {
+        const newValues = JSON.parse(req.body.newValues);
+        if (req.file) {
+            const url = req.protocol + "://" + req.get("host");
+            let imgPath = url + "/images/" + req.file.filename;
+            newValues.slika = imgPath;
+        }
+        console.log(newValues)
+        await ProductModel.findByIdAndUpdate(req.params.productId, newValues);
+        if (req.body.oldImg) {
+            const path = "./backend" + req.body.oldImg.substring(req.body.oldImg.indexOf("/images"));
+
+            fs.unlink(path, (err) => {
+                if (err)
+                    console.log(err);
+            });
+
+        }
+        return res.send("Proizvod je uspešno ažiriran.")
+
+    } catch (ex) {
+        console.log(ex);
+        return res.status(501).send("Došlo je do greške prilikom izmene proizvoda, pokušajte ponovo.");
     }
-    console.log(newValues)
-    await ProductModel.findByIdAndUpdate(req.params.productId, newValues);
-    if(req.body.oldImg){
-      const path ="./backend" +req.body.oldImg.substring(req.body.oldImg.indexOf("/images"));
 
-      fs.unlink(path, (err) => {
-          if (err)
-            console.log(err);
-      });
+})
 
+router.delete('/:productId/company/:idPorekla', async(req, res) => {
+    try {
+        await ProductModel.findByIdAndDelete(req.params.productId);
+        await CompanyModel.findByIdAndUpdate(req.params.idPorekla, { $pull: { ponudjeniProizvodi: req.params.productId } });
+        const path = "./backend" + req.body.imagePath.substring(req.body.imagePath.indexOf("/images"));
+
+        fs.unlink(path, (err) => {
+            if (err)
+                console.log(err);
+        });
+        return res.send("Uspesno obrisan proizvod");
+
+    } catch (ex) {
+        console.log(ex);
+        return res.status(501).send("Doslo je do greske prilikom brisanja proizvoda, pokusajte ponovo!");
     }
-    return res.send("Proizvod je uspešno ažiriran.")
 
-  }catch (ex){
-    console.log(ex);
-    return res.status(501).send("Došlo je do greške prilikom izmene proizvoda, pokušajte ponovo.");
-  }
+})
+
+router.delete('/:productId/user/:idPorekla', async(req, res) => {
+    try {
+        await ProductModel.findByIdAndDelete(req.params.productId);
+        await UserModel.findByIdAndUpdate(req.params.idPorekla, { $pull: { ponudjeneKnjige: req.params.productId } });
+        const path = "./backend" + req.body.imagePath.substring(req.body.imagePath.indexOf("/images"));
+
+        fs.unlink(path, (err) => {
+            if (err)
+                console.log(err);
+        });
+        return res.send("Uspesno obrisan proizvod");
+
+    } catch (ex) {
+        console.log(ex);
+        return res.status(501).send("Doslo je do greske prilikom brisanja proizvoda, pokusajte ponovo!");
+    }
 
 })
 

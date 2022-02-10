@@ -15,5 +15,14 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  onObrisanProizvod(id){
+    console.log(id);
+    const index=this.products.findIndex(product=>{
+      return product._id==id;
+    })
+    console.log(index);
+    if(index!=-1)
+      this.products.splice(index,1);
+  }
 
 }
