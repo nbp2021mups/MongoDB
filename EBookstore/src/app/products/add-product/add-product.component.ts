@@ -24,8 +24,6 @@ export class AddProductComponent implements OnInit {
 
   ngOnInit(): void {
 
-
-
     this.form = new FormGroup({
       kategorija: new FormControl('', Validators.required),
       naziv: new FormControl('', Validators.required),

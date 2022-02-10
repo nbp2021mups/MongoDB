@@ -60,7 +60,7 @@ const schema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "orders"
     }],
-    ponudjeneKnjige: [{
+    iznajmljuje: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "product"
     }]
