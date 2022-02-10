@@ -6,6 +6,8 @@ import { ProductsService } from 'src/services/products.service';
 
 import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
+import { LoggedUser } from 'src/models/loggedUser.model';
+import { BookstoreUser } from 'src/models/bookstoreUser.model';
 
 @Component({
   selector: 'app-add-product',
@@ -86,7 +88,7 @@ export class AddProductComponent implements OnInit {
 
         const poreklo={
           id: user.id,
-          naziv: Object(user).naziv
+          naziv: (user as BookstoreUser).naziv
         }
         productData.append("poreklo",JSON.stringify(poreklo));
 

@@ -15,12 +15,12 @@ export class ProductsService {
 
     constructor(private http: HttpClient) {}
 
-    ucitajProizvode(skip: number, count: number) {
+    ucitajProizvode(skip: number, count: number, queryParams) {
         return this.http.get<any>('http://localhost:3000/products/search', {
             params: {
                 skip: skip,
                 count: count,
-                filter: '{}',
+                filter: JSON.stringify(queryParams),
                 select: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
             }
         }).pipe(map(response => {
@@ -38,42 +38,14 @@ export class ProductsService {
         }));
     }
 
-
-
-
-    ucitajKnjige(skip: number, count: number){
-        return this.http.get<any>('http://localhost:3000/products/search', {
+    ucitajProizvode2(skip: number, count: number, queryParams) {
+        return this.http.get<any>('http://localhost:3000/uros/search/' + skip + '/' + count, {
             params: {
-                skip: skip,
-                count: count,
-                filter: '{"kategorija" : "knjiga"}',
-                select: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
+                ...queryParams,
+                selectFields: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
             }
         }).pipe(map(response => {
-            const knjige = response.sadrzaj;
-            const ret = [];
-            knjige.forEach(knjiga => {
-                ret.push(new BookBasic(knjiga._id, knjiga.naziv, knjiga.proizvodjac, knjiga.kolicina, knjiga.cena,
-                    knjiga.slika, knjiga.kategorija, knjiga.autor, knjiga.zanr, knjiga.poreklo));
-            });
-            return ret;
-        }));
-    }
-
-
-
-
-    ucitajProizvodeKnjizare(idKnjizare: string, skip: number, count: number) {
-        return this.http.get<any>('http://localhost:3000/products/search', {
-            params: {
-                skip: skip,
-                count: count,
-                filter: '{"poreklo.id" : "' + idKnjizare + '"}',
-                select: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
-            }
-        }).pipe(map(response => {
-            console.log(response);
-            const products = response.sadrzaj;
+            const products = response;
             const ret: ProductBasic[] = [];
             products.forEach(prod => {
                 if(prod.kategorija == 'knjiga') {
@@ -88,22 +60,22 @@ export class ProductsService {
     }
 
 
-
-
-    ucitajKnjigeKnjizare(idKnjizare: string, skip: number, count: number) {
-        return this.http.get<any>('http://localhost:3000/products/search', {
+    ucitajProizvodeKnjizare(idKnjizare: string, skip: number, count: number, queryParams) {
+        return this.http.get<any>('http://localhost:3000/uros/search/' + idKnjizare + '/' + skip + '/' + count, {
             params: {
-                skip: skip,
-                count: count,
-                filter: '{"poreklo.id" : "' + idKnjizare + '", "kategorija" : "knjiga"}',
-                select: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
+                ...queryParams,
+                selectFields: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
             }
         }).pipe(map(response => {
-            const knjige = response.sadrzaj;
-            const ret = [];
-            knjige.forEach(knjiga => {
-                ret.push(new BookBasic(knjiga._id, knjiga.naziv, knjiga.proizvodjac, knjiga.kolicina, knjiga.cena,
-                    knjiga.slika, knjiga.kategorija, knjiga.autor, knjiga.zanr, knjiga.poreklo));
+            const products = response.ponudjeniProizvodi;
+            const ret: ProductBasic[] = [];
+            products.forEach(prod => {
+                if(prod.kategorija == 'knjiga') {
+                    ret.push(new BookBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika,
+                        prod.kategorija, prod.autor, prod.zanr, prod.poreklo));
+                } else {
+                    ret.push(new ProductBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika, prod.kategorija, prod.poreklo));
+                }
             });
             return ret;
         }));

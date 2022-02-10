@@ -21,17 +21,19 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   velicinaStranice: number = 12;
   izabranaKategorija : string;
   routeSub: Subscription;
+  querySub: Subscription;
   form: FormGroup;
   muski: boolean = false;
   zenski: boolean = false;
   a4: boolean = false;
   a5: boolean = false;
   idKnjizare: string = null;
+  queryParams = {};
 
   cene = [{controlName: 'cena1', value: '0-1000', text : '0-1000', checked: false},
           {controlName: 'cena2', value: '1000-2000', text : '1000-2000', checked: false},
           {controlName: 'cena3', value: '2000-5000', text : '2000-5000', checked: false},
-          {controlName: 'cena4', value: '5000-', text : '5000+', checked: false}];
+          {controlName: 'cena4', value: '5000-999999', text : '5000+', checked: false}];
 
   zanrovi = [{value: 'Drama', text: 'Drama'},
           {value: 'Komedija', text: 'Komedija'},
@@ -50,7 +52,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
           {controlName: 'uzrast2', value: '5-8', text : '5 - 8 godina', checked: false},
           {controlName: 'uzrast3', value: '8-13', text : '8 - 13 godina', checked: false},
           {controlName: 'uzrast4', value: '13-18', text : '13 - 18 godina', checked: false},
-          {controlName: 'uzrast5', value: '18-', text : '18+ godina', checked: false}];
+          {controlName: 'uzrast5', value: '18-999', text : '18+ godina', checked: false}];
   
   brDelova = [{controlName: 'delovi1', value: 500, text : '500', checked: false},
           {controlName: 'delovi2', value: 1000, text : '1000', checked: false},
@@ -85,14 +87,26 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     this.cene.forEach(cena => {this.form.addControl(cena.controlName, new FormControl())});
     this.uzrasti.forEach(uzrast => {this.form.addControl(uzrast.controlName, new FormControl())});
     this.brDelova.forEach(br => {this.form.addControl(br.controlName, new FormControl())});
-    
+
     this.routeSub = this.route.params.subscribe(params => {
       if(Object.keys(params).length > 0){
         this.idKnjizare = params['idKnjizare'];
-        this.ucitajPodatkeZaKnjizaru(this.idKnjizare, this.brStranice);
+        this.ucitajPodatkeZaKnjizaru(this.idKnjizare, this.brStranice, this.queryParams);
       } else {
         this.idKnjizare = null;
-        this.ucitajPodatke(this.brStranice);
+        this.ucitajPodatke(this.brStranice, this.queryParams);
+      }
+    });
+
+    this.querySub = this.route.queryParams.subscribe(params => {
+      this.queryParams = params;
+
+      if(this.idKnjizare){
+        this.brStranice = 0;
+        this.ucitajPodatkeZaKnjizaru(this.idKnjizare, this.brStranice, this.queryParams);
+      } else {
+        this.brStranice = 0;
+        this.ucitajPodatke(this.brStranice, this.queryParams);
       }
     });
   }
@@ -100,9 +114,9 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
   prethodnaStrana() {
     if(!this.idKnjizare)
-      this.ucitajPodatke(this.brStranice - 1);
+      this.ucitajPodatke(this.brStranice - 1, this.queryParams);
     else
-      this.ucitajPodatkeZaKnjizaru(this.idKnjizare, this.brStranice - 1);
+      this.ucitajPodatkeZaKnjizaru(this.idKnjizare, this.brStranice - 1, this.queryParams);
     this.brStranice--;
     window.scrollTo(0, 0);
   }
@@ -110,9 +124,9 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
   sledecaStrana() {
     if(!this.idKnjizare)
-      this.ucitajPodatke(this.brStranice + 1);
+      this.ucitajPodatke(this.brStranice + 1, this.queryParams);
     else
-      this.ucitajPodatkeZaKnjizaru(this.idKnjizare, this.brStranice + 1);
+      this.ucitajPodatkeZaKnjizaru(this.idKnjizare, this.brStranice + 1, this.queryParams);
     this.brStranice++;
     window.scrollTo(0, 0);
   }
@@ -172,62 +186,65 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
 
 
-  ucitajPodatke(brStranice: number) {
+  ucitajPodatke(brStranice: number, queryParams) {
     this.authService.user.subscribe(user => {
-      //ako niko nije ulogovan, ili je ulogovan korisnik
-      if(user == null || user.role == 'user'){
-        if(this.tipStranice == 'proizvodi') {
-          this.prodService.ucitajProizvode(brStranice * this.velicinaStranice, this.velicinaStranice).subscribe({
-            next: resp => {
-              this.products = resp;
-            },
-            error: err => { console.log(err);}
-          });
-        //ukoliko smo na stranici koja sadrzi samo knjige
-        } else {
-          this.prodService.ucitajKnjige(brStranice * this.velicinaStranice, this.velicinaStranice).subscribe({
-            next: resp => {
-              this.products = resp;
-            },
-            error: err => { console.log(err);}
-          });
-        }
+      if(user && user.role == 'bookstore'){
+        return;
       }
+
+      if(this.tipStranice == 'knjige'){
+        queryParams = {kategorija: 'knjiga', ...queryParams};
+      }
+
+      this.prodService.ucitajProizvode2(brStranice * this.velicinaStranice, this.velicinaStranice, queryParams).subscribe({
+        next: resp => {
+          this.products = resp;
+        },
+        error: err => {console.log(err);}
+      });
     }).unsubscribe();
   }
 
 
 
-  ucitajPodatkeZaKnjizaru(idKnjizare: string, brStranice: number) {
+  ucitajPodatkeZaKnjizaru(idKnjizare: string, brStranice: number, queryParams) {
       this.authService.user.subscribe(user => {
         if(user != null && user.role == 'bookstore' && user.id != idKnjizare){
           return;
         }
-        if(this.tipStranice == 'proizvodi') {
-          this.prodService.ucitajProizvodeKnjizare(idKnjizare, brStranice * this.velicinaStranice, this.velicinaStranice).subscribe({
-            next: resp => {
-              this.products = resp;
-            },
-            error: err => { console.log(err);}
-          });
-        //ukoliko smo na stranici koja sadrzi samo knjige
-        } else {
-          this.prodService.ucitajKnjigeKnjizare(idKnjizare, brStranice * this.velicinaStranice, this.velicinaStranice).subscribe({
-            next: resp => {
-              this.products = resp;
-            },
-            error: err => { console.log(err);}
-          });
+
+        if(this.tipStranice == 'knjige'){
+          queryParams = {kategorija: 'knjiga', ...queryParams};
         }
+
+        this.prodService.ucitajProizvodeKnjizare(idKnjizare, brStranice * this.velicinaStranice, this.velicinaStranice, queryParams).subscribe({
+          next: resp => {
+            this.products = resp;
+          },
+          error: err => {console.log(err);}
+        });
       }).unsubscribe();
     }
 
 
 
   onSubmit() {
+    const queryParams = {};
+
     const kategorija = this.izabranaKategorija;
+    if(kategorija && kategorija != ''){
+      queryParams['kategorija'] = kategorija;
+    }
+
     const naziv = this.form.get('naziv').value;
+    if(naziv && naziv != ''){
+      queryParams['naziv'] = naziv;
+    }
+
     const proizvodjac = this.form.get('proizvodjac').value;
+    if(proizvodjac && proizvodjac != ''){
+      queryParams['proizvodjac'] = proizvodjac;
+    }
 
     const cene = [];
     this.cene.forEach(cena => {
@@ -235,18 +252,27 @@ export class ProductPageComponent implements OnInit, OnDestroy {
         cene.push(cena.value);
       }
     });
-    const sort = this.form.get('sortiranje').value;
+    if(cene.length > 0){
+      queryParams['cene'] = JSON.stringify(cene);
+    }
 
-    console.log('kategorija : ', kategorija);
-    console.log('naziv : ', naziv);
-    console.log('proizvodjac : ', proizvodjac);
+    const sort = this.form.get('sortiranje').value;
+    if(sort){
+      queryParams['sort'] = sort;
+    }
+
 
     if (kategorija == 'knjiga') {
       const autor = this.form.get('autor').value;
       const zanr = this.form.get('zanr').value;
 
-      console.log('autor: ', autor);
-      console.log('zanr : ', zanr);
+      if(autor && autor != ''){
+        queryParams['autor'] = autor;
+      }
+      if(zanr && zanr.length > 0){
+        queryParams['zanr'] = JSON.stringify(zanr);
+      }
+
     } else if(kategorija == 'drustvena igra') {
       const uzrasti = [];
       this.uzrasti.forEach(uzrast => {
@@ -254,7 +280,10 @@ export class ProductPageComponent implements OnInit, OnDestroy {
           uzrasti.push(uzrast.value);
         }
       });
-      console.log('uzrasti : ', uzrasti);
+      if(uzrasti.length > 0){
+        queryParams['uzrast'] = JSON.stringify(uzrasti);
+      }
+
     } else if(kategorija == 'slagalica') {
       const brDelova = [];
       this.brDelova.forEach(br => {
@@ -262,34 +291,39 @@ export class ProductPageComponent implements OnInit, OnDestroy {
           brDelova.push(br.value);
         }
       });
-      console.log('delovi : ', brDelova);
+      if(brDelova.length > 0){
+        queryParams['brDelova'] = JSON.stringify(brDelova);
+      }
+
     } else if (kategorija == 'ranac') {
-      console.log('pol : ', this.muski, this.zenski);
+
+      if(this.muski && !this.zenski){
+        queryParams['pol'] = '["muski"]';
+      } else if(!this.muski && this.zenski){
+        queryParams['pol'] = '["zenski"]';
+      }
+
     } else if (kategorija == 'privezak'){
       const materijal = this.form.get('materijal').value;
-      console.log('materijal : ', materijal);
-    } else if (kategorija == 'sveska') {
-      console.log('format : ', this.a4, this.a5);
-    }
-
-    console.log('cene : ', cene);
-    console.log('sortiranje : ', sort);
-
-
-    //prikupljeni podaci, sada saljemo request
-
-    //formiramo query parametre
-
+      if(materijal && materijal != ''){
+        queryParams['materijal'] = materijal;
+      }
     
-    if(this.idKnjizare) {
-
-    } else {
+    } else if (kategorija == 'sveska') {
+      if(this.a4 && !this.a5){
+        queryParams['format'] = '["A4"]';
+      } else if(!this.a4 && this.a5){
+        queryParams['format'] = '["A5"]';
+      }
 
     }
+
+    this.router.navigate([], {relativeTo: this.route, queryParamsHandling : '', queryParams: queryParams});
   }
 
 
   ngOnDestroy(): void {
       this.routeSub.unsubscribe();
+      this.querySub.unsubscribe();
   }
 }
