@@ -32,6 +32,9 @@ import { OrderSingleComponent } from './components/order-single/order-single.com
 import { OrdersComponent } from './components/orders/orders.component';
 import { OrderUserComponent } from './components/order-user/order-user.component';
 import { WarningDialogComponent } from './warning-dialog/warning-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AddUsersBookComponent } from './add-users-book/add-users-book.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,9 @@ import { WarningDialogComponent } from './warning-dialog/warning-dialog.componen
     OrderSingleComponent,
     OrdersComponent,
     OrderUserComponent,
-    WarningDialogComponent
+    WarningDialogComponent,
+    AddUsersBookComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -68,7 +73,9 @@ import { WarningDialogComponent } from './warning-dialog/warning-dialog.componen
     MatIconModule,
     MatRadioModule,
     HttpClientModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

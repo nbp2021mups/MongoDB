@@ -5,6 +5,8 @@ import { ProductFull } from 'src/models/product-full.model';
 import { AuthService } from 'src/services/auth.service';
 import { ProductsService } from 'src/services/products.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { WarningDialogComponent } from '../warning-dialog/warning-dialog.component';
 
 @Component({
   selector: 'app-product-info-page',
@@ -18,7 +20,11 @@ export class ProductInfoPageComponent implements OnInit {
   product: ProductFull;
   personal: boolean;
 
-  constructor(private route: ActivatedRoute, private productService: ProductsService, private authService: AuthService, private router: Router) { }
+  constructor(private route: ActivatedRoute,
+    private productService: ProductsService,
+    private authService: AuthService,
+    private router: Router,
+    private dialog: MatDialog) { }
 
 
   ngOnInit(): void {
@@ -53,28 +59,38 @@ export class ProductInfoPageComponent implements OnInit {
 
   onDeleteClicked(){
 
-    if(this.product.poreklo.ime){
-      this.productService.deleteUserProduct(this.product._id, this.product.slika, this.product.poreklo.id).subscribe({
-        next: response=>{
-
-        },
-        error: err=>{
-
-        }
-      });
-    }
-    else if(this.product.poreklo.naziv){
-      console.log('ovde')
-      this.productService.deleteCompanyProduct(this.product._id, this.product.slika, this.product.poreklo.id).subscribe({
-        next: response=>{
-          this.router.navigate(['/proizvodi', this.product.poreklo.id]);
-        },
-        error: err=>{
-
-        }
+    let dialogWarning= this.dialog.open(WarningDialogComponent,
+      { data :
+        { pitanje : `Da li ste sigurni da želite da obrišete ovaj proizvod?`,
+          potvrdna : 'Obriši'}
       });
 
-    }
+    dialogWarning.afterClosed().subscribe(result=>{
+      if(result=='true'){
+
+        if(this.product.poreklo.ime){
+          this.productService.deleteUserProduct(this.product._id, this.product.slika, this.product.poreklo.id).subscribe({
+            next: response=>{
+
+            },
+            error: err=>{
+
+            }
+          });
+        }
+        else if(this.product.poreklo.naziv){
+          console.log('ovde')
+          this.productService.deleteCompanyProduct(this.product._id, this.product.slika, this.product.poreklo.id).subscribe({
+            next: response=>{
+              this.router.navigate(['/proizvodi', this.product.poreklo.id]);
+            },
+            error: err=>{
+
+            }
+          });
+        }
+      }
+    });
 
   }
   onUpdateClicked(){
