@@ -4,6 +4,7 @@ import { map } from "rxjs/operators";
 import { BookBasic } from "src/models/book-basic.model";
 import { BookFull } from "src/models/book-full.model";
 import { DrustvenaIgraFull } from "src/models/drustvenaIgra-full.model";
+import { KnjigaIznajmljivanjeFull } from "src/models/knjiga-iznajmljivanje-full.model";
 import { PrivezakFull } from "src/models/privezak-full.model";
 import { ProductBasic } from "src/models/product-basic.model";
 import { RanacFull } from "src/models/ranac-full.model";
@@ -121,6 +122,11 @@ export class ProductsService {
           return new SlagalicaFull(id, naziv, proizvodjac, kolicina, cena, slika
             , kategorija, opis, response.poreklo, response.dimenzije, response.brojDelova);
         }
+        else if(kategorija=='knjiga na izdavanje'){
+          return new KnjigaIznajmljivanjeFull(id, naziv, proizvodjac, kolicina, cena, slika, kategorija, opis, response.poreklo, response.autor,
+            response.zanr, response.brojStrana, response.izdata, response.stanje);
+        }
+
       }))
     }
 

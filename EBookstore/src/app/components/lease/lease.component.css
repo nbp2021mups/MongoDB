@@ -1,4 +1,10 @@
 .overflow-y-auto {
-    overflow-y: auto;
-    overflow-x: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.btn-add:hover {
+  background-color: #ade8f4;
+  color: #030101;
+  border-color: #030101;
 }
