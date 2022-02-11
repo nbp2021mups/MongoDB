@@ -38,6 +38,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddUsersBookComponent } from './add-users-book/add-users-book.component';
 import { CommonModule } from '@angular/common';
+import { LeaseDialogComponent } from './lease-dialog/lease-dialog.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,8 @@ import { CommonModule } from '@angular/common';
     WarningDialogComponent,
     LeaseComponent,
     LeaseSingleComponent,
-    AddUsersBookComponent
+    AddUsersBookComponent,
+    LeaseDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -80,7 +83,8 @@ import { CommonModule } from '@angular/common';
     MatCheckboxModule,
     MatDialogModule,
     BrowserAnimationsModule,
-    CommonModule
+    CommonModule,
+    MatDatepickerModule
   ],
   providers: [],
   bootstrap: [AppComponent],
