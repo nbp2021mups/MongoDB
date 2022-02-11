@@ -34,6 +34,9 @@ import { OrderUserComponent } from './components/order-user/order-user.component
 import { WarningDialogComponent } from './warning-dialog/warning-dialog.component';
 import { LeaseComponent } from './components/lease/lease.component';
 import { LeaseSingleComponent } from './components/lease-single/lease-single.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AddUsersBookComponent } from './add-users-book/add-users-book.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +60,9 @@ import { LeaseSingleComponent } from './components/lease-single/lease-single.com
     OrderUserComponent,
     WarningDialogComponent,
     LeaseComponent,
-    LeaseSingleComponent
+    LeaseSingleComponent,
+    AddUsersBookComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -72,7 +77,9 @@ import { LeaseSingleComponent } from './components/lease-single/lease-single.com
     MatIconModule,
     MatRadioModule,
     HttpClientModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

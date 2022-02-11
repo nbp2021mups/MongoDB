@@ -5,16 +5,16 @@ import { AuthService } from "./auth.service";
 import { map, take } from "rxjs/operators";
 
 @Injectable({providedIn: 'root'})
-export class AuthGuard implements CanActivate{
+export class AuthGuardUser implements CanActivate{
 
     constructor(private authService: AuthService, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
         return this.authService.user.pipe(take(1), map(user => {
-            if (user){
+            if (user && user.role == 'user'){
                 return true;
             }
-            return this.router.createUrlTree(['/prijavljivanje']);
+            return this.router.createUrlTree(['/pocetna']);
         }));
     }
 

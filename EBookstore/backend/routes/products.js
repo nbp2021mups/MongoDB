@@ -71,7 +71,7 @@ router.get("/:productId", async(req, res) => {
 router.post("/", multer({ storage }).single("image"), async(req, res) => {
     try {
         const kategorija = req.body.kategorija;
-        if (kategorija == 'knjiga') {
+        if (kategorija == 'knjiga' || kategorija == 'knjiga na izdavanje') {
             if (req.body.brojStrana)
                 req.body.brojStrana = parseInt(req.body.brojStrana);
             if (req.body.izdata)
@@ -92,7 +92,6 @@ router.post("/", multer({ storage }).single("image"), async(req, res) => {
         }
 
         req.body.poreklo = JSON.parse(req.body.poreklo);
-
         if (!req.body.poreklo ||
             !req.body.poreklo.id ||
             (!req.body.poreklo.naziv && (!req.body.poreklo.ime || !req.body.poreklo.prezime)) ||
