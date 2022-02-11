@@ -18,7 +18,7 @@
 
       <div class="d-flex flex-row flex-wrap">
         <mat-form-field
-        class="p-2 col-12 col-lg-4"
+        class="p-2 col-12 col-lg-6"
         appearance="standard">
           <mat-label>Naziv</mat-label>
           <input
@@ -32,7 +32,7 @@
         </mat-form-field>
 
         <mat-form-field
-        class="p-2 col-12 col-lg-4"
+        class="p-2 col-12 col-lg-6"
         appearance="standard">
           <mat-label>Proizvođač</mat-label>
           <input
@@ -44,30 +44,15 @@
             >Molimo Vas da unesete proizvođača</mat-error
           >
         </mat-form-field>
-
-        <mat-form-field
-        class="p-2 col-12 col-lg-4"
-        appearance="standard">
-          <mat-label>Količina</mat-label>
-          <input
-            matInput
-            type="number"
-            min="1"
-            formControlName="kolicina"
-          />
-          <mat-error *ngIf="form.get('kolicina').invalid"
-            >Molimo Vas da unesete količinu</mat-error
-          >
-        </mat-form-field>
-
       </div>
 
-      <!-- knjiga -->
+      <!-- knjiga ili izdavanje -->
       <div class="d-flex flex-row flex-wrap"
-      *ngIf="selectedCategory=='knjiga'">
+      *ngIf="selectedCategory=='knjiga' || selectedCategory=='knjiga na izdavanje'">
         <mat-form-field
         class="p-2 col-12 col-lg-6"
-        appearance="standard">
+        appearance="standard"
+        *ngIf="selectedCategory=='knjiga'">
           <mat-label>ISBN</mat-label>
           <input
             matInput
@@ -77,6 +62,17 @@
           <mat-error *ngIf="form.get('isbn').invalid"
             >Molimo Vas da unesete ISBN knjige</mat-error
           >
+        </mat-form-field>
+
+        <mat-form-field class="p-2 col-12 col-lg-6" appearance="standard" *ngIf="selectedCategory=='knjiga na izdavanje'">
+          <mat-label>Stanje knjige</mat-label>
+          <mat-select
+          formControlName="stanje">
+            <mat-option value="Nekorišćena">Nekorišćena</mat-option>
+            <mat-option value="Korišćena bez oštećenja">Korišćena bez oštećenja</mat-option>
+            <mat-option value="Korišćena sa oštećenjem">Korišćena sa oštećenjem</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('stanje').invalid">Molimo Vas unesete stanje knjige</mat-error>
         </mat-form-field>
 
         <mat-form-field
@@ -95,9 +91,9 @@
 
       </div>
 
-      <!-- knjiga -->
+      <!-- knjiga ili izdavanje -->
       <div class="d-flex flex-row flex-wrap"
-      *ngIf="selectedCategory=='knjiga'">
+      *ngIf="selectedCategory=='knjiga' || selectedCategory=='knjiga na izdavanje'">
         <mat-form-field
         class="p-2 col-12 col-lg-4"
         appearance="standard">
@@ -311,7 +307,7 @@
 
       <div class="d-flex flex-row flex-wrap">
         <mat-form-field
-        class="p-2 col-12 col-lg-8"
+        class="p-2 col-12 col-lg-12"
         appearance="standard">
           <mat-label>Opis</mat-label>
           <textarea
@@ -327,9 +323,27 @@
             >Molimo Vas da unesete opis proizvoda</mat-error
           >
         </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-row flex-wrap">
+        <mat-form-field
+        class="p-2 col-12 col-lg-6"
+        appearance="standard"
+        *ngIf="selectedCategory!='knjiga na izdavanje'">
+          <mat-label>Količina</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            formControlName="kolicina"
+          />
+          <mat-error *ngIf="form.get('kolicina').invalid"
+            >Molimo Vas da unesete količinu</mat-error
+          >
+        </mat-form-field>
 
         <mat-form-field
-        class="p-2 col-12 col-lg-4 mt-2"
+        class="p-2 col-12 col-lg-6 mt-2"
         appearance="standard">
           <mat-label>Cena</mat-label>
           <input

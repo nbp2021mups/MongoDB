@@ -32,6 +32,7 @@ const routes: Routes = [
   { path: 'narudzbine', component: OrdersComponent, canActivate: [AuthGuard] },
   { path: 'iznajmljivanje', component: LeaseComponent, canActivate: [AuthGuardUser] },
   { path: 'izmena/:idProizvoda', component: EditProductComponent, canActivate: [AuthGuardBookstore]},
+  { path: 'korisnik/izmena/:idKnjige', component: EditProductComponent, canActivate: [AuthGuardUser]},
   { path: 'proizvod/:idProizvoda', component: ProductInfoPageComponent},
   { path: 'nova-knjiga-iznajmljivanje', component: AddUsersBookComponent, canActivate: [AuthGuardUser]},
   { path: '**', redirectTo: 'pocetna' },

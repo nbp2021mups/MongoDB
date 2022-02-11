@@ -12,6 +12,7 @@ import { SveskaFull } from 'src/models/sveska-full.model';
 import { DrustvenaIgraFull } from 'src/models/drustvenaIgra-full.model';
 import { SlagalicaFull } from 'src/models/slagalica-full.model';
 import { Router } from '@angular/router';
+import { KnjigaIznajmljivanjeFull } from 'src/models/knjiga-iznajmljivanje-full.model';
 
 @Component({
   selector: 'app-edit-product',
@@ -36,6 +37,8 @@ export class EditProductComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.paramsSub = this.route.params.subscribe(params => {
       this.idProizvoda = params['idProizvoda'];
+      if(!this.idProizvoda)
+        this.idProizvoda = params['idKnjige'];
       console.log(this.idProizvoda);
     });
 
@@ -63,6 +66,8 @@ export class EditProductComponent implements OnInit, OnDestroy {
       brojIgraca:  new FormControl(null),
       uzrastOd: new FormControl('',Validators.required),
       uzrastDo: new FormControl('',Validators.required),
+
+      stanje: new FormControl('', Validators.required),
       slika: new FormControl('', {
         validators: [Validators.required],
         asyncValidators: [mimeType],
@@ -86,7 +91,7 @@ export class EditProductComponent implements OnInit, OnDestroy {
           slika : resp.slika
 
         });
-        if(this.selectedCategory=='knjiga'){
+        if(this.selectedCategory=='knjiga' || this.selectedCategory=='knjiga na izdavanje'){
           const book=resp as BookFull;
           this.form.patchValue({
            isbn:book.isbn,
@@ -95,7 +100,20 @@ export class EditProductComponent implements OnInit, OnDestroy {
            izdata : book.godIzdavanja,
            brojStrana : book.brStrana
           });
+          if(this.selectedCategory=='knjiga'){
+            this.form.patchValue({
+             isbn:book.isbn,
+            });
+          }
+          else if(this.selectedCategory=='knjiga na izdavanje'){
+            const izn=resp as KnjigaIznajmljivanjeFull;
+            console.log("tu", izn.stanje)
+            this.form.patchValue({
+             stanje: izn.stanje,
+            });
+          }
         }
+
         else if (this.selectedCategory=='ranac'){
           const ranac=resp as RanacFull;
           this.form.patchValue({
@@ -167,11 +185,17 @@ export class EditProductComponent implements OnInit, OnDestroy {
     this.productService.updateProduct(this.idProizvoda, formData).subscribe({
       next: resp=>{
         console.log(resp);
-        this.router.navigate(['/proizvod', this.idProizvoda]);
+        if (this.selectedCategory!='knjiga na izdavanje')
+          this.router.navigate(['/proizvod', this.idProizvoda]);
+        else
+          this.router.navigate(['/pocetna']);//PROMENI OVO
       },
       error: err=>{
         console.log(err)
-        this.router.navigate(['/proizvod', this.idProizvoda]);
+        if (this.selectedCategory!='knjiga na izdavanje')
+          this.router.navigate(['/proizvod', this.idProizvoda]);
+        else
+          this.router.navigate(['/pocetna']);//PROMENI OVO
       }
     })
 

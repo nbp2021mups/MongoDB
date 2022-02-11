@@ -60,7 +60,7 @@ router.get("/:productId", async(req, res) => {
     try {
         const product = await ProductModel.findById(req.params.productId);
         return res.send(product);
-    } catch {
+    } catch (ex){
         console.log(ex);
         return res.status(501).send("Nastala je greska na serverskoj strani!");
 
