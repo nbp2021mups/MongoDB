@@ -168,8 +168,8 @@ router.delete('/:userID/:bookID', async(req, res) => {
             .then(result =>
                 result.deletedCount != 1 ?
                 res.status(409).send({ poruka: "Nastala je greska!", sadrzaj: "Nije pronadjen zahtev! " }) :
-                res.send({ poruka: "Uspesno!", sadrzaj: {} })
-            ).catch(sadrzaj => res.status(409).send({ poruka: "Nastala je greska!", sadrzaj }));
+                res.send({ poruka: "Uspesno!", sadrzaj: {} }))
+            .catch(sadrzaj => res.status(409).send({ poruka: "Nastala je greska!", sadrzaj }));
     } catch (sadrzaj) {
         console.log(sadrzaj);
         return res.status(501).send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj });

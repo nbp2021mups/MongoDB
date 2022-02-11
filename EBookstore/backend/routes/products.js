@@ -126,7 +126,7 @@ router.post("/", multer({ storage }).single("image"), async(req, res) => {
             if (req.body.poreklo.naziv)
                 update = await CompanyModel.updateOne({ _id: req.body.poreklo.id }, { $push: { ponudjeniProizvodi: product._id } });
             else if (req.body.kategorija == "knjiga na izdavanje")
-                update = await UserModel.updateOne({ _id: req.body.poreklo.id }, { $push: { iznajmljuje: product._id } });
+                update = await UserModel.updateOne({ _id: req.body.poreklo.id }, { $push: { ponudjeneKnjige: product._id } });
             else
                 throw "Korisnici mogu samo knjige da postavljaju na iznajmljivanje!";
 
@@ -182,7 +182,6 @@ router.patch("/:productId", multer({ storage }).single("image"), async(req, res)
             let imgPath = url + "/images/" + req.file.filename;
             newValues.slika = imgPath;
         }
-        console.log(newValues)
         await ProductModel.findByIdAndUpdate(req.params.productId, newValues);
         if (req.body.oldImg) {
             const path = "./backend" + req.body.oldImg.substring(req.body.oldImg.indexOf("/images"));
