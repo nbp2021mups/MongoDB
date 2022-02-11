@@ -60,15 +60,9 @@ const schema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "order"
     }],
-<<<<<<< HEAD
     ponudjeneKnjige: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "product"
-=======
-    iznajmljuje: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "product"
->>>>>>> 3421988ea81dc69e3cd5e6aebd8b1a0c9ae1c6c9
     }]
 });
 
