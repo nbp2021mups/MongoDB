@@ -5,6 +5,7 @@ import { AuthService } from 'src/services/auth.service';
 import { ProductsService } from 'src/services/products.service';
 import { MatDialog } from '@angular/material/dialog';
 import { WarningDialogComponent } from 'src/app/warning-dialog/warning-dialog.component';
+import { KnjigaIznajmljivanjeBasic } from 'src/models/knjiga-iznajmljivanje-basic.model';
 
 
 enum Kategorija {
@@ -120,5 +121,9 @@ export class ProductComponent implements OnInit {
       });
 
     }).unsubscribe();
+  }
+
+  zahtevana() {
+    return (this.product as KnjigaIznajmljivanjeBasic).zahtevana;
   }
 }

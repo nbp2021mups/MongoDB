@@ -74,8 +74,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
     if(this.tipStranice == 'knjige'){
       this.izabranaKategorija = 'knjiga';
-    }
-    if(this.tipStranice == 'iznajmljivanje'){
+    } else if(this.tipStranice == 'iznajmljivanje'){
       this.izabranaKategorija = 'knjiga na izdavanje';
     }
 
@@ -105,6 +104,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
         this.ucitajPodatkeZaKnjizaru(this.idKnjizare, this.brStranice, this.queryParams);
       } else {
         this.idKnjizare = null;
+        console.log('ovde');
         this.ucitajPodatke(this.brStranice, this.queryParams);
       }
     });
@@ -117,6 +117,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
         this.ucitajPodatkeZaKnjizaru(this.idKnjizare, this.brStranice, this.queryParams);
       } else {
         this.brStranice = 0;
+        console.log('i ovde');
         this.ucitajPodatke(this.brStranice, this.queryParams);
       }
     });
@@ -207,14 +208,18 @@ export class ProductPageComponent implements OnInit, OnDestroy {
         queryParams = {kategorija: 'knjiga', ...queryParams};
       } else if(this.tipStranice == 'iznajmljivanje') {
         this.authService.user.subscribe(user => {
-          const uid = user.id;
-          queryParams = {loggedU : uid, kategorija: 'knjiga na izdavanje', ...queryParams};
+          if(user && user.role == 'user'){
+            const uid = user.id;
+            queryParams = {kategorija: 'knjiga na izdavanje', uid: uid, ...queryParams};
+          } else {
+            queryParams = {kategorija: 'knjiga na izdavanje', ...queryParams};
+          }
         }).unsubscribe();
       }
 
       const selectFields = ['_id', 'naziv', 'proizvodjac', 'cena', 'slika', 'kolicina', 'kategorija', 'autor', 'zanr', 'poreklo'];
       if(this.tipStranice == 'iznajmljivanje'){
-        selectFields.push('izdata');
+        selectFields.push('zahtevaliZajam');
       }
 
       this.prodService.ucitajProizvode2(brStranice * this.velicinaStranice, this.velicinaStranice, queryParams, selectFields).subscribe({
