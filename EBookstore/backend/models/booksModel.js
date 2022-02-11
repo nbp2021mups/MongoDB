@@ -22,12 +22,13 @@ const schema = new mongoose.Schema({
             "Triler",
             "Naucna fantastika",
             "Psihologija",
-            "Stucna literatura",
+            "Strucna literatura",
             "Zdravlje",
             "Knjige za decu",
             "Roman",
             "Klasik",
-            "Novela"
+            "Novela",
+            "Horor"
         ],
     },
     izdata: {
