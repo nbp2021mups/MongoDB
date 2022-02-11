@@ -11,7 +11,7 @@
     <div class="d-flex flex-grow-1 w-100" style="min-height: 75vh" [ngSwitch]="selectedIndex">
 
         <div *ngSwitchCase="1" class="m-3 px-4 d-flex flex-grow-1 flex-column w-100">
-            <button class="w-25 align-self-end m-2 btn btn-primary">Dodaj novu knjigu</button>
+            <button class="w-25 align-self-end m-2 btn btn-primary" routerLink="/nova-knjiga-iznajmljivanje">Dodaj novu knjigu</button>
             <div class="overflow-y-auto d-flex flex-column w-100">
                 <h5 *ngIf="booksForLease.length == 0" class="text-center">Nemate knjige za izdavanje</h5>
                 <app-lease-single *ngFor="let book of booksForLease" [book]="book"></app-lease-single>

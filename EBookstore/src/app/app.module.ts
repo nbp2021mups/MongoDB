@@ -37,6 +37,7 @@ import { LeaseSingleComponent } from './components/lease-single/lease-single.com
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddUsersBookComponent } from './add-users-book/add-users-book.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -61,8 +62,7 @@ import { AddUsersBookComponent } from './add-users-book/add-users-book.component
     WarningDialogComponent,
     LeaseComponent,
     LeaseSingleComponent,
-    AddUsersBookComponent,
-
+    AddUsersBookComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +79,8 @@ import { AddUsersBookComponent } from './add-users-book/add-users-book.component
     HttpClientModule,
     MatCheckboxModule,
     MatDialogModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent],
