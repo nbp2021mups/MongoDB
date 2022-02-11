@@ -127,6 +127,7 @@ export class ProductsService {
             , kategorija, opis, response.poreklo, response.dimenzije, response.brojDelova);
         }
         else if(kategorija=='knjiga na izdavanje'){
+          console.log(response.poreklo)
           return new KnjigaIznajmljivanjeFull(id, naziv, proizvodjac, kolicina, cena, slika, kategorija, opis, response.poreklo, response.autor,
             response.zanr, response.brojStrana, response.izdata, response.stanje);
         }
