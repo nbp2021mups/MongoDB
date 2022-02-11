@@ -206,7 +206,10 @@ export class ProductPageComponent implements OnInit, OnDestroy {
       if(this.tipStranice == 'knjige'){
         queryParams = {kategorija: 'knjiga', ...queryParams};
       } else if(this.tipStranice == 'iznajmljivanje') {
-        queryParams = {kategorija: 'knjiga na izdavanje', ...queryParams};
+        this.authService.user.subscribe(user => {
+          const uid = user.id;
+          queryParams = {loggedU : uid, kategorija: 'knjiga na izdavanje', ...queryParams};
+        }).unsubscribe();
       }
 
       const selectFields = ['_id', 'naziv', 'proizvodjac', 'cena', 'slika', 'kolicina', 'kategorija', 'autor', 'zanr', 'poreklo'];

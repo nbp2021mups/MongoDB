@@ -4,6 +4,7 @@ import { map } from "rxjs/operators";
 import { BookBasic } from "src/models/book-basic.model";
 import { BookFull } from "src/models/book-full.model";
 import { DrustvenaIgraFull } from "src/models/drustvenaIgra-full.model";
+import { KnjigaIznajmljivanjeBasic } from "src/models/knjiga-iznajmljivanje-basic.model";
 import { KnjigaIznajmljivanjeFull } from "src/models/knjiga-iznajmljivanje-full.model";
 import { PrivezakFull } from "src/models/privezak-full.model";
 import { ProductBasic } from "src/models/product-basic.model";
@@ -48,13 +49,15 @@ export class ProductsService {
                 selectFields: selectFields
             }
         }).pipe(map(response => {
-            console.log(response);
             const products = response;
             const ret: ProductBasic[] = [];
             products.forEach(prod => {
                 if(prod.kategorija == 'knjiga') {
                     ret.push(new BookBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika,
                         prod.kategorija, prod.autor, prod.zanr, prod.poreklo));
+                } else if(prod.kategorija == 'knjiga na izdavanje') {
+                  ret.push(new KnjigaIznajmljivanjeBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika,
+                    prod.kategorija, prod.poreklo, prod.autor, prod.zanr, prod.izdata, prod.stanje));
                 } else {
                     ret.push(new ProductBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika, prod.kategorija, prod.poreklo));
                 }
@@ -154,4 +157,13 @@ export class ProductsService {
       }});
     }
 
+
+
+    addToCart(userId, productId, amount){
+      return this.http.post('http://localhost:3000/users/add-to-cart', {
+        proizvodID: productId,
+        userID: userId,
+        kolicina: amount
+      });
+    }
 }

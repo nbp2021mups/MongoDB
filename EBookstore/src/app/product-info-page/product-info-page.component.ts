@@ -97,4 +97,12 @@ export class ProductInfoPageComponent implements OnInit {
     this.router.navigate(['/izmena', this.product._id]);
   }
 
+  onAddCart(){
+
+  }
+
+  onSendRequest(){
+
+  }
+
 }

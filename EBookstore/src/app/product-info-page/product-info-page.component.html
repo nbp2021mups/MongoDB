@@ -11,16 +11,16 @@
     <h2>{{product.naziv}}</h2>
     <div class="small-info">
       <p>Kategorija : {{product.kategorija}}</p>
-      <p *ngIf="product.kategorija=='knjiga'">{{product.zanr | uppercase}}</p>
+      <p *ngIf="product.kategorija=='knjiga' || product.kategorija=='knjiga na izdavanje'">{{product.zanr | uppercase}}</p>
       <p *ngIf="product.kategorija=='knjiga'">ISBN: {{product.isbn}}</p>
       <p *ngIf="product.kategorija=='ranac'">{{product.pol | uppercase}}</p>
       <p *ngIf="product.kategorija=='sveska'">{{product.format}}</p>
     </div>
-    <p *ngIf="product.kategorija=='knjiga'">Autor: {{product.autor}}</p>
-    <p *ngIf="product.kategorija=='knjiga'">Izdavač: {{product.proizvodjac}}</p>
-    <p *ngIf="product.kategorija=='knjiga' && product.godIzdavanja">Godina izdanja: {{product.godIzdavanja}}.</p>
+    <p *ngIf="product.kategorija=='knjiga' || product.kategorija=='knjiga na izdavanje'">Autor: {{product.autor}}</p>
+    <p *ngIf="product.kategorija=='knjiga' || product.kategorija=='knjiga na izdavanje'">Izdavač: {{product.proizvodjac}}</p>
+    <p *ngIf="(product.kategorija=='knjiga' || product.kategorija=='knjiga na izdavanje') && product.godIzdavanja">Godina izdanja: {{product.godIzdavanja}}.</p>
     <p *ngIf="product.kategorija!='knjiga'">Proizvođač: {{product.proizvodjac}}</p>
-    <p *ngIf="product.kategorija=='knjiga' && product.brStrana">Broj strana: {{product.brStrana}}</p>
+    <p *ngIf="(product.kategorija=='knjiga' || product.kategorija=='knjiga na izdavanje') && product.brStrana">Broj strana: {{product.brStrana}}</p>
 
     <p *ngIf="product.kategorija=='privezak'">Materijal: {{product.materijal}}</p>
     <p *ngIf="product.kategorija=='sveska' && product.brListova">Broj listova: {{product.brListova}}</p>
@@ -30,10 +30,19 @@
     <p *ngIf="product.kategorija=='slagalica'">Broj delova: {{product.brDelova}}</p>
     <p *ngIf="product.kategorija=='slagalica' && product.dimenzije">Dimenzije: {{product.dimenzije}} cm</p>
     <p>{{product.opis}}</p>
+    <p class="stanje" *ngIf="product.kategorija=='knjiga na izdavanje'">Stanje: {{product.stanje}}</p>
     <p class="cena">Cena: {{product.cena}} RSD</p>
-    <button class="btn btn-outline-primary btn-lg button-product"*ngIf="product.kolicina>0 && !personal">Dodaj u korpu<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-cart korpa" viewBox="0 0 16 16">
+    <button class="btn btn-outline-primary btn-lg button-product"
+    *ngIf="product.kolicina>0 && !personal && product.kategorija!='knjiga na izdavanje'"
+    (click)="onAddCart()">Dodaj u korpu<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-cart korpa" viewBox="0 0 16 16">
       <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
     </svg></button>
+    <button
+    class="btn btn-outline-primary btn-lg button-product"
+    *ngIf="product.kategorija=='knjiga na izdavanje'"
+    (click)="onSendRequest()">
+      Pošalji zahtev za iznajmljivanje
+    </button>
     <p class="nijeDostupan" *ngIf="product.kolicina<1">Proizvod trenutno nije na stanju.</p>
     <div class="d-flex flex-row justify-content-center">
       <button class="btn btn-outline-primary col-5 button-product" *ngIf="personal" (click)="onDeleteClicked()">Obriši proizvod</button>
