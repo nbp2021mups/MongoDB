@@ -60,7 +60,7 @@ router.get("/:productId", async(req, res) => {
     try {
         const product = await ProductModel.findById(req.params.productId);
         return res.send(product);
-    } catch (ex){
+    } catch (ex) {
         console.log(ex);
         return res.status(501).send("Nastala je greska na serverskoj strani!");
 
@@ -107,6 +107,9 @@ router.post("/", multer({ storage }).single("image"), async(req, res) => {
         session.startTransaction();
 
         try {
+            if (req.body.kategorija == "knjiga na izdavanje")
+                req.body.zahtevaliZajam = [];
+
             const product = await new ProductModel({
                     ...req.body,
                     slika: req.protocol +
