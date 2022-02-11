@@ -23,7 +23,6 @@ export class ProductsService {
                 skip: skip,
                 count: count,
                 filter: JSON.stringify(queryParams),
-                //select: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
                 select: selectFields
             }
         }).pipe(map(response => {
@@ -45,7 +44,6 @@ export class ProductsService {
         return this.http.get<any>('http://localhost:3000/uros/search/' + skip + '/' + count, {
             params: {
                 ...queryParams,
-                //selectFields: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
                 selectFields: selectFields
             }
         }).pipe(map(response => {
@@ -57,7 +55,7 @@ export class ProductsService {
                         prod.kategorija, prod.autor, prod.zanr, prod.poreklo));
                 } else if(prod.kategorija == 'knjiga na izdavanje') {
                   ret.push(new KnjigaIznajmljivanjeBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika,
-                    prod.kategorija, prod.poreklo, prod.autor, prod.zanr, prod.izdata, prod.stanje));
+                    prod.kategorija, prod.poreklo, prod.autor, prod.zanr, prod.izdata, prod.stanje, prod.zahtevana));
                 } else {
                     ret.push(new ProductBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika, prod.kategorija, prod.poreklo));
                 }

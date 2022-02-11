@@ -93,12 +93,32 @@ export class ProductInfoPageComponent implements OnInit {
     });
 
   }
+
   onUpdateClicked(){
     this.router.navigate(['/izmena', this.product._id]);
   }
 
-  onAddCart(){
+  onAddToCart(){
+    this.authService.user.subscribe(user => {
+      if(!user){
+        this.router.navigate(['/prijavljivanje']);
+        return;
+      }
+      if(user.role == 'bookstore'){
+        return;
+      }
 
+
+      //ako je ulogovan obican korisnik
+      this.productService.addToCart(user.id, this.product._id, 1).subscribe({
+        next: resp => {
+
+        },
+        error: err => {
+          console.log(err);
+        }
+      });
+    }).unsubscribe();
   }
 
   onSendRequest(){

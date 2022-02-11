@@ -68,10 +68,6 @@ router.get("/search/:idKnjizare/:skip/:count", async (req, res) => {
             if(req.query.materijal){
                 filter['materijal'] = {$regex : req.query.materijal};
             }
-        } else if(req.query.kategorija && req.query.kategorija == 'knjiga na izdavanje') {
-            if(req.query.loggedU){
-                filter['zahtevaliZajam'] = { $ne : req.query.loggedU};
-            }
         }
 
         const company = await CompanyModel.findById(req.params.idKnjizare).populate({path : 'ponudjeniProizvodi',
@@ -164,6 +160,18 @@ router.get("/search/:skip/:count", async (req, res) => {
                                                         .limit(parseInt(req.params.count))
                                                         .sort(req.query.sort ? req.query.sort : null)
                                                         .exec();
+
+                                                        
+        if(req.query.kategorija && req.query.kategorija == 'knjiga na izdavanje') {
+            if(req.query.uid){
+                products.forEach(prod => {
+                    if(prod.zahtevaliZajam){
+                        const index = prod.zahtevaliZajam.findIndex(el => el == req.query.uid);
+                        prod._doc.zahtevana =  index == -1 ? false : true;
+                    }
+                });
+            }
+        }
 
         return res.send(products);
     }
