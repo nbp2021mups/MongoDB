@@ -91,9 +91,14 @@ router.patch('/response', async(req, res) => {
 
         try {
             const lease = {};
-            if (req.body.response == 1)
-                lease.update = await LeaseModel.updateOne({ _id: req.body.leaseID }, { $set: { potvrdjeno: req.body.response } }, { new: true, session });
-            else if (req.body.response == -1) {
+            if (req.body.response == 1) {
+                lease.value = await LeaseModel.findOneAndUpdate({ _id: req.body.leaseID }, { $set: { potvrdjeno: req.body.response } }, { new: true, session }).select('doDatuma knjiga');
+                if (lease.value) {
+                    const update = await ProductModel.updateOne({ _id: lease.value.knjiga.id }, { $set: { izdataDo: lease.value.doDatuma } }, { session });
+                    if (update.matchedCount != 1 || update.modifiedCount < 1)
+                        throw "Nema knjige sa prosledjenim identifikatorom!";
+                }
+            } else if (req.body.response == -1) {
                 lease.value = await LeaseModel.findOneAndDelete({ _id: req.body.leaseID }, { new: true, session });
                 if (lease.value)
                     await sendEmail(lease.value.korisnikZajmi.email, "Odbijen zahtev za zajam",
@@ -108,7 +113,7 @@ router.patch('/response', async(req, res) => {
             } else
                 throw "Nevalidna vrednost odgovora!";
 
-            if (!lease.value && lease.update.matchedCount != 1)
+            if (!lease.value)
                 throw "Nema zajma sa prosledjenim identifikatorom!"
 
             await session.commitTransaction();
@@ -121,16 +126,6 @@ router.patch('/response', async(req, res) => {
             await session.endSession();
             res.status(501).send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj });
         }
-
-        LeaseModel.updateOne({ _id: req.body.leaseID }, { $set: { potvrdjeno: req.body.response } })
-            .then(result => {
-                if (result.modifiedCount != 1)
-                    return res.status(409).send({ poruka: "Nastala je greska! ", sadrzaj: "Nista nije azurirano! " });
-
-                return res.send({ poruka: "Uspesno!", sadrzaj: {} })
-            })
-            .catch(sadrzaj => res.send({ poruka: "Nastala je greska!", sadrzaj }));
-
     } catch (sadrzaj) {
         console.log(sadrzaj);
         res.status(501).send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj });
