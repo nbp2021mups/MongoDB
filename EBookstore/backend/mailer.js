@@ -14,7 +14,7 @@ const transport = nodemailer.createTransport({
 
 const sendEmail = async(to, subject, html) => {
     await transport.sendMail({
-        from: '"MUPS Team" ' + process.env.EMAIL_USER,
+        from: '"E-Knjižara" ' + process.env.EMAIL_USER,
         to,
         subject,
         html
