@@ -15,13 +15,14 @@ export class ProductsService {
 
     constructor(private http: HttpClient) {}
 
-    ucitajProizvode(skip: number, count: number, queryParams) {
+    ucitajProizvode(skip: number, count: number, queryParams, selectFields) {
         return this.http.get<any>('http://localhost:3000/products/search', {
             params: {
                 skip: skip,
                 count: count,
                 filter: JSON.stringify(queryParams),
-                select: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
+                //select: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
+                select: selectFields
             }
         }).pipe(map(response => {
             const products = response.sadrzaj;
@@ -38,13 +39,15 @@ export class ProductsService {
         }));
     }
 
-    ucitajProizvode2(skip: number, count: number, queryParams) {
+    ucitajProizvode2(skip: number, count: number, queryParams, selectFields) {
         return this.http.get<any>('http://localhost:3000/uros/search/' + skip + '/' + count, {
             params: {
                 ...queryParams,
-                selectFields: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
+                //selectFields: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
+                selectFields: selectFields
             }
         }).pipe(map(response => {
+            console.log(response);
             const products = response;
             const ret: ProductBasic[] = [];
             products.forEach(prod => {

@@ -37,7 +37,7 @@ export class ProductComponent implements OnInit {
   ngOnInit(): void {
     if(this.product.kategorija == 'knjiga'){
       this.kategorija = Kategorija.Knjiga;
-    } else if (this.product.kategorija == 'knjiga za iznajmljivanje') {
+    } else if (this.product.kategorija == 'knjiga na izdavanje') {
       this.kategorija = Kategorija.KnjigaZaIznajmljivanje;
     } else {
       this.kategorija = Kategorija.Ostalo;

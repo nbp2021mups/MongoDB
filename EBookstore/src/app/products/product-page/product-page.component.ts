@@ -62,12 +62,23 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.tipStranice = this.router.url.slice(1,2);
-    this.tipStranice = this.tipStranice == 'p' ? 'proizvodi' : 'knjige';
+    const path = this.router.url;
+    if(path.includes('iznajmljivanje')){
+      this.tipStranice = 'iznajmljivanje';
+    } else if(path.includes('knjige')){
+      this.tipStranice = 'knjige';
+    } else if(path.includes('proizvodi')){
+      this.tipStranice = 'proizvodi';
+    }
     
+
     if(this.tipStranice == 'knjige'){
       this.izabranaKategorija = 'knjiga';
     }
+    if(this.tipStranice == 'iznajmljivanje'){
+      this.izabranaKategorija = 'knjiga na izdavanje';
+    }
+
     this.brStranice = 0;
 
     this.form = new FormGroup({
@@ -194,9 +205,16 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
       if(this.tipStranice == 'knjige'){
         queryParams = {kategorija: 'knjiga', ...queryParams};
+      } else if(this.tipStranice == 'iznajmljivanje') {
+        queryParams = {kategorija: 'knjiga na izdavanje', ...queryParams};
       }
 
-      this.prodService.ucitajProizvode2(brStranice * this.velicinaStranice, this.velicinaStranice, queryParams).subscribe({
+      const selectFields = ['_id', 'naziv', 'proizvodjac', 'cena', 'slika', 'kolicina', 'kategorija', 'autor', 'zanr', 'poreklo'];
+      if(this.tipStranice == 'iznajmljivanje'){
+        selectFields.push('izdata');
+      }
+
+      this.prodService.ucitajProizvode2(brStranice * this.velicinaStranice, this.velicinaStranice, queryParams, selectFields).subscribe({
         next: resp => {
           this.products = resp;
         },
