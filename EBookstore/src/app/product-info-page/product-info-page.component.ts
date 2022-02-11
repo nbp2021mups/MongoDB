@@ -7,6 +7,8 @@ import { ProductsService } from 'src/services/products.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { WarningDialogComponent } from '../warning-dialog/warning-dialog.component';
+import { LeaseDialogComponent } from '../lease-dialog/lease-dialog.component';
+import { LeasesService } from 'src/services/leases.service';
 
 @Component({
   selector: 'app-product-info-page',
@@ -19,12 +21,14 @@ export class ProductInfoPageComponent implements OnInit {
   productId: string;
   product: ProductFull;
   personal: boolean;
+  idLogUser: string;
 
   constructor(private route: ActivatedRoute,
     private productService: ProductsService,
     private authService: AuthService,
     private router: Router,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private leasesService : LeasesService) { }
 
 
   ngOnInit(): void {
@@ -43,6 +47,7 @@ export class ProductInfoPageComponent implements OnInit {
             this.personal=false;
           }else{
             this.personal=user.id==this.product.poreklo.id;
+            this.idLogUser=user.id;
           }
         }).unsubscribe();
         console.log(this.personal)
@@ -102,6 +107,47 @@ export class ProductInfoPageComponent implements OnInit {
   }
 
   onSendRequest(){
+
+
+    let dialogLease= this.dialog.open(LeaseDialogComponent,
+      { width: '400px',
+        data :
+        {
+          potvrdna : 'Iznajmi'}
+      });
+
+    dialogLease.afterClosed().subscribe(result=>{
+
+        if(result!='false'){
+          console.log({
+            korisnikZajmi: this.product.poreklo.id,
+            korisnikPozajmljuje: this.idLogUser,
+            knjiga: this.product._id,
+            odDatuma: (result.odDatuma as Date).toISOString(),
+            doDatuma: (result.doDatuma as Date).toISOString(),
+            cena: result.cena
+          })
+          this.leasesService.posaljiZahtevZaInzajmljivanje({
+            korisnikZajmi: this.product.poreklo.id,
+            korisnikPozajmljuje: this.idLogUser,
+            knjiga: this.product._id,
+            odDatuma: result.odDatuma,
+            doDatuma: result.doDatuma,
+            cena: result.cena
+          }).subscribe({
+            next: resp=>{
+              console.log(resp);
+
+            },
+            error: err=>{
+              console.log(err)
+
+            }
+          })
+
+        }
+
+    })
 
   }
 

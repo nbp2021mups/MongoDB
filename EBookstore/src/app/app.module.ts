@@ -40,6 +40,7 @@ import { AddUsersBookComponent } from './add-users-book/add-users-book.component
 import { CommonModule } from '@angular/common';
 import { LeaseDialogComponent } from './lease-dialog/lease-dialog.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatDialogModule,
     BrowserAnimationsModule,
     CommonModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent],

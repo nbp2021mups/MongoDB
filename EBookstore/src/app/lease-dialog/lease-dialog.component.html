@@ -1,1 +1,35 @@
-<p>lease-dialog works!</p>
+<h2 mat-dialog-title>
+  Zahtev za iznajmljivanje knjige
+  </h2>
+ <mat-dialog-content>
+
+  <div>
+    <mat-form-field appearance="standard" class="w-100">
+      <mat-label>Izaberite period iznajmljivanja</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Početak" [(ngModel)]="data.odDatuma" required>
+        <input matEndDate placeholder="Kraj" [(ngModel)]="data.doDatuma" required>
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
+
+
+  <div>
+    <mat-form-field appearance="standard" class="w-100">
+      <mat-label>Predložite cenu za željeni period</mat-label>
+      <input matInput [(ngModel)]="data.cena" type="number" min="1">
+      <label matSuffix>RSD</label>
+    </mat-form-field>
+
+  </div>
+
+ </mat-dialog-content>
+ <mat-dialog-actions align="center">
+  <button mat-raised-button [mat-dialog-close]="data" [disabled]="!data.cena || !data.odDatuma || !data.doDatuma" class="btn btn-outline-primary btn-dialog col-sm-4 m-2" tabindex="1"> {{potvrdna}} </button>
+	<button mat-raised-button mat-dialog-close="false" class="btn btn-outline-primary btn-dialog m-2 col-sm-4" tabindex="-1">Odustani</button>
+	<!-- <button mat-raised-button mat-dialog-close="true" click="onClose()"class="btn btn-outline-primary btn-dialog col-sm-4 m-2" tabindex="1"> {{potvrdna}} </button>
+	<button mat-raised-button mat-dialog-close="false" class="btn btn-outline-primary btn-dialog m-2 col-sm-4" tabindex="-1">Odustani</button> -->
+</mat-dialog-actions>
+

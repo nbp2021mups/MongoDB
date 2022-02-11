@@ -16,7 +16,7 @@ export class ProductBasic {
         this.cena = cena;
         this.slika = slika;
         this.kategorija = kategorija;
-        if(kategorija == 'knjiga za iznajmljivanje') {
+        if(kategorija == 'knjiga na izdavanje') {
             this.poreklo = {id: poreklo.id, ime: poreklo.ime, prezime: poreklo.prezime};
         } else {
             this.poreklo = {id: poreklo.id, naziv: poreklo.naziv};
