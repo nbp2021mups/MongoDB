@@ -4,6 +4,7 @@ import { map } from "rxjs/operators";
 import { BookBasic } from "src/models/book-basic.model";
 import { BookFull } from "src/models/book-full.model";
 import { DrustvenaIgraFull } from "src/models/drustvenaIgra-full.model";
+import { KnjigaIznajmljivanjeFull } from "src/models/knjiga-iznajmljivanje-full.model";
 import { PrivezakFull } from "src/models/privezak-full.model";
 import { ProductBasic } from "src/models/product-basic.model";
 import { RanacFull } from "src/models/ranac-full.model";
@@ -15,13 +16,14 @@ export class ProductsService {
 
     constructor(private http: HttpClient) {}
 
-    ucitajProizvode(skip: number, count: number, queryParams) {
+    ucitajProizvode(skip: number, count: number, queryParams, selectFields) {
         return this.http.get<any>('http://localhost:3000/products/search', {
             params: {
                 skip: skip,
                 count: count,
                 filter: JSON.stringify(queryParams),
-                select: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
+                //select: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
+                select: selectFields
             }
         }).pipe(map(response => {
             const products = response.sadrzaj;
@@ -38,13 +40,15 @@ export class ProductsService {
         }));
     }
 
-    ucitajProizvode2(skip: number, count: number, queryParams) {
+    ucitajProizvode2(skip: number, count: number, queryParams, selectFields) {
         return this.http.get<any>('http://localhost:3000/uros/search/' + skip + '/' + count, {
             params: {
                 ...queryParams,
-                selectFields: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
+                //selectFields: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
+                selectFields: selectFields
             }
         }).pipe(map(response => {
+            console.log(response);
             const products = response;
             const ret: ProductBasic[] = [];
             products.forEach(prod => {
@@ -121,6 +125,11 @@ export class ProductsService {
           return new SlagalicaFull(id, naziv, proizvodjac, kolicina, cena, slika
             , kategorija, opis, response.poreklo, response.dimenzije, response.brojDelova);
         }
+        else if(kategorija=='knjiga na izdavanje'){
+          return new KnjigaIznajmljivanjeFull(id, naziv, proizvodjac, kolicina, cena, slika, kategorija, opis, response.poreklo, response.autor,
+            response.zanr, response.brojStrana, response.izdata, response.stanje);
+        }
+
       }))
     }
 

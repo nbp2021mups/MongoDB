@@ -157,4 +157,12 @@ export class LeaseComponent implements OnInit {
         error: err => console.log(err)
     });
   }
+
+  onObrisanaKnjiga(id){
+    const index= this.booksForLease.findIndex(knjiga=>{
+      return knjiga._id==id;
+    })
+    if(index!=-1)
+      this.booksForLease.splice(index,1);
+  }
 }
