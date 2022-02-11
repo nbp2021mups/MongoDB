@@ -63,7 +63,7 @@ export class LeaseComponent implements OnInit {
         ['limit']: this.count,
         ['skip']: reload ? 0 : this.booksForLease.length,
         ['sort']: JSON.stringify({ date: -1 }),
-        ['select']: 'naziv proizvodjac autor zanr slika cena'
+        ['select']: 'naziv proizvodjac autor zanr slika cena poreklo'
       }
     }).subscribe({
         next: (data: { poruka: string, sadrzaj: Array<BookBasic> }) => {
