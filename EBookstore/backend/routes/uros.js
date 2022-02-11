@@ -68,6 +68,10 @@ router.get("/search/:idKnjizare/:skip/:count", async (req, res) => {
             if(req.query.materijal){
                 filter['materijal'] = {$regex : req.query.materijal};
             }
+        } else if(req.query.kategorija && req.query.kategorija == 'knjiga na izdavanje') {
+            if(req.query.loggedU){
+                filter['zahtevaliZajam'] = { $ne : req.query.loggedU};
+            }
         }
 
         const company = await CompanyModel.findById(req.params.idKnjizare).populate({path : 'ponudjeniProizvodi',
