@@ -50,7 +50,7 @@
                     <a class="nav-link" routerLink="/narudzbine" *ngIf="this.ulogovan">Narudžbine</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="" *ngIf="this.ulogovan">Profil</a>
+                    <a class="nav-link" routerLink="/zajam" *ngIf="this.ulogovan && this.tip == 'user'">Zajam</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/prijavljivanje" *ngIf="!this.ulogovan">Prijavi se</a>
