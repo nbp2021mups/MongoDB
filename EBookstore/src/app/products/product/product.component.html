@@ -13,9 +13,10 @@
     </div>
 
     <p class="product-item maker">{{product.proizvodjac}}</p>
-    <p class="product-item price">{{product.cena + " RSD"}}</p>
+    <p class="product-item price" *ngIf="kategorija != 1">{{product.cena + " RSD"}}</p>
+    <p class="product-item price" *ngIf="kategorija == 1">{{product.cena + " RSD mesecno"}}</p>
 
-    <button class="btn btn-sm cart-btn mt-1" *ngIf="kategorija != 1 && !personal && product.kolicina > 0">Dodaj u korpu</button>
+    <button class="btn btn-sm cart-btn mt-1" *ngIf="kategorija != 1 && !personal && product.kolicina > 0" (click)="onDodajUKorpu()">Dodaj u korpu</button>
     <span class = "span-stanje px-2 py-1" *ngIf="product.kolicina == 0">Trenutno nije na stanju</span>
     <button class="btn btn-sm cart-btn mt-1" *ngIf="kategorija == 1 && !personal">Iznajmi knjigu</button>
 
