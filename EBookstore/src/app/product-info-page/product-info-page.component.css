@@ -45,7 +45,7 @@ p {
 }
 .small-info p {
   margin: 2px;
-  color: #7a7878e1;
+  color: #696767e1;
   font-size: 0.9rem;
   font-weight: 300;
 }
@@ -56,6 +56,16 @@ p {
   font-family: "Helvetica Neue", sans-serif;
   font-size: 18px;
   line-height: 26px;
+}
+.stanje {
+  margin: 10px 0px;
+  color: #2b0a0d;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: bolder;
+  padding: 2px;
+  border-bottom: 1px solid rgb(49, 24, 24);
 }
 
 .nijeDostupan {
