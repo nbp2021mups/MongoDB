@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema({
     korisnik: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
+        ref: "user",
         required: [true, "Mora se navesti ID korisnika!"],
     },
     cena: {
@@ -20,7 +20,7 @@ const schema = mongoose.Schema({
         _id: { id: false },
         id: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "products",
+            ref: "product",
             required: [true, "Mora se navesti ID proizvoda!"],
         },
         naziv: {
@@ -50,7 +50,7 @@ const schema = mongoose.Schema({
             naziv: String,
             id: {
                 type: mongoose.Types.ObjectId,
-                ref: "companies",
+                ref: "company",
                 required: [true, "ID je obavezno polje!"],
             },
         },

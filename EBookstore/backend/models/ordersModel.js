@@ -4,12 +4,11 @@ const { stringify } = require("querystring");
 const schema = mongoose.Schema({
     kompanija: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "companies",
-        default: null
+        ref: "company"
     },
     korisnik: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
+        ref: "user",
         required: [true, "Mora se navesti ID korisnika!"],
     },
     cena: {
@@ -26,7 +25,7 @@ const schema = mongoose.Schema({
         _id: { id: false },
         id: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "products",
+            ref: "product",
             required: [true, "Mora se navesti ID proizvoda!"],
         },
         naziv: {
@@ -56,7 +55,7 @@ const schema = mongoose.Schema({
             naziv: String,
             id: {
                 type: mongoose.Types.ObjectId,
-                ref: "companies",
+                ref: "company",
                 required: [true, "ID je obavezno polje!"],
             },
         },
@@ -73,28 +72,32 @@ const schema = mongoose.Schema({
             ],
         },
     }, ],
-    potvrdjena: {
+    status: {
         _id: { id: false },
-        vrednost: {
+        potvrdjena: {
             type: Number,
             default: 0
         },
-        od: [{
+        potvrdili: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: "companies",
+            ref: "company",
         }],
-        ukupno: [{
+        odbili: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: "companies",
+            ref: "company",
         }],
-        userOrder: {
+        naCekanju: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: "orders",
+            ref: "company",
+        }],
+        celaNarudzbina: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "order",
         }
     },
     datum: {
         type: Date,
-        default: new Date()
+        required: [true, "Neophodno je navesti datum narudzbine!"]
     },
     kategorija: {
         type: String,
@@ -104,7 +107,6 @@ const schema = mongoose.Schema({
             'korisnik'
         ]
     },
-
 });
 
 const OrderModel = mongoose.model("order", schema);

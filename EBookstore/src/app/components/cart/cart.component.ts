@@ -98,7 +98,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.cart.proizvodi = this.cart.proizvodi.filter((el, ind) => ind != index);
   }
 
-  async order(): Promise<void>{
+  order(): void{
     const c = this.changes.done ? this.changes : null;
     this.http.post('http://localhost:3000/orders',
     {
@@ -111,6 +111,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.cart.cena = 0;
         this.cart.proizvodi = new Array<ProductBasicSubdocument>();
         this.changes = { done: false, obrisani: new Map<string, boolean>(), promenjeni: new Map<string, number>() };
+        this.hasMore = false;
     },
       error: err => console.log(err)
     });

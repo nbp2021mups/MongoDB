@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { UserOrder } from 'src/models/user-order.model';
+import { UserInfo } from 'src/models/user-info.model';
 
 @Component({
   selector: 'app-order-user',
@@ -9,7 +9,7 @@ import { UserOrder } from 'src/models/user-order.model';
 })
 export class OrderUserComponent implements OnInit {
 
-  @Input() user: UserOrder = null;
+  @Input() user: UserInfo = null;
 
   constructor() { }
 

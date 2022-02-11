@@ -91,8 +91,8 @@ router.post("/", multer({ storage }).single("image"), async(req, res) => {
             req.body.brojDelova = parseInt(req.body.brojDelova);
         }
 
-
         req.body.poreklo = JSON.parse(req.body.poreklo);
+
         if (!req.body.poreklo ||
             !req.body.poreklo.id ||
             (!req.body.poreklo.naziv && (!req.body.poreklo.ime || !req.body.poreklo.prezime)) ||

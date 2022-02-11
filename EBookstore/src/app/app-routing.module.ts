@@ -11,6 +11,7 @@ import { AddProductComponent } from './products/add-product/add-product.componen
 import { EditProductComponent } from './products/edit-product/edit-product.component';
 import { ProductInfoPageComponent } from './product-info-page/product-info-page.component';
 import { OrdersComponent } from './components/orders/orders.component';
+import { LeaseComponent } from './components/lease/lease.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/pocetna', pathMatch: 'full' },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'novi-proizvod', component: AddProductComponent },
   { path: 'korpa', component: CartComponent, canActivate: [AuthGuard] },
   { path: 'narudzbine', component: OrdersComponent },
+  { path: 'iznajmljivanje', component: LeaseComponent },
   { path: 'izmena/:idProizvoda', component: EditProductComponent},
   { path: 'proizvod/:idProizvoda', component: ProductInfoPageComponent},
   { path: '**', redirectTo: 'pocetna' },

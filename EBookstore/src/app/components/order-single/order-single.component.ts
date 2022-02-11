@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { OrderBasic } from 'src/models/order-basic.model';
 import { ProductBasicSubdocument } from 'src/models/product-basic-subdocument.model';
-import { UserOrder } from 'src/models/user-order.model';
+import { UserInfo } from 'src/models/user-info.model';
 
 @Component({
   selector: 'app-order-single',
@@ -14,6 +14,8 @@ export class OrderSingleComponent implements OnInit {
   @Input() order: OrderBasic = new OrderBasic();
   @Input() category: string = 'user';
 
+  @Output() orderDeleted: EventEmitter<string> = new EventEmitter<string>();
+
   public count: number = 5;
   public hasMoreProducts: boolean = false;
 
@@ -23,7 +25,7 @@ export class OrderSingleComponent implements OnInit {
   public loadedProducts: boolean = false;
   public loadedUser: boolean = false;
 
-  public user: UserOrder = null;
+  public user: UserInfo = null;
 
   constructor(private http: HttpClient) { }
 
@@ -46,7 +48,7 @@ export class OrderSingleComponent implements OnInit {
       this.loadedUser = true;
       this.http.get('http://localhost:3000/orders/get-user-info/' + this.order.korisnik)
       .subscribe({
-        next: (data: { poruka: string, sadrzaj: UserOrder }) => this.user = data.sadrzaj,
+        next: (data: { poruka: string, sadrzaj: UserInfo }) => this.user = data.sadrzaj,
         error: err => console.log(err)
     });
     }
@@ -75,7 +77,7 @@ export class OrderSingleComponent implements OnInit {
     .subscribe({
       next: response => {
         console.log(response);
-        this.order.potvrdjena.vrednost = 1;
+        this.order.status.potvrdjena = 1;
       },
       error: response => console.log(response)
     });
@@ -84,8 +86,15 @@ export class OrderSingleComponent implements OnInit {
   declineOrder() : void {
     this.http.patch("http://localhost:3000/orders/decline", { orderID: this.order._id })
     .subscribe({
-      next: response => console.log(response),
+      next: response => {
+        console.log(response);
+        this.order.status.potvrdjena = -1;
+      },
       error: response => console.log(response)
     });
+  }
+
+  deleteOrder(): void {
+    this.orderDeleted.emit(this.order._id);
   }
 }

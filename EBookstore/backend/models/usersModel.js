@@ -42,7 +42,7 @@ const schema = mongoose.Schema({
         _id: { id: false },
         id: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "carts",
+            ref: "cart",
             required: [true, "ID korpe je obavezan!"]
         },
         cena: {
@@ -58,11 +58,11 @@ const schema = mongoose.Schema({
     },
     narudzbine: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "orders"
+        ref: "order"
     }],
     ponudjeneKnjige: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "product"
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "product"
     }]
 });
 

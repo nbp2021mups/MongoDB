@@ -32,6 +32,8 @@ import { OrderSingleComponent } from './components/order-single/order-single.com
 import { OrdersComponent } from './components/orders/orders.component';
 import { OrderUserComponent } from './components/order-user/order-user.component';
 import { WarningDialogComponent } from './warning-dialog/warning-dialog.component';
+import { LeaseComponent } from './components/lease/lease.component';
+import { LeaseSingleComponent } from './components/lease-single/lease-single.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { WarningDialogComponent } from './warning-dialog/warning-dialog.componen
     OrderSingleComponent,
     OrdersComponent,
     OrderUserComponent,
-    WarningDialogComponent
+    WarningDialogComponent,
+    LeaseComponent,
+    LeaseSingleComponent
   ],
   imports: [
     BrowserModule,

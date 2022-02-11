@@ -40,7 +40,7 @@ export class OrdersComponent implements OnInit {
             ['filter']: JSON.stringify(this.filter),
             ['skip']: 0,
             ['limit']: this.count,
-            ['select']: 'cena brojProizvoda potvrdjena korisnik kompanija datum',
+            ['select']: 'cena brojProizvoda status korisnik kompanija datum kategorija',
             ['sort']: JSON.stringify({ datum: -1 })
           }
         }).subscribe({ next: (data: {poruka:string, sadrzaj: Array<OrderBasic>}) => {
@@ -49,6 +49,15 @@ export class OrdersComponent implements OnInit {
           },
           error: err => console.log(err)
         });
+  }
+
+  deleteOrder(orderID: string, ind: number) : void {
+    this.http.delete("http://localhost:3000/orders/" + orderID).subscribe({
+        next: data => {
+        this.orders = this.orders.filter((el, index) => ind != index);
+      },
+      error: err => console.log(err)
+    });
   }
 
 }

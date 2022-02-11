@@ -1,78 +1,85 @@
 <div class="card">
 
-  <div class="card-header d-flex flex-row justify-content-between">
+    <div class="card-header d-flex flex-row justify-content-between">
 
-    <h2>Cena: {{ order.cena | number : '1.2-2' }} dinara</h2>
+        <h2>Cena: {{ order.cena | number : '1.2-2' }} dinara</h2>
 
-    <div>
+        <div class="d-flex flex-row justify-content-between">
 
-      <div *ngIf="order.potvrdjena.vrednost == 1">
+            <div *ngIf="order.status.potvrdjena == 1" class="d-flex justify-content-center align-items-center">
 
-        <svg xmlns="http://www.w3.org/2000/svg" data-toggle="tooltip" data-placement="top" title="Potvrđena" width="25" height="25" class="bi bi-check-circle" viewBox="0 0 16 16">
-          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-          <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-        </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" data-toggle="tooltip" data-placement="top" title="Potvrđena" width="25" height="25" class="bi bi-check-circle" viewBox="0 0 16 16">
+                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                  <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                </svg>
 
-      </div>
+            </div>
 
-      <div *ngIf="order.potvrdjena.vrednost == 0">
+            <div *ngIf="order.status.potvrdjena == 0" class="d-flex justify-content-center align-items-center">
 
-          <svg *ngIf="category == 'korisnik'" xmlns="http://www.w3.org/2000/svg" data-toggle="tooltip" data-placement="top" title="Na čekanju" width="25" height="25" class="bi bi-clock" viewBox="0 0 16 16">
-            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
-          </svg>
+                <svg *ngIf="category == 'korisnik'" xmlns="http://www.w3.org/2000/svg" data-toggle="tooltip" data-placement="top" title="Na čekanju" width="25" height="25" class="bi bi-clock" viewBox="0 0 16 16">
+                  <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                </svg>
 
-          <div *ngIf="category == 'kompanija'">
+                <div *ngIf="category == 'kompanija'">
 
-            <button class="btn btn-outline-danger m-1" (click)="declineOrder()">Odbaci narudžbinu</button>
-            <button class="btn btn-success m-1" (click)="acceptOrder()">Odobri narudžbinu</button>
+                    <button class="btn btn-outline-danger m-1" (click)="declineOrder()">Odbaci narudžbinu</button>
+                    <button class="btn btn-success m-1" (click)="acceptOrder()">Odobri narudžbinu</button>
 
-          </div>
+                </div>
 
-      </div>
+            </div>
 
-      <div *ngIf="order.potvrdjena.vrednost == -1">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
-          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-          <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
-        </svg>
-      </div>
+            <div *ngIf="order.status.potvrdjena == -1" class="d-flex justify-content-center align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
+                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                  <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                </svg>
+            </div>
 
-    </div>
+            <button *ngIf="order.kategorija == 'korisnik'" class="btn btn-danger mx-2" (click)="deleteOrder()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+              </svg>
+            </button>
 
-  </div>
-
-  <div class="card-body d-flex flex-column justify-content-between">
-
-    <h5 class="card-title">Broj proizvoda: {{ order.brojProizvoda }}</h5>
-    <p class="card-text">Datum: {{ order.datum | date : 'dd. MMM. yyyy. u HH:mm' : 'sr-Latn-RS' }}h</p>
-
-    <div class="d-flex flex-column justify-content-between">
-
-      <div class="d-flex flex-row justify-start-0">
-
-        <button *ngIf="category == 'kompanija'" class="btn btn-outline-primary m-1 order-btn" (click)="toggleUser()">{{ displayUser ? 'Sakrij' : 'Prikaži' }} korisnika</button>
-        <button class="btn btn-outline-primary m-1 order-btn" (click)="toggleProducts()">{{ displayProducts ? 'Sakrij' : 'Prikaži' }} proizvode</button>
-
-      </div>
-
-      <div *ngIf="displayUser && user != null" class="d-flex flex-column pt-1 mt-3 mb-1 h-50">
-
-        <app-order-user [user]="user"></app-order-user>
-
-      </div>
-
-      <div *ngIf="displayProducts" class="d-flex flex-column pt-1 mt-3 mb-1 h-50">
-
-        <div class="overflow-auto" style="max-height: 60vh">
-          <app-product-order *ngFor="let product of order.proizvodi" [product]="product" [displayOnly]="true"></app-product-order>
         </div>
-        <button *ngIf="hasMoreProducts" class="btn btn-outline-primary order-btn" (click)="loadMoreProducts()">Učitaj još</button>
-
-      </div>
 
     </div>
 
-  </div>
+    <div class="card-body d-flex flex-column justify-content-between">
+
+        <h5 class="card-title">Broj proizvoda: {{ order.brojProizvoda }}</h5>
+        <p class="card-text">Datum: {{ order.datum | date : 'dd. MMM. yyyy. u HH:mm' : 'sr-Latn-RS' }}h</p>
+
+        <div class="d-flex flex-column justify-content-between">
+
+            <div class="d-flex flex-row justify-start-0">
+
+                <button *ngIf="category == 'kompanija'" class="btn btn-outline-primary m-1 order-btn" (click)="toggleUser()">{{ displayUser ? 'Sakrij' : 'Prikaži' }} korisnika</button>
+                <button class="btn btn-outline-primary m-1 order-btn" (click)="toggleProducts()">{{ displayProducts ? 'Sakrij' : 'Prikaži' }} proizvode</button>
+
+            </div>
+
+            <div *ngIf="displayUser && user != null" class="d-flex flex-column pt-1 mt-3 mb-1 h-50">
+
+                <app-order-user [user]="user"></app-order-user>
+
+            </div>
+
+            <div *ngIf="displayProducts" class="d-flex flex-column pt-1 mt-3 mb-1 h-50">
+
+                <div class="overflow-auto d-flex flex-column justify-content-between" style="max-height: 60vh">
+                    <app-product-order class="my-2" *ngFor="let product of order.proizvodi" [product]="product" [displayOnly]="true"></app-product-order>
+                </div>
+                <button *ngIf="hasMoreProducts" class="btn btn-outline-primary order-btn" (click)="loadMoreProducts()">Učitaj još</button>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
