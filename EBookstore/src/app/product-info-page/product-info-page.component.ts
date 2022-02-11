@@ -16,6 +16,8 @@ import { LeasesService } from 'src/services/leases.service';
   styleUrls: ['./product-info-page.component.css']
 })
 export class ProductInfoPageComponent implements OnInit {
+  error: string = '';
+  success: string = '';
   imagePreview: string = '';
   paramsSub: Subscription;
   productId: string;
@@ -137,10 +139,18 @@ export class ProductInfoPageComponent implements OnInit {
           }).subscribe({
             next: resp=>{
               console.log(resp);
+              this.success="Zahtev za iznajmljivanje je poslat korisniku, bićete obavešteni kada zahtev bude obrađen.";
+              setTimeout(() => {
+                this.success = '';
+              }, 3000);
 
             },
             error: err=>{
               console.log(err)
+              this.error = err.error.sadrzaj;
+              setTimeout(() => {
+                this.error = '';
+              }, 3000);
 
             }
           })

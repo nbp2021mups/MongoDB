@@ -1,3 +1,9 @@
+<div class="alert alert-success text-center ml-auto mt-50" *ngIf="success">
+  {{ success }}
+</div>
+<div class="alert alert-danger text-center ml-auto mt-50" *ngIf="error">
+  {{ error }}
+</div>
 <div class="d-flex align-items-center main-div flex-row justify-content-center flex-wrap" *ngIf="this.product">
   <div class="p-2 col-12 col-lg-5">
     <div class="slika-conteiner">
@@ -31,7 +37,10 @@
     <p *ngIf="product.kategorija=='slagalica' && product.dimenzije">Dimenzije: {{product.dimenzije}} cm</p>
     <p>{{product.opis}}</p>
     <p class="stanje" *ngIf="product.kategorija=='knjiga na izdavanje'">Stanje: {{product.stanje}}</p>
-    <p class="cena">Cena: {{product.cena}} RSD</p>
+    <p class="iznajmljuje" *ngIf="product.kategorija=='knjiga na izdavanje'">Iznajmljuje korisnik {{product.poreklo.ime}} {{product.poreklo.prezime}}</p>
+    <p class="cena" *ngIf="product.kategorija!='knjiga na izdavanje'">Cena: {{product.cena}} RSD</p>
+
+    <p class="cena" *ngIf="product.kategorija=='knjiga na izdavanje'">Okvirna cena iznajmljivanja: {{product.cena}} RSD</p>
     <button class="btn btn-outline-primary btn-lg button-product"
     *ngIf="product.kolicina>0 && !personal && product.kategorija!='knjiga na izdavanje'"
     (click)="onAddCart()">Dodaj u korpu<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-cart korpa" viewBox="0 0 16 16">
