@@ -181,7 +181,7 @@ export class ProductComponent implements OnInit {
             });
           }
       });
-    });
+    }).unsubscribe();
 
   }
 
@@ -213,7 +213,7 @@ export class ProductComponent implements OnInit {
           });
         }
       })
-    })
+    }).unsubscribe();
   }
 
 

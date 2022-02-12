@@ -70,11 +70,11 @@ export class AddUsersBookComponent implements OnInit {
 
       this.productService.addProduct(bookData).subscribe({
         next:resp=>{
-          this.router.navigate(['knjizare']);
+          this.router.navigate(['zajam']);
         },
         error : err=>{
           console.log(err)
-          this.router.navigate(['knjizare']);
+          this.router.navigate(['zajam']);
         }
       });
 

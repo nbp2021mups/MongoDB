@@ -104,7 +104,6 @@ export class ProductPageComponent implements OnInit, OnDestroy {
         this.ucitajPodatkeZaKnjizaru(this.idKnjizare, this.brStranice, this.queryParams);
       } else {
         this.idKnjizare = null;
-        console.log('ovde');
         this.ucitajPodatke(this.brStranice, this.queryParams);
       }
     });
@@ -117,7 +116,6 @@ export class ProductPageComponent implements OnInit, OnDestroy {
         this.ucitajPodatkeZaKnjizaru(this.idKnjizare, this.brStranice, this.queryParams);
       } else {
         this.brStranice = 0;
-        console.log('i ovde');
         this.ucitajPodatke(this.brStranice, this.queryParams);
       }
     });

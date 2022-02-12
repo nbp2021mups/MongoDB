@@ -4,7 +4,7 @@
     <form (ngSubmit)="onSubmit()" [formGroup]="form" class=" d-flex flex-row flex-wrap">
     
     <mat-radio-group class="d-flex flex-column col-md-2" (change)="onIzborKategorije($event)"
-    formControlName="kategorija"  *ngIf="this.tipStranice != 'knjige'">
+    formControlName="kategorija"  *ngIf="this.tipStranice == 'proizvodi'">
     <label class="labela">Kategorija</label>
       <mat-radio-button value="knjiga" class="mt-2" color="primary">Knjige</mat-radio-button>
       <mat-radio-button value="drustvena igra" class="mt-2" color="primary">Društvene igre</mat-radio-button>
@@ -35,7 +35,7 @@
             />
         </mat-form-field>
 
-        <mat-form-field appearance="standard" class="p-0" *ngIf="izabranaKategorija == 'knjiga'">
+        <mat-form-field appearance="standard" class="p-0" *ngIf="izabranaKategorija == 'knjiga' || izabranaKategorija == 'knjiga na izdavanje'">
             <mat-label>Autor</mat-label>
             <input
             matInput
@@ -44,7 +44,7 @@
             />
         </mat-form-field>
 
-        <mat-form-field appearance="standard" *ngIf="izabranaKategorija == 'knjiga'">
+        <mat-form-field appearance="standard" *ngIf="izabranaKategorija == 'knjiga' || izabranaKategorija == 'knjiga na izdavanje'">
             <mat-label>Izaberite zanrove</mat-label>
             <mat-select formControlName="zanr" multiple>
               <mat-option *ngFor = "let zanr of this.zanrovi" [value]="zanr.value">{{zanr.text}}</mat-option>
