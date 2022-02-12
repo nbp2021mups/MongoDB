@@ -63,7 +63,7 @@ h1:after {
 
 .book .page:nth-child(3) {
   -webkit-animation: pageTurn 1.2s cubic-bezier(0, 0.39, 1, 0.68) 1.2s infinite;
-  animation: pageTurn 1.2s cubic-bezier(0, 0.39, 1, 0.68) 1.2s infinite;
+  animation: pageTurn 0.5s cubic-bezier(0, 0.39, 1, 0.68) 0s infinite;
 }
 
 /* Page turn */
