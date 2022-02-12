@@ -51,7 +51,7 @@ router.post('/', async(req, res) => {
             if (korisnici.length != 2)
                 throw "ID korisnika nisu validni!";
 
-            if (new Date(req.body.odDatuma) > new Date(req.body.doDatuma) || new Date(req.body.odDatuma) < new Date())
+            if (new Date(req.body.odDatuma) > new Date(req.body.doDatuma) || new Date(req.body.odDatuma).toISOString() < new Date().toISOString())
                 throw "Datumi nisu validni!";
 
             req.body.korisnikPozajmljuje = new mongoose.Types.ObjectId(req.body.korisnikPozajmljuje);
@@ -65,8 +65,8 @@ router.post('/', async(req, res) => {
             const zajmi = korisnici.find(k => String(k._id) == String(req.body.korisnikZajmi)),
                 pozajmljuje = korisnici.find(k => String(k._id) == String(req.body.korisnikPozajmljuje));
 
-            const unique = await LeaseModel.findOne({ "korisnikPozajmljuje.id": req.body.korisnikPozajmljuje, "knjiga.id": req.body.knjiga, "korisnikZajmi.id": req.body.korisnikZajmi });
-            if (unique && unique.cena == req.body.cena && new Date(unique.odDatuma) == new Date(req.body.odDatuma) && new Date(req.body.doDatuma) == new Date(unique.doDatuma))
+            const unique = await LeaseModel.findOne({ "korisnikPozajmljuje.id": req.body.korisnikPozajmljuje, "knjiga.id": req.body.knjiga, "korisnikZajmi.id": req.body.korisnikZajmi }).select('odDatuma doDatuma cena');
+            if (unique && unique.cena == req.body.cena && new Date(unique.odDatuma).toISOString() == new Date(req.body.odDatuma).toISOString() && new Date(req.body.doDatuma).toISOString() == new Date(unique.doDatuma).toISOString())
                 throw "Već ste poslali identičan zahtev korisniku!";
 
             const lease = await new LeaseModel({
@@ -109,7 +109,7 @@ router.patch('/response', async(req, res) => {
 
             if (req.body.response == 1) {
                 lease.value = await LeaseModel.findOneAndUpdate({ _id: req.body.leaseID }, { $set: { potvrdjeno: req.body.response } }, { new: true, session }).select('odDatuma doDatuma knjiga korisnikPozajmljuje');
-                if (new Date(lease.value.odDatuma) < new Date())
+                if (new Date(lease.value.odDatuma).toISOString() < new Date().toISOString())
                     throw "Period je istekao, ne možete prihvatiti!";
 
                 lease.update = await ProductModel.findOneAndUpdate({ _id: lease.value.knjiga.id }, { $set: { izdataDo: lease.value.doDatuma } }, { session });
@@ -117,7 +117,7 @@ router.patch('/response', async(req, res) => {
                 if (!lease.update)
                     throw "Knjiga nije pronađena!";
 
-                if (lease.update.izdataDo && new Date(lease.update.izdataDo) > new Date() && req.body.response == 1)
+                if (lease.update.izdataDo && new Date(lease.update.izdataDo).toISOString() > new Date().toISOString() && req.body.response == 1)
                     throw "Knjiga je već izdata!";
 
             } else if (req.body.response == -1)
