@@ -70,7 +70,6 @@ router.patch("/decline", async(req, res) => {
         session.startTransaction();
 
         try {
-
             const order = await OrderModel.findOneAndUpdate({ _id: req.body.orderID }, { $set: { "status.potvrdjena": -1 } }, { new: true, session })
                 .populate({
                     path: 'korisnik',
@@ -112,8 +111,7 @@ router.patch("/decline", async(req, res) => {
                 <label>email: ${ order.kompanija.email }</label><br/>
                 <label>telefon: ${ order.kompanija.telefon }</label>`);
 
-            //await session.commitTransaction();
-            await session.abortTransaction();
+            await session.commitTransaction();
             await session.endSession();
             return res.send({ poruka: "Uspešno! ", sadrzaj: {} });
 

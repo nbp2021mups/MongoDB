@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { BookBasic } from 'src/models/book-basic.model';
 import { Lease } from 'src/models/lease.model';
 import { User } from 'src/models/user.model';
 import { AuthService } from 'src/services/auth.service';
+import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.component';
 
 @Component({
   selector: 'app-lease',
@@ -27,7 +29,7 @@ export class LeaseComponent implements OnInit {
   public hasMoreLeaseRequests: boolean = false;
   public hasMoreMyLeased: boolean = false;
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient, private authService: AuthService, private matDialog: MatDialog) { }
 
   ngOnInit(): void {
     this.authService.user.subscribe({
@@ -104,8 +106,8 @@ export class LeaseComponent implements OnInit {
         ['filter']: JSON.stringify({
             potvrdjeno: 0,
            "korisnikZajmi.id": this.loggedUser.id,
-           odDatuma: { $lte: new Date().toISOString() },
-           doDatuma: { $gte: new Date().toISOString() }
+          //  odDatuma: { $gte: new Date().toISOString() },
+          //  doDatuma: { $gte: new Date().toISOString() }
         }),
         ['limit']: this.count,
         ['skip']: reload ? 0 : this.leaseRequests.length,
@@ -147,14 +149,20 @@ export class LeaseComponent implements OnInit {
 
   leaseResponse(response:number, ind: number)
   {
+    const dialog = this.matDialog.open(LoadingDialogComponent);
+
     this.http.patch('http://localhost:3000/leases/response', {
       leaseID: this.leaseRequests[ind]._id,
       response
     }).subscribe({
         next: _ => {
           this.leaseRequests = this.leaseRequests.filter((el, index) => index != ind);
+          dialog.componentInstance.response('Uspešno!', true);
         },
-        error: err => console.log(err)
+        error: err => {
+          console.log(err);
+          dialog.componentInstance.response(err.error.sadrzaj, false);
+        }
     });
   }
 

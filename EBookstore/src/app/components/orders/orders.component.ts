@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { OrderBasic } from 'src/models/order-basic.model';
 import { User } from 'src/models/user.model';
 import { AuthService } from 'src/services/auth.service';
+import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.component';
 
 @Component({
   selector: 'app-orders',
@@ -18,7 +20,7 @@ export class OrdersComponent implements OnInit {
 
   private count: number = 10;
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient, private authService: AuthService, private matDialog: MatDialog) { }
 
   ngOnInit(): void {
     this.authService.user.subscribe({
@@ -52,11 +54,21 @@ export class OrdersComponent implements OnInit {
   }
 
   deleteOrder(orderID: string, ind: number) : void {
+    const dialog = this.matDialog.open(LoadingDialogComponent, {
+      data: {
+        content: 'Narudžbina se briše! Molimo sačekajte...'
+      }
+    });
+
     this.http.delete("http://localhost:3000/orders/" + orderID).subscribe({
         next: data => {
         this.orders = this.orders.filter((el, index) => ind != index);
+        dialog.componentInstance.response('Narudžbina je uspešno obrisana!', true);
       },
-      error: err => console.log(err)
+      error: err => {
+        console.log(err);
+        dialog.componentInstance.response(err.error.sadrzaj, false);
+      }
     });
   }
 

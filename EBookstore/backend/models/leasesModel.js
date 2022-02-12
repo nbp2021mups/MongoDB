@@ -123,7 +123,8 @@ const schema = mongoose.Schema({
     },
     doDatuma: {
         type: Date,
-        required: [true, "Obavezno je navesti do kog datuma je izdavanje!"]
+        required: [true, "Obavezno je navesti do kog datuma je izdavanje!"],
+        expires: 0
     },
     potvrdjeno: {
         type: Number,

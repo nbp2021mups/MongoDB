@@ -59,13 +59,6 @@ router.get("/findByCompany/:companyId", (req, res) => {
 router.get("/:productId", async(req, res) => {
     try {
         const product = await ProductModel.findById(req.params.productId);
-       /*  if(product.zahtevaliZajam){
-          console.log(String(product.zahtevaliZajam));
-          const zahtevan=product.zahtevaliZajam.find(zahtev=>{
-            return String(zahtev)==req.query.userId;
-          })
-          product.zahtevan=Boolean(zahtevan);
-        } */
         return res.send(product);
     } catch (ex) {
         console.log(ex);
@@ -114,9 +107,6 @@ router.post("/", multer({ storage }).single("image"), async(req, res) => {
         session.startTransaction();
 
         try {
-            if (req.body.kategorija == "knjiga na izdavanje")
-                req.body.zahtevaliZajam = [];
-
             const product = await new ProductModel({
                     ...req.body,
                     slika: req.protocol +

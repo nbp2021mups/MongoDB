@@ -1,0 +1,13 @@
+<mat-dialog-content class="p-5">
+    <h4 [ngClass]="{'text-success': result == 1, 'text-danger': result == -1 }">
+        {{ content }}
+    </h4>
+    <span *ngIf="loading" class="d-flex flex-row justify-content-between" role="status">
+      <div class="spinner-grow text-primary" role="status"></div>
+      <div class="spinner-grow text-primary" role="status"></div>
+      <div class="spinner-grow text-primary" role="status"></div>
+    </span>
+</mat-dialog-content>
+<mat-dialog-actions align="center" *ngIf="!loading">
+    <button mat-raised-button mat-dialog-close="true" class="btn btn-outline-primary btn-dialog w-100" tabindex="1"> Zatvori </button>
+</mat-dialog-actions>

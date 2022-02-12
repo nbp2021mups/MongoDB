@@ -41,6 +41,9 @@ router.get('/leased', async(req, res) => {
 
 router.post('/', async(req, res) => {
     try {
+        if (req.body.korisnikPozajmljuje == req.body.korisnikZajmi)
+            return res.status(409).send({ poruka: "Nastala je greska", sadrzaj: "Ne mozete iznajmiti sopstveni proizvod!" });
+
         const korisnici = await UserModel.find({ _id: { $in: [req.body.korisnikZajmi, req.body.korisnikPozajmljuje] } })
             .select('ime prezime adresa email telefon');
 
@@ -61,13 +64,10 @@ router.post('/', async(req, res) => {
                     _id: req.body.knjiga,
                     "poreklo.id": req.body.korisnikZajmi
                 },
-                null, { session }).select('naziv proizvodjac slika autor zanr cena zahtevaliZajam');
+                null, { session }).select('naziv proizvodjac slika autor zanr cena');
 
             if (knjiga == null)
                 throw "ID knjige nije validan!";
-
-            if (knjiga.zahtevaliZajam.find(z => String(z) == String(req.body.korisnikPozajmljuje)))
-                throw "Vec ste poslali zahtev za ovaj proizvod!";
 
             const zajmi = korisnici.find(k => String(k._id) == String(req.body.korisnikZajmi)),
                 pozajmljuje = korisnici.find(k => String(k._id) == String(req.body.korisnikPozajmljuje));
@@ -88,10 +88,6 @@ router.post('/', async(req, res) => {
                     }
                 })
                 .save({ session });
-
-            const u = await ProductModel.updateOne({ _id: knjiga._id }, { $push: { zahtevaliZajam: req.body.korisnikPozajmljuje } }, { session });
-            if (u.modifiedCount != 1)
-                throw "Knjiga nije azurirana!";
 
             await session.commitTransaction();
             await session.endSession();
@@ -120,21 +116,25 @@ router.patch('/response', async(req, res) => {
             const lease = {};
 
             if (req.body.response == 1) {
-                lease.value = await LeaseModel.findOneAndUpdate({ _id: req.body.leaseID }, { $set: { potvrdjeno: req.body.response } }, { new: true, session }).select('doDatuma knjiga korisnikPozajmljuje');
-                lease.update = { $set: { izdataDo: lease.value.doDatuma }, $pull: { zahtevaliZajam: lease.value.korisnikPozajmljuje.id } };
-            } else if (req.body.response == -1) {
+                lease.value = await LeaseModel.findOneAndUpdate({ _id: req.body.leaseID }, { $set: { potvrdjeno: req.body.response } }, { new: true, session }).select('odDatuma doDatuma knjiga korisnikPozajmljuje');
+                if (new Date(lease.value.odDatuma) < new Date())
+                    throw "Period je istekao, ne možete prihvatiti!";
+
+                lease.update = await ProductModel.findOneAndUpdate({ _id: lease.value.knjiga.id }, { $set: { izdataDo: lease.value.doDatuma } }, { session });
+
+                if (!lease.update)
+                    throw "Knjiga nije pronađena!";
+
+                if (lease.update.izdataDo && new Date(lease.update.izdataDo) > new Date() && req.body.response == 1)
+                    throw "Knjiga je već izdata!";
+
+            } else if (req.body.response == -1)
                 lease.value = await LeaseModel.findOneAndDelete({ _id: req.body.leaseID }, { new: true, session });
-                lease.update = { $pull: { zahtevaliZajam: lease.value.korisnikPozajmljuje.id } };
-            } else
+            else
                 throw "Nevalidna vrednost odgovora!";
 
             if (!lease.value)
-                throw "Nema zajma sa prosledjenim identifikatorom!"
-
-            lease.update = await ProductModel.updateOne({ _id: lease.value.knjiga.id }, lease.update, { session });
-
-            if (lease.update.matchedCount != 1 || lease.update.modifiedCount < 1)
-                throw "Knjiga nije azurirana!";
+                throw "Nema zajma sa prosleđenim identifikatorom!"
 
             if (req.body.response == -1)
                 await sendEmail(lease.value.korisnikZajmi.email, "Odbijen zahtev za zajam",
@@ -164,19 +164,31 @@ router.patch('/response', async(req, res) => {
 
 router.delete('/:userID/:bookID', async(req, res) => {
     try {
-        LeaseModel.deleteOne({ "korisnikPozajmljuje.id": req.params.userID, "knjiga.id": req.params.bookID, potvrdjeno: 0 })
-            .then(async (result) =>{
-              if(result.deletedCount != 1)
-                return res.status(409).send({ poruka: "Nastala je greska!", sadrzaj: "Nije pronadjen zahtev! " });
-              console.log("uso")
-              const idUser=new mongoose.Types.ObjectId(req.params.userID);
-              console.log("id knjige",req.params.bookID, "id korisnika", req.params.userID)
-              await ProductModel.findByIdAndUpdate(req.params.bookID, { $pull: { zahtevaliZajam: idUser } })
+        const session = await mongoose.startSession();
+        session.startTransaction();
 
-              return res.send({ poruka: "Uspesno!", sadrzaj: {} })
+        try {
+            const lease = await LeaseModel.findOneAndDelete({ "korisnikPozajmljuje.id": req.params.userID, "knjiga.id": req.params.bookID }, { new: true, session }).select('potvrdjeno');
 
-            }).catch(sadrzaj => res.status(409).send({ poruka: "Nastala je greska!", sadrzaj }));
+            if (!lease)
+                throw "Nije pronađen zahtev!";
 
+            if (lease.potvrdjeno == 1) {
+                const p = await ProductModel.updateOne({ _id: req.params.bookID }, { $set: { izdataDo: new Date().toISOString() } }, { session });
+                if (p.matchedCount != 1)
+                    throw "Nije pronađen proizvod!";
+            }
+
+            await session.commitTransaction();
+            await session.endSession();
+
+            return res.send({ poruka: "Uspesno!", sadrzaj: {} });
+        } catch (sadrzaj) {
+            console.log(sadrzaj);
+            await session.abortTransaction();
+            await session.endSession();
+            return res.status(501).send({ poruka: "Nastala je greska!", sadrzaj });
+        }
 
     } catch (sadrzaj) {
         console.log(sadrzaj);
