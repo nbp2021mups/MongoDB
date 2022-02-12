@@ -133,7 +133,7 @@ const schema = mongoose.Schema({
     }
 });
 
-schema.index({ "korisnikPozajmljuje.id": 1, "knjiga.id": 1 });
+schema.index({ "korisnikPozajmljuje.id": 1, "knjiga.id": 1, "korisnikZajmi.id": 1 });
 
 const LeaseModel = mongoose.model("lease", schema);
 
