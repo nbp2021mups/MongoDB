@@ -4,7 +4,7 @@
     </div>
     <div class="card-body p-3 d-flex flex-column justify-content-between">
         <label class="text-center" *ngIf="orders.length == 0">Nemate narudžbine</label>
-        <app-order-single *ngFor="let order of orders; index as ind" [order]="order" (orderDeleted)="deleteOrder($event, ind)" [category]="filter.kategorija"></app-order-single>
+        <app-order-single *ngFor="let order of orders; index as ind" class="my-2" [order]="order" (orderDeleted)="deleteOrder($event, ind)" [category]="filter.kategorija"></app-order-single>
         <button class="btn btn-primary" *ngIf="hasMore" (click)="loadMore()">Učitaj još</button>
     </div>
 </div>

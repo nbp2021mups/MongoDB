@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { OrderBasic } from 'src/models/order-basic.model';
 import { ProductBasicSubdocument } from 'src/models/product-basic-subdocument.model';
 import { User } from 'src/models/user.model';
 import { AuthService } from 'src/services/auth.service';
 import { Cart } from '../../models/cart/cart';
+import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.component';
 
 @Component({
   selector: 'app-cart',
@@ -18,7 +20,7 @@ export class CartComponent implements OnInit, OnDestroy {
   private count: number = 4;
   public changes: { done: boolean, cena?: number, brojProizvoda?: number, obrisani?: Map<string, boolean>, promenjeni?: Map<string, number> } = { done: false, obrisani: new Map<string, boolean>(), promenjeni: new Map<string, number>() };
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService, private matDialog: MatDialog) {}
 
   ngOnDestroy(): void {
     if(this.changes.done)
@@ -100,6 +102,13 @@ export class CartComponent implements OnInit, OnDestroy {
 
   order(): void{
     const c = this.changes.done ? this.changes : null;
+    const dialog = this.matDialog.open(LoadingDialogComponent, {
+      data: {
+        content: "Kreira se narudžbina! Molimo sačekajte...",
+        loading: true
+      }
+    });
+
     this.http.post('http://localhost:3000/orders',
     {
       ...c,
@@ -112,8 +121,11 @@ export class CartComponent implements OnInit, OnDestroy {
         this.cart.proizvodi = new Array<ProductBasicSubdocument>();
         this.changes = { done: false, obrisani: new Map<string, boolean>(), promenjeni: new Map<string, number>() };
         this.hasMore = false;
+        dialog.componentInstance.response('Narudžbina je uspešno kreirana!', true);
     },
-      error: err => console.log(err)
-    });
+      error: err => {
+        console.log(err);
+        dialog.componentInstance.response(err.error.sadrzaj, false);
+    }});
   }
 }

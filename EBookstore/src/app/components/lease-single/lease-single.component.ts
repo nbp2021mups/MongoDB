@@ -6,6 +6,7 @@ import { UserInfo } from 'src/models/user-info.model';
 import { ProductsService } from 'src/services/products.service';
 import { MatDialog } from '@angular/material/dialog';
 import { WarningDialogComponent } from 'src/app/warning-dialog/warning-dialog.component';
+import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.component';
 
 @Component({
   selector: 'app-lease-single',

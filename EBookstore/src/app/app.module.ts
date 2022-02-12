@@ -42,6 +42,7 @@ import { LeaseDialogComponent } from './lease-dialog/lease-dialog.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { LoadingDialogComponent } from './components/loading-dialog/loading-dialog.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
     LeaseSingleComponent,
     AddUsersBookComponent,
     LeaseDialogComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    LoadingDialogComponent
   ],
   imports: [
     BrowserModule,

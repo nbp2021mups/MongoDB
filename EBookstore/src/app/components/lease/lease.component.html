@@ -8,28 +8,28 @@
         </ul>
     </div>
 
-    <div class="d-flex flex-grow-1 w-100" style="min-height: 75vh" [ngSwitch]="selectedIndex">
+    <div class="d-flex flex-grow-1 w-100" style="max-height: 75vh" [ngSwitch]="selectedIndex">
 
         <div *ngSwitchCase="1" class="m-3 px-4 d-flex flex-grow-1 flex-column w-100">
             <button class="w-25 align-self-end m-2 btn btn-outline-primary btn-add" routerLink="/nova-knjiga-iznajmljivanje">Dodaj novu knjigu</button>
             <div class="overflow-y-auto d-flex flex-column w-100">
-                <h5 *ngIf="booksForLease.length == 0" class="text-center">Nemate knjige za izdavanje</h5>
-                <app-lease-single *ngFor="let book of booksForLease" [book]="book" (obrisanaKnjiga)="onObrisanaKnjiga($event)"></app-lease-single>
+                <label *ngIf="booksForLease.length == 0" class="text-center">Nemate knjige za izdavanje</label>
+                <app-lease-single class="my-2" *ngFor="let book of booksForLease" [book]="book" (obrisanaKnjiga)="onObrisanaKnjiga($event)"></app-lease-single>
                 <button *ngIf="hasMoreBooksForLease" class="btn btn-primary">Učitaj još</button>
             </div>
         </div>
 
         <div *ngSwitchCase="2" class="m-3 px-4 d-flex flex-grow-1 w-100">
             <div class="overflow-y-auto d-flex flex-column w-100">
-                <h5 *ngIf="leasedBooks.length == 0" class="text-center">Nemate iznajmljene knjige</h5>
-                <app-lease-single *ngFor="let lease of leasedBooks" [lease]="lease"></app-lease-single>
+                <label *ngIf="leasedBooks.length == 0" class="text-center">Nemate iznajmljene knjige</label>
+                <app-lease-single class="my-2" *ngFor="let lease of leasedBooks" [lease]="lease"></app-lease-single>
                 <button *ngIf="hasMoreLeasedBooks" class="btn btn-primary">Učitaj još</button>
             </div>
         </div>
 
         <div *ngSwitchCase="3" class="m-3 px-4 d-flex flex-grow-1 w-100">
             <div class="overflow-y-auto d-flex flex-column w-100">
-                <h5 *ngIf="leaseRequests.length == 0" class="text-center">Nemate zahteve za izdavanje</h5>
+                <label *ngIf="leaseRequests.length == 0" class="text-center">Nemate zahteve za izdavanje</label>
                 <app-lease-single class="my-2" *ngFor="let lease of leaseRequests; index as ind" [lease]="lease" (response)="leaseResponse($event, ind)"></app-lease-single>
                 <button *ngIf="hasMoreLeaseRequests" class="btn btn-primary">Učitaj još</button>
             </div>
@@ -37,8 +37,8 @@
 
         <div *ngSwitchCase="4" class="m-3 px-4 d-flex flex-grow-1 w-100">
             <div class="overflow-y-auto d-flex flex-column w-100">
-                <h5 *ngIf="myLeased.length == 0" class="text-center">Nemate pozajmljene knjige</h5>
-                <app-lease-single *ngFor="let lease of myLeased" [lease]="lease"></app-lease-single>
+                <label *ngIf="myLeased.length == 0" class="text-center">Nemate pozajmljene knjige</label>
+                <app-lease-single class="my-2" *ngFor="let lease of myLeased" [lease]="lease"></app-lease-single>
                 <button *ngIf="hasMoreMyLeased" class="btn btn-primary">Učitaj još</button>
             </div>
         </div>
