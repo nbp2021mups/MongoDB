@@ -99,10 +99,10 @@ export class ProductInfoPageComponent implements OnInit {
         if(this.product.poreklo.ime){
           this.productService.deleteUserProduct(this.product._id, this.product.slika, this.product.poreklo.id).subscribe({
             next: response=>{
-
+              this.router.navigate(['/zajam']);
             },
             error: err=>{
-
+              this.router.navigate(['/zajam']);
             }
           });
         }
@@ -113,7 +113,7 @@ export class ProductInfoPageComponent implements OnInit {
               this.router.navigate(['/proizvodi', this.product.poreklo.id]);
             },
             error: err=>{
-
+              this.router.navigate(['/proizvodi', this.product.poreklo.id]);
             }
           });
         }

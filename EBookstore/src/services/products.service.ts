@@ -55,7 +55,7 @@ export class ProductsService {
                         prod.kategorija, prod.autor, prod.zanr, prod.poreklo));
                 } else if(prod.kategorija == 'knjiga na izdavanje') {
                   ret.push(new KnjigaIznajmljivanjeBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika,
-                    prod.kategorija, prod.poreklo, prod.autor, prod.zanr, prod.izdata, prod.stanje, prod.zahtevana));
+                    prod.kategorija, prod.poreklo, prod.autor, prod.zanr, prod.izdata, prod.stanje, prod.status));
                 } else {
                     ret.push(new ProductBasic(prod._id, prod.naziv, prod.proizvodjac, prod.kolicina, prod.cena, prod.slika, prod.kategorija, prod.poreklo));
                 }

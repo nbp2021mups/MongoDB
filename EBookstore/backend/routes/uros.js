@@ -165,8 +165,19 @@ router.get("/search/:skip/:count", async(req, res) => {
 
         if (req.query.kategorija && req.query.kategorija == 'knjiga na izdavanje') {
             if (req.query.uid) {
-                const leased = (await LeaseModel.find({ "korisnikPozajmljuje.id": req.query.uid }).select('knjiga')).reduce((acc, el) => ({...acc, [String(el.knjiga.id)]: true }), {});
-                products.forEach(prod => prod._doc.zahtevana = leased[String(prod._id)]);
+                const leased = (await LeaseModel.find({ "korisnikPozajmljuje.id": req.query.uid }).select('knjiga potvrdjeno')).reduce((acc, el) => ({...acc, [String(el.knjiga.id)]: el.potvrdjeno }), {});
+                products.forEach(prod => {
+                    const lease = leased[String(prod._id)];
+                    if(lease){
+                        prod._doc.status = lease;
+                    } else {
+                        prod._doc.status = 2;
+                    }
+                    //1 - potvrdjeno(knjiga se sada iznajmljuje)
+                    //0 - zahtev poslat(jos uvek nema odgovora)
+                    //-1 - zahtev odbijen
+                    //2 - zahtev ne postoji
+                });
             }
         }
 
