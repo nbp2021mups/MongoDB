@@ -40,8 +40,7 @@ const schema = mongoose.Schema({
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "user",
-            required: [true, "Obavezno je navesti identifikator korisnika koji pozajmljuje!"],
-            index: true
+            required: [true, "Obavezno je navesti identifikator korisnika koji pozajmljuje!"]
         },
         ime: {
             type: String,
