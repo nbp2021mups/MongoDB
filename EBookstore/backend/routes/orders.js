@@ -97,15 +97,16 @@ router.patch("/decline", async(req, res) => {
                 throw "Narudzbina nije korektno povezana!";
 
             if (userOrder.status.naCekanju.length == 0) {
-                userOrder.status.potvrdjena = 1;
+                userOrder.status.potvrdjena = userOrder.status.potvrdili.length == 0 ? -1 : 1;
                 await userOrder.save({ session });
             }
 
             await sendEmail(order.korisnik.email, "Odbijena narudžbina",
                 `<h1>Kompanija '${ order.kompanija.naziv }' je odbila svoj deo Vaše narudžbine</h1>
-                ${ order.proizvodi.map(p => "<li>" + p.naziv + " x " + p.kolicina + "</li>\n") }
-                <h3>Ukoliko ste nezadovoljni ovim, možete  otkazati svoju narudžbinu u potpunosti</h3>
-                <br/>
+                <ul>
+                  ${ order.proizvodi.map(p => "<li>" + p.naziv + " x " + p.kolicina + "</li>").join("") }
+                </ul>
+                <h3>Ukoliko ste nezadovoljni ovim, možete  otkazati svoju narudžbinu u potpunosti!</h3>
                 <br/>
                 <h2>Kontakt kompanije:</h2>
                 <label>email: ${ order.kompanija.email }</label><br/>
@@ -171,9 +172,10 @@ router.delete('/:orderID', async(req, res) => {
             for (const v of Object.values(potvrdili))
                 await sendEmail(v.email, "Otkazana narudžbina",
                     `<h1>Korisnik '${ userOrder.korisnik.ime } ${ userOrder.korisnik.prezime }' je otkazao/la svoju narudžbinu</h1>
-                    ${ v.proizvodi.map(p => "<li>" + p.naziv + " x " + p.kolicina + "</li>\n") }
+                    <ul>
+                      ${ v.proizvodi.map(p => "<li>" + p.naziv + " x " + p.kolicina + "</li>").join("") }
+                    </ul>
                     <h3>Navedene zalihe proizvoda Vaše kompanije su ponovo dostupne za druge korisnike!</h3>
-                    <br/>
                     <br/>
                     <h2>Kontakt korisnika:</h2>
                     <label>email: ${ userOrder.korisnik.email }</label><br/>
