@@ -7,10 +7,11 @@ export class KnjigaIznajmljivanjeFull extends ProductFull {
     public isbn: string;
     public godIzdavanja: number;
     public stanje: string;
+    public zahtevali: [];
 
     constructor(_id: string, naziv: string, proizvodjac: string, kolicina: number, cena: number,
         slika: string, kategorija: string, opis: string, poreklo, autor: string, zanr: string, brStrana: number,
-        godIzdavanja: number, stanje: string) {
+        godIzdavanja: number, stanje: string, zahtevali: []) {
 
         super(_id, naziv, proizvodjac, kolicina, cena, slika, kategorija, opis, poreklo);
 
@@ -19,6 +20,7 @@ export class KnjigaIznajmljivanjeFull extends ProductFull {
         this.brStrana = brStrana;
         this.godIzdavanja = godIzdavanja;
         this.stanje = stanje;
+        this.zahtevali = zahtevali;
     }
 
 }

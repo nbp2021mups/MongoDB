@@ -164,12 +164,20 @@ router.patch('/response', async(req, res) => {
 
 router.delete('/:userID/:bookID', async(req, res) => {
     try {
-        LeaseModel.deleteOne({ korisnikPozajmljuje: req.params.userID, knjiga: req.params.bookID, potvrdjeno: 0 })
-            .then(result =>
-                result.deletedCount != 1 ?
-                res.status(409).send({ poruka: "Nastala je greska!", sadrzaj: "Nije pronadjen zahtev! " }) :
-                res.send({ poruka: "Uspesno!", sadrzaj: {} }))
-            .catch(sadrzaj => res.status(409).send({ poruka: "Nastala je greska!", sadrzaj }));
+        LeaseModel.deleteOne({ "korisnikPozajmljuje.id": req.params.userID, "knjiga.id": req.params.bookID, potvrdjeno: 0 })
+            .then(async (result) =>{
+              if(result.deletedCount != 1)
+                return res.status(409).send({ poruka: "Nastala je greska!", sadrzaj: "Nije pronadjen zahtev! " });
+              console.log("uso")
+              const idUser=new mongoose.Types.ObjectId(req.params.userID);
+              console.log("id knjige",req.params.bookID, "id korisnika", req.params.userID)
+              await ProductModel.findByIdAndUpdate(req.params.bookID, { $pull: { zahtevaliZajam: idUser } })
+
+              return res.send({ poruka: "Uspesno!", sadrzaj: {} })
+
+            }).catch(sadrzaj => res.status(409).send({ poruka: "Nastala je greska!", sadrzaj }));
+
+
     } catch (sadrzaj) {
         console.log(sadrzaj);
         return res.status(501).send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj });

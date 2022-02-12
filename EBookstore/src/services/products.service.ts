@@ -92,7 +92,7 @@ export class ProductsService {
         return this.http.post<any>("http://localhost:3000/products", productData);
     }
 
-    getProductById(id: String){
+    getProductById(id: string){
       return this.http.get<any>('http://localhost:3000/products/'+id).pipe(map(response=>{
         const id= response._id;
         const kategorija= response.kategorija;
@@ -129,7 +129,7 @@ export class ProductsService {
         else if(kategorija=='knjiga na izdavanje'){
           console.log(response.poreklo)
           return new KnjigaIznajmljivanjeFull(id, naziv, proizvodjac, kolicina, cena, slika, kategorija, opis, response.poreklo, response.autor,
-            response.zanr, response.brojStrana, response.izdata, response.stanje);
+            response.zanr, response.brojStrana, response.izdata, response.stanje, response.zahtevaliZajam);
         }
 
       }))

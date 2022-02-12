@@ -18,8 +18,8 @@
 
     <button class="btn btn-sm cart-btn mt-1" *ngIf="kategorija != 1 && !personal && product.kolicina > 0" (click)="onDodajUKorpu()">Dodaj u korpu</button>
     <span class = "span-stanje px-2 py-1" *ngIf="product.kolicina == 0">Trenutno nije na stanju</span>
-    <button class="btn btn-sm cart-btn mt-1" *ngIf="kategorija == 1 && !personal && !zahtevana()">Iznajmi knjigu</button>
-    <button class="btn btn-sm cart-btn mt-1" *ngIf="kategorija == 1 && !personal && zahtevana()">Otkazi zahtev</button>
+    <button class="btn btn-sm cart-btn mt-1" *ngIf="kategorija == 1 && !personal && !zahtevana()" (click)="onIznajmiClicked()">Iznajmi knjigu</button>
+    <button class="btn btn-sm cart-btn mt-1" *ngIf="kategorija == 1 && !personal && zahtevana()" (click)="onOtkaziClicked()">Otkazi zahtev</button>
 
     <div class="d-flex w-100">
         <button class="btn btn-sm cart-btn mt-1 me-auto" *ngIf="personal" (click)="onObrisiClicked()">Obrisi proizvod</button>

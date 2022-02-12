@@ -9,6 +9,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { WarningDialogComponent } from '../warning-dialog/warning-dialog.component';
 import { LeaseDialogComponent } from '../lease-dialog/lease-dialog.component';
 import { LeasesService } from 'src/services/leases.service';
+import { KnjigaIznajmljivanjeBasic } from 'src/models/knjiga-iznajmljivanje-basic.model';
+import { KnjigaIznajmljivanjeFull } from 'src/models/knjiga-iznajmljivanje-full.model';
 
 @Component({
   selector: 'app-product-info-page',
@@ -24,6 +26,7 @@ export class ProductInfoPageComponent implements OnInit {
   product: ProductFull;
   personal: boolean;
   idLogUser: string;
+  isReq: boolean;
 
   constructor(private route: ActivatedRoute,
     private productService: ProductsService,
@@ -31,7 +34,6 @@ export class ProductInfoPageComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private leasesService : LeasesService) { }
-
 
   ngOnInit(): void {
 
@@ -58,10 +60,29 @@ export class ProductInfoPageComponent implements OnInit {
         console.log(err);
       }
     })
+
+   /*  const ind=(this.product as KnjigaIznajmljivanjeFull).zahtevali.findIndex(zahtev=>{
+      return zahtev==this.idLogUser;
+    })
+    this.zahtevana=ind!==-1; */
   }
 
   ngOnDestroy(): void {
     this.paramsSub.unsubscribe();
+  }
+
+  zahtevana() {
+    const zahtevali=(this.product as KnjigaIznajmljivanjeFull).zahtevali;
+    if(zahtevali && zahtevali.length>0){
+      const ind=zahtevali.findIndex(zahtev=>{
+        return zahtev==this.idLogUser;
+      })
+      console.log(ind)
+      this.isReq=ind!=-1;
+
+    }
+
+    return this.isReq;
   }
 
   onDeleteClicked(){
@@ -130,7 +151,6 @@ export class ProductInfoPageComponent implements OnInit {
 
   onSendRequest(){
 
-
     let dialogLease= this.dialog.open(LeaseDialogComponent,
       { width: '400px',
         data :
@@ -139,16 +159,7 @@ export class ProductInfoPageComponent implements OnInit {
       });
 
     dialogLease.afterClosed().subscribe(result=>{
-
         if(result!='false'){
-          console.log({
-            korisnikZajmi: this.product.poreklo.id,
-            korisnikPozajmljuje: this.idLogUser,
-            knjiga: this.product._id,
-            odDatuma: (result.odDatuma as Date).toISOString(),
-            doDatuma: (result.doDatuma as Date).toISOString(),
-            cena: result.cena
-          })
           this.leasesService.posaljiZahtevZaInzajmljivanje({
             korisnikZajmi: this.product.poreklo.id,
             korisnikPozajmljuje: this.idLogUser,
@@ -159,6 +170,7 @@ export class ProductInfoPageComponent implements OnInit {
           }).subscribe({
             next: resp=>{
               console.log(resp);
+              this.isReq=true;
               this.success="Zahtev za iznajmljivanje je poslat korisniku, bićete obavešteni kada zahtev bude obrađen.";
               setTimeout(() => {
                 this.success = '';
@@ -171,14 +183,31 @@ export class ProductInfoPageComponent implements OnInit {
               setTimeout(() => {
                 this.error = '';
               }, 3000);
-
             }
-          })
-
+          });
         }
-
-    })
-
+    });
   }
 
+  onCancleRequest(){
+
+    let dialogWarning= this.dialog.open(WarningDialogComponent,
+      { data :
+        { pitanje : `Da li ste sigurni da želite da otkažete zahtev za iznajmljivanje knjige ${this.product.naziv}?`,
+          potvrdna : 'Otkaži'}
+      });
+
+    dialogWarning.afterClosed().subscribe(result=>{
+      if(result=='true'){
+        this.leasesService.otkaziZahtevZaInzajmljivanje(this.product._id,this.idLogUser).subscribe({
+          next: response=>{
+            this.isReq=false;
+          },
+          error: err=>{
+            console.log(err)
+          }
+        });
+      }
+    })
+  }
 }

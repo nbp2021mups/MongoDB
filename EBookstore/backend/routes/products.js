@@ -59,6 +59,13 @@ router.get("/findByCompany/:companyId", (req, res) => {
 router.get("/:productId", async(req, res) => {
     try {
         const product = await ProductModel.findById(req.params.productId);
+       /*  if(product.zahtevaliZajam){
+          console.log(String(product.zahtevaliZajam));
+          const zahtevan=product.zahtevaliZajam.find(zahtev=>{
+            return String(zahtev)==req.query.userId;
+          })
+          product.zahtevan=Boolean(zahtevan);
+        } */
         return res.send(product);
     } catch (ex) {
         console.log(ex);
@@ -223,7 +230,7 @@ router.delete('/:productId/company/:idPorekla', async(req, res) => {
 router.delete('/:productId/user/:idPorekla', async(req, res) => {
     try {
         await ProductModel.findByIdAndDelete(req.params.productId);
-        await UserModel.findByIdAndUpdate(req.params.idPorekla, { $pull: { ponudjeneKnjige: req.params.productId } });
+        await UserModel.findByIdAndUpdate(req.params.idPorekla, { $pull: { ponudjeneKnjige: ObjectId(req.params.productId) } });
         const path = "./backend" + req.body.imagePath.substring(req.body.imagePath.indexOf("/images"));
 
         fs.unlink(path, (err) => {

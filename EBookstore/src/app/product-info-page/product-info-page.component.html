@@ -48,9 +48,15 @@
     </svg></button>
     <button
     class="btn btn-outline-primary btn-lg button-product"
-    *ngIf="product.kategorija=='knjiga na izdavanje'"
+    *ngIf="product.kategorija=='knjiga na izdavanje' && !zahtevana() && !personal"
     (click)="onSendRequest()">
       Pošalji zahtev za iznajmljivanje
+    </button>
+    <button
+    class="btn btn-outline-primary btn-lg button-product"
+    *ngIf="product.kategorija=='knjiga na izdavanje' && zahtevana() && !personal"
+    (click)="onCancleRequest()">
+      Otkaži zahtev za iznajmljivanje
     </button>
     <p class="nijeDostupan" *ngIf="product.kolicina<1">Proizvod trenutno nije na stanju.</p>
     <div class="d-flex flex-row justify-content-center">
