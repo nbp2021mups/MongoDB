@@ -10,6 +10,7 @@ const schema = new mongoose.Schema({
     proizvodjac: {
         type: String,
         required: [true, "Proizvodjac je obavezan!"],
+        index: true
     },
     kolicina: {
         type: Number,
@@ -19,7 +20,7 @@ const schema = new mongoose.Schema({
     cena: {
         type: Number,
         required: [true, "Cena mora biti navedena!"],
-        min: [0, "Cena ne sme biti negativna vrednost!"],
+        min: [0, "Cena ne sme biti negativna vrednost!"]
     },
     slika: {
         type: String,
@@ -50,9 +51,12 @@ const schema = new mongoose.Schema({
         id: {
             type: mongoose.Types.ObjectId,
             required: [true, "ID je obavezno polje!"],
+            index: true
         },
     },
 }, { strict: false });
+
+schema.index({ "autor": 1 });
 
 const ProductModel = mongoose.model("product", schema);
 

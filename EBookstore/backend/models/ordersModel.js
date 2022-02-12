@@ -4,12 +4,14 @@ const { stringify } = require("querystring");
 const schema = mongoose.Schema({
     kompanija: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "company"
+        ref: "company",
+        index: true
     },
     korisnik: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user",
         required: [true, "Mora se navesti ID korisnika!"],
+        index: true
     },
     cena: {
         type: Number,

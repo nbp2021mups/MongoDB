@@ -8,7 +8,8 @@ const schema = mongoose.Schema({
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "user",
-            required: [true, "Obavezno je navesti identifikator korisnika koji daje na zajam!"]
+            required: [true, "Obavezno je navesti identifikator korisnika koji daje na zajam!"],
+            index: true
         },
         ime: {
             type: String,
@@ -39,7 +40,8 @@ const schema = mongoose.Schema({
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "user",
-            required: [true, "Obavezno je navesti identifikator korisnika koji pozajmljuje!"]
+            required: [true, "Obavezno je navesti identifikator korisnika koji pozajmljuje!"],
+            index: true
         },
         ime: {
             type: String,
@@ -69,12 +71,12 @@ const schema = mongoose.Schema({
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "product",
-            required: [true, "Obavezno je navesti identifikator knjige koja se pozajmljuje!"]
+            required: [true, "Obavezno je navesti identifikator knjige koja se pozajmljuje!"],
+            index: true
         },
         naziv: {
             type: String,
             required: [true, "Naziv proizvoda je obavezan!"],
-            index: true,
         },
         proizvodjac: {
             type: String,
@@ -87,7 +89,6 @@ const schema = mongoose.Schema({
         autor: {
             type: String,
             required: [true, "Autor je obavezan!"],
-            index: true,
         },
         cena: {
             type: Number,
@@ -131,6 +132,8 @@ const schema = mongoose.Schema({
         default: 0
     }
 });
+
+schema.index({ "korisnikPozajmljuje.id": 1, "knjiga.id": 1 });
 
 const LeaseModel = mongoose.model("lease", schema);
 

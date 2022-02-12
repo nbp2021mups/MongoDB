@@ -5,6 +5,7 @@ const schema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "user",
         required: [true, "Mora se navesti ID korisnika!"],
+        index: true
     },
     cena: {
         type: Number,
