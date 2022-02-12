@@ -15,7 +15,7 @@
             <div class="overflow-y-auto d-flex flex-column w-100">
                 <label *ngIf="booksForLease.length == 0" class="text-center">Nemate knjige za izdavanje</label>
                 <app-lease-single class="my-2" *ngFor="let book of booksForLease" [book]="book" (obrisanaKnjiga)="onObrisanaKnjiga($event)"></app-lease-single>
-                <button *ngIf="hasMoreBooksForLease" class="btn btn-primary">Učitaj još</button>
+                <button *ngIf="hasMoreBooksForLease" class="btn btn-primary" (click)="loadBooksForLease()">Učitaj još</button>
             </div>
         </div>
 
@@ -23,7 +23,7 @@
             <div class="overflow-y-auto d-flex flex-column w-100">
                 <label *ngIf="leasedBooks.length == 0" class="text-center">Nemate iznajmljene knjige</label>
                 <app-lease-single class="my-2" *ngFor="let lease of leasedBooks" [lease]="lease"></app-lease-single>
-                <button *ngIf="hasMoreLeasedBooks" class="btn btn-primary">Učitaj još</button>
+                <button *ngIf="hasMoreLeasedBooks" class="btn btn-primary" (click)="loadLeasedBooks()">Učitaj još</button>
             </div>
         </div>
 
@@ -31,7 +31,7 @@
             <div class="overflow-y-auto d-flex flex-column w-100">
                 <label *ngIf="leaseRequests.length == 0" class="text-center">Nemate zahteve za izdavanje</label>
                 <app-lease-single class="my-2" *ngFor="let lease of leaseRequests; index as ind" [lease]="lease" (response)="leaseResponse($event, ind)"></app-lease-single>
-                <button *ngIf="hasMoreLeaseRequests" class="btn btn-primary">Učitaj još</button>
+                <button *ngIf="hasMoreLeaseRequests" class="btn btn-primary" (click)="loadLeaseRequests()">Učitaj još</button>
             </div>
         </div>
 
@@ -39,7 +39,7 @@
             <div class="overflow-y-auto d-flex flex-column w-100">
                 <label *ngIf="myLeased.length == 0" class="text-center">Nemate pozajmljene knjige</label>
                 <app-lease-single class="my-2" *ngFor="let lease of myLeased" [lease]="lease"></app-lease-single>
-                <button *ngIf="hasMoreMyLeased" class="btn btn-primary">Učitaj još</button>
+                <button *ngIf="hasMoreMyLeased" class="btn btn-primary" (click)="loadMyLeased()">Učitaj još</button>
             </div>
         </div>
 

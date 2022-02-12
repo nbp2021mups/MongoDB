@@ -105,9 +105,7 @@ export class LeaseComponent implements OnInit {
       params: {
         ['filter']: JSON.stringify({
             potvrdjeno: 0,
-           "korisnikZajmi.id": this.loggedUser.id,
-          //  odDatuma: { $gte: new Date().toISOString() },
-          //  doDatuma: { $gte: new Date().toISOString() }
+           "korisnikZajmi.id": this.loggedUser.id
         }),
         ['limit']: this.count,
         ['skip']: reload ? 0 : this.leaseRequests.length,
