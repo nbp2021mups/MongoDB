@@ -8,6 +8,7 @@ import { WarningDialogComponent } from 'src/app/warning-dialog/warning-dialog.co
 import { KnjigaIznajmljivanjeBasic } from 'src/models/knjiga-iznajmljivanje-basic.model';
 import { LeaseDialogComponent } from 'src/app/lease-dialog/lease-dialog.component';
 import { LeasesService } from 'src/services/leases.service';
+import { LoadingDialogComponent } from 'src/app/components/loading-dialog/loading-dialog.component';
 
 
 enum Kategorija {
@@ -38,7 +39,8 @@ export class ProductComponent implements OnInit {
      private router: Router,
      private productService: ProductsService,
      private dialog: MatDialog,
-     private leasesService: LeasesService) { }
+     private leasesService: LeasesService,
+     private matDialog: MatDialog) { }
 
   ngOnInit(): void {
     if(this.product.kategorija == 'knjiga'){
@@ -81,7 +83,7 @@ export class ProductComponent implements OnInit {
         if(this.product.poreklo.ime){
           this.productService.deleteUserProduct(this.product._id, this.product.slika, this.product.poreklo.id).subscribe({
             next: response=>{
-
+              this.obrisaniProizvod.emit(this.product._id);
             },
             error: err=>{
 
@@ -114,22 +116,29 @@ export class ProductComponent implements OnInit {
         return;
       }
 
+      const dialog = this.matDialog.open(LoadingDialogComponent, {
+        data: {
+          content: 'Dodavanje u korpu...'
+        }
+      });
+      
 
       //ako je ulogovan obican korisnik
       this.productService.addToCart(user.id, this.product._id, 1).subscribe({
         next: resp => {
-
+          dialog.componentInstance.response('Proizvod dodat u korpu!', true);
         },
         error: err => {
           console.log(err);
+          dialog.componentInstance.response('Doslo je do greske. Pokusajte ponovo.', false);
         }
       });
 
     }).unsubscribe();
   }
 
-  zahtevana() {
-    return (this.product as KnjigaIznajmljivanjeBasic).zahtevana;
+  status() {
+    return (this.product as KnjigaIznajmljivanjeBasic).status;
   }
 
   onIznajmiClicked(){
@@ -164,7 +173,7 @@ export class ProductComponent implements OnInit {
             }).subscribe({
               next: resp=>{
                 console.log(resp);
-                (this.product as KnjigaIznajmljivanjeBasic).zahtevana=true;
+                (this.product as KnjigaIznajmljivanjeBasic).status = 0 ;
                 this.success="Zahtev za iznajmljivanje je poslat korisniku.";
                 setTimeout(() => {
                   this.success = '';
@@ -205,7 +214,7 @@ export class ProductComponent implements OnInit {
         if(result=='true'){
           this.leasesService.otkaziZahtevZaInzajmljivanje(this.product._id,user.id).subscribe({
             next: response=>{
-              (this.product as KnjigaIznajmljivanjeBasic).zahtevana=false;
+              (this.product as KnjigaIznajmljivanjeBasic).status = 2;
             },
             error: err=>{
               console.log(err)

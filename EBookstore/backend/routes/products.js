@@ -7,6 +7,7 @@ const fs = require("fs");
 const { ProductModel } = require("../models/productsModel");
 const { CompanyModel } = require("../models/companiesModel");
 const { UserModel } = require("../models/usersModel");
+const { LeaseModel } = require("../models/leasesModel");
 const mongoose = require('mongoose');
 
 router.get("/search", (req, res) => {
@@ -221,6 +222,7 @@ router.delete('/:productId/user/:idPorekla', async(req, res) => {
     try {
         await ProductModel.findByIdAndDelete(req.params.productId);
         await UserModel.findByIdAndUpdate(req.params.idPorekla, { $pull: { ponudjeneKnjige: new mongoose.Types.ObjectId(req.params.productId) } });
+        await LeaseModel.deleteMany({'knjiga.id' : req.params.productId});
         const path = "./backend" + req.body.imagePath.substring(req.body.imagePath.indexOf("/images"));
 
         fs.unlink(path, (err) => {
