@@ -41,36 +41,33 @@ router.get('/leased', async(req, res) => {
 
 router.post('/', async(req, res) => {
     try {
-        if (req.body.korisnikPozajmljuje == req.body.korisnikZajmi)
-            return res.status(409).send({ poruka: "Nastala je greska", sadrzaj: "Ne mozete iznajmiti sopstveni proizvod!" });
-
-        const korisnici = await UserModel.find({ _id: { $in: [req.body.korisnikZajmi, req.body.korisnikPozajmljuje] } })
-            .select('ime prezime adresa email telefon');
-
-        if (korisnici.length != 2)
-            return res.status(409).send({ poruka: "Nastala je greska!", sadrzaj: "ID korisnika nisu validni!" });
-
-        if (new Date(req.body.odDatuma) > new Date(req.body.doDatuma))
-            return res.status(409).send({ poruka: "Nastala je greska!", sadrzaj: "Datum od izdavanja je veci od datuma do kraja izdavanja!" });
-
-        req.body.korisnikPozajmljuje = new mongoose.Types.ObjectId(req.body.korisnikPozajmljuje);
-        req.body.korisnikZajmi = new mongoose.Types.ObjectId(req.body.korisnikZajmi);
-
-        const session = await mongoose.startSession();
-        session.startTransaction();
-
         try {
-            const knjiga = await ProductModel.findOne({
-                    _id: req.body.knjiga,
-                    "poreklo.id": req.body.korisnikZajmi
-                },
-                null, { session }).select('naziv proizvodjac slika autor zanr cena');
+            if (req.body.korisnikPozajmljuje == req.body.korisnikZajmi)
+                throw "Ne mozete iznajmiti sopstveni proizvod!";
+
+            const korisnici = await UserModel.find({ _id: { $in: [req.body.korisnikZajmi, req.body.korisnikPozajmljuje] } })
+                .select('ime prezime adresa email telefon');
+
+            if (korisnici.length != 2)
+                throw "ID korisnika nisu validni!";
+
+            if (new Date(req.body.odDatuma) > new Date(req.body.doDatuma) || new Date(req.body.odDatuma) < new Date())
+                throw "Datumi nisu validni!";
+
+            req.body.korisnikPozajmljuje = new mongoose.Types.ObjectId(req.body.korisnikPozajmljuje);
+            req.body.korisnikZajmi = new mongoose.Types.ObjectId(req.body.korisnikZajmi);
+
+            const knjiga = await ProductModel.findOne({ _id: req.body.knjiga }).select('naziv proizvodjac slika autor zanr cena');
 
             if (knjiga == null)
                 throw "ID knjige nije validan!";
 
             const zajmi = korisnici.find(k => String(k._id) == String(req.body.korisnikZajmi)),
                 pozajmljuje = korisnici.find(k => String(k._id) == String(req.body.korisnikPozajmljuje));
+
+            const unique = await LeaseModel.findOne({ "korisnikPozajmljuje.id": req.body.korisnikPozajmljuje, "knjiga.id": req.body.knjiga, "korisnikZajmi.id": req.body.korisnikZajmi });
+            if (unique && unique.cena == req.body.cena && new Date(unique.odDatuma) == new Date(req.body.odDatuma) && new Date(req.body.doDatuma) == new Date(unique.doDatuma))
+                throw "Već ste poslali identičan zahtev korisniku!";
 
             const lease = await new LeaseModel({
                     ...req.body,
@@ -87,18 +84,13 @@ router.post('/', async(req, res) => {
                         id: knjiga._id
                     }
                 })
-                .save({ session });
-
-            await session.commitTransaction();
-            await session.endSession();
+                .save();
 
             return res.send({ poruka: "Uspesno!", sadrzaj: lease });
 
         } catch (sadrzaj) {
             console.log(sadrzaj);
-            await session.abortTransaction();
-            await session.endSession();
-            res.status(501).send({ poruka: "Nastala je greska na serverskoj strani!", sadrzaj });
+            res.status(409).send({ poruka: "Nastala je greska!", sadrzaj });
         }
 
     } catch (sadrzaj) {

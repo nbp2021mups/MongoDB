@@ -8,8 +8,53 @@
 U svrhu deljenja baze je napravljen nalog:
 MongoDB (https://cloud.mongodb.com/):
     username: "nbp2021mups@gmail.com"
-    password: "MUPS, imate li 1000 pereca?"
+    lozinka: "MUPS, imate li 1000 pereca?"
+
+Nalozi kreirani u bazi:
+
+	Knjižare:
+		Email nalog (https://gmail.com):
+			email: "hijeroglif.2022.123@gmail.com"
+			lozinka: "imateli1000pereca"
+		Laguna:
+			username: laguna123
+			lozinka: laguna123
+		Vulkan:
+			username: vulkan123
+			lozinka: laguna123
+		Statovac:
+			username: statovac
+			lozinka: laguna123
+			
+	Korisnici:
+		Email nalog (https://gmail.com):
+			email: "sara.saric.2022.123@gmail.com"
+			lozinka: "imateli1000pereca"
+		Stefan:
+			username: Stefan
+			lozinka: Stefan123
+		stefan123:
+			username: stefan123
+			lozinka: stefan123
+		
+S obzirom da smo za pojedina obaveštenja koristili slanje mail-ova, ove naloge možete iskoristiti za nadgledanje istih.
 	
-Connection string za povezivanje na cluster: "mongodb+srv://mups2021:ImateLi1000Pereca@nbpno1.h4xhj.mongodb.net/baza?retryWrites=true&w=majority"
+Za pokretanje aplikacije je potrebno:
+	- Intalirati Node.js i Angular
+	- Pozicionirati se u okviru foldera E-Bookstore
+	- Instalirati neophodne pakete uz pomoć npm-a:
+		naredba: npm install
+	- Ukoliko nemate globalno instaliran nodemon paket, možete isti instalirati naredbom:
+		naredba: npm install g nodemon
+	- Pokrenuti:
+		- Server korišćen za Web API na lokalnoj mašini i portu 3000:
+			naredba: npm run server
+		- Angular server za serverinje interfejsa na lokalnoj mašini i portu 4200:
+			naredba: npm run start
+			
+* Ukoliko ovi portovi nisu slobodni, angular automatski obaveštava i pruža mogućnost promene porta.
+* Za promenu porta servera za Web API to se može učiniti promenom promenljive SERVER_PORT u okviru .env fajla.
+	
+Connection string za povezivanje na cluster: "mongodb+srv://mups2021:ImateLi1000Pereca@nbpno1.h4xhj.mongodb.net/E-Bookstore?retryWrites=true&w=majority"
 
 Ako je bilo šta potrebno objasniti, otvoreni smo za bilo kakva pitanja.

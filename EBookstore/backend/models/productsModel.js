@@ -53,7 +53,7 @@ const schema = new mongoose.Schema({
             required: [true, "ID je obavezno polje!"],
             index: true
         },
-    },
+    }
 }, { strict: false });
 
 schema.index({ "autor": 1 });

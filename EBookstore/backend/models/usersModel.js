@@ -6,7 +6,7 @@ const schema = mongoose.Schema({
         type: String,
         unique: [true, "Username mora biti jedinstven!"],
         required: [true, "Username je obavezan!"],
-        index: [true, "Username mora biti jedinstven!"],
+        index: true
     },
     lozinka: {
         type: String,
