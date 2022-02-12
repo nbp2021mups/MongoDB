@@ -59,7 +59,7 @@ export class LeaseComponent implements OnInit {
     }
   }
 
-  loadBooksForLease(reload: boolean): void {
+  loadBooksForLease(reload: boolean = false): void {
     this.http.get('http://localhost:3000/leases/offered/' + this.loggedUser.id, {
       params: {
         ['limit']: this.count,
@@ -79,7 +79,7 @@ export class LeaseComponent implements OnInit {
     });
   }
 
-  loadLeasedBooks(reload: boolean): void {
+  loadLeasedBooks(reload: boolean = false): void {
     this.http.get('http://localhost:3000/leases/leased', {
       params: {
         ['filter']: JSON.stringify({ "korisnikZajmi.id": this.loggedUser.id, potvrdjeno: 1 }),
@@ -100,7 +100,7 @@ export class LeaseComponent implements OnInit {
     });
   }
 
-  loadLeaseRequests(reload: boolean): void {
+  loadLeaseRequests(reload: boolean = false): void {
     this.http.get('http://localhost:3000/leases/leased', {
       params: {
         ['filter']: JSON.stringify({
@@ -126,7 +126,7 @@ export class LeaseComponent implements OnInit {
     });
   }
 
-  loadMyLeased(reload: boolean): void {
+  loadMyLeased(reload: boolean = false): void {
     this.http.get('http://localhost:3000/leases/leased', {
       params: {
         ['filter']: JSON.stringify({ "korisnikPozajmljuje.id": this.loggedUser.id  }),
