@@ -61,7 +61,7 @@ export class ProductInfoPageComponent implements OnInit {
       }
     }); */
 
- 
+
 
 
     this.authService.user.subscribe(user=>{
@@ -190,6 +190,7 @@ export class ProductInfoPageComponent implements OnInit {
             next: resp=>{
               console.log(resp);
               this.isReq=true;
+              (this.product as KnjigaIznajmljivanjeFull).status=0;
               this.success="Zahtev za iznajmljivanje je poslat korisniku, bićete obavešteni kada zahtev bude obrađen.";
               setTimeout(() => {
                 this.success = '';
@@ -221,6 +222,8 @@ export class ProductInfoPageComponent implements OnInit {
         this.leasesService.otkaziZahtevZaInzajmljivanje(this.product._id,this.idLogUser).subscribe({
           next: response=>{
             this.isReq=false;
+            (this.product as KnjigaIznajmljivanjeFull).status=2;
+
           },
           error: err=>{
             console.log(err)
