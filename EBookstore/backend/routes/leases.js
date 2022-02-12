@@ -66,7 +66,7 @@ router.post('/', async(req, res) => {
                 pozajmljuje = korisnici.find(k => String(k._id) == String(req.body.korisnikPozajmljuje));
 
             const unique = await LeaseModel.findOne({ "korisnikPozajmljuje.id": req.body.korisnikPozajmljuje, "knjiga.id": req.body.knjiga, "korisnikZajmi.id": req.body.korisnikZajmi });
-            if (unique.cena == req.body.cena && new Date(unique.odDatuma) == new Date(req.body.odDatuma) && new Date(req.body.doDatuma) == new Date(unique.doDatuma))
+            if (unique && unique.cena == req.body.cena && new Date(unique.odDatuma) == new Date(req.body.odDatuma) && new Date(req.body.doDatuma) == new Date(unique.doDatuma))
                 throw "Već ste poslali identičan zahtev korisniku!";
 
             const lease = await new LeaseModel({

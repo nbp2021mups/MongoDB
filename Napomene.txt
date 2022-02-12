@@ -8,11 +8,36 @@
 U svrhu deljenja baze je napravljen nalog:
 MongoDB (https://cloud.mongodb.com/):
     username: "nbp2021mups@gmail.com"
-    password: "MUPS, imate li 1000 pereca?"
-	
-Email nalog (https://gmail.com):
-	email: "nbp2021mups@gmail.com"
-	password: "imateli1000pereca"
+    lozinka: "MUPS, imate li 1000 pereca?"
+
+Nalozi kreirani u bazi:
+
+	Knjižare:
+		Email nalog (https://gmail.com):
+			email: "hijeroglif.2022.123@gmail.com"
+			lozinka: "imateli1000pereca"
+		Laguna:
+			username: laguna123
+			lozinka: laguna123
+		Vulkan:
+			username: vulkan123
+			lozinka: laguna123
+		Statovac:
+			username: statovac
+			lozinka: laguna123
+			
+	Korisnici:
+		Email nalog (https://gmail.com):
+			email: "sara.saric.2022.123@gmail.com"
+			lozinka: "imateli1000pereca"
+		Stefan:
+			username: Stefan
+			lozinka: Stefan123
+		stefan123:
+			username: stefan123
+			lozinka: stefan123
+		
+S obzirom da smo za pojedina obaveštenja koristili slanje mail-ova, ove naloge možete iskoristiti za nadgledanje istih.
 	
 Za pokretanje aplikacije je potrebno:
 	- Intalirati Node.js i Angular
