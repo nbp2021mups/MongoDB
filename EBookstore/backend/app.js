@@ -2,13 +2,12 @@ const express = require("express");
 const path = require("path");
 
 const authRoute = require("./routes/auth");
-const booksRoute = require("./routes/books");
 const companiesRoute = require("./routes/companies");
 const productsRoute = require("./routes/products");
 const usersRoute = require("./routes/users");
 const ordersRoute = require("./routes/orders");
 const leasesRoute = require("./routes/leases");
-const urosRoute = require("./routes/uros");
+const pretragaRoute = require("./routes/pretraga");
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -29,12 +28,11 @@ app.use((req, res, next) => {
 });
 
 app.use("/auth", authRoute);
-app.use("/books", booksRoute);
 app.use("/companies", companiesRoute);
 app.use("/products", productsRoute);
 app.use("/users", usersRoute);
 app.use("/orders", ordersRoute);
 app.use("/leases", leasesRoute);
-app.use("/uros", urosRoute);
+app.use("/pretraga", pretragaRoute);
 
 module.exports = app;

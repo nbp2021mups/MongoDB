@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { iif, Subscription } from 'rxjs';
 import { ProductFull } from 'src/models/product-full.model';
 import { AuthService } from 'src/services/auth.service';
 import { ProductsService } from 'src/services/products.service';
@@ -42,7 +42,7 @@ export class ProductInfoPageComponent implements OnInit {
     });
 
 
-    this.productService.getProductById(this.productId).subscribe({
+    /* this.productService.getProductById(this.productId).subscribe({
       next: response=>{
         this.product=response;
         console.log(this.product);
@@ -59,30 +59,49 @@ export class ProductInfoPageComponent implements OnInit {
       error: err=>{
         console.log(err);
       }
-    })
+    }); */
 
-   /*  const ind=(this.product as KnjigaIznajmljivanjeFull).zahtevali.findIndex(zahtev=>{
-      return zahtev==this.idLogUser;
-    })
-    this.zahtevana=ind!==-1; */
+ 
+
+
+    this.authService.user.subscribe(user=>{
+
+      if(user && user.role == 'user'){
+        this.productService.getProductById(this.productId, user.id).subscribe({
+          next: response=>{
+            this.product=response;
+            this.personal=user.id==this.product.poreklo.id;
+          },
+          error: err=>{
+            console.log(err);
+          }
+        });
+      }else {
+        this.productService.getProductById(this.productId, null).subscribe({
+          next: response=>{
+            this.product=response;
+            this.personal=user.id==this.product.poreklo.id;
+          },
+          error: err=>{
+            console.log(err);
+          }
+        });
+      }
+
+      if(!user){
+        this.personal=false;
+      }else{
+        this.idLogUser=user.id;
+      }
+    }).unsubscribe();
   }
 
   ngOnDestroy(): void {
     this.paramsSub.unsubscribe();
   }
 
-  zahtevana() {
-    const zahtevali=(this.product as KnjigaIznajmljivanjeFull).zahtevali;
-    if(zahtevali && zahtevali.length>0){
-      const ind=zahtevali.findIndex(zahtev=>{
-        return zahtev==this.idLogUser;
-      })
-      console.log(ind)
-      this.isReq=ind!=-1;
-
-    }
-
-    return this.isReq;
+  status() {
+    return (this.product as KnjigaIznajmljivanjeFull).status;
   }
 
   onDeleteClicked(){

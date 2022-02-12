@@ -60,6 +60,18 @@ router.get("/findByCompany/:companyId", (req, res) => {
 router.get("/:productId", async(req, res) => {
     try {
         const product = await ProductModel.findById(req.params.productId);
+        if(product.kategorija == 'knjiga na izdavanje') {
+            if (req.query.uid) {
+                const leased = (await LeaseModel.find({ "korisnikPozajmljuje.id": req.query.uid }).select('knjiga potvrdjeno')).reduce((acc, el) => ({...acc, [String(el.knjiga.id)]: el.potvrdjeno }), {});
+                const lease = leased[String(product._id)];
+                if(lease == 0 || lease){
+                    product._doc.status = lease;
+                } else {
+                    product._doc.status = 2;
+                }
+            }
+        }
+
         return res.send(product);
     } catch (ex) {
         console.log(ex);
