@@ -1,6 +1,8 @@
+<app-spinner class="spinner" *ngIf = "isLoading"></app-spinner>
+
 <!-- deo za pretragu -->
 
-<div class="container-fluid border p-2 mt-2 search">
+<div class="container-fluid border p-2 mt-2 search" *ngIf = "!isLoading">
     <form (ngSubmit)="onSubmit()" [formGroup]="form" class=" d-flex flex-row flex-wrap">
     
     <mat-radio-group class="d-flex flex-column col-md-2" (change)="onIzborKategorije($event)"
@@ -115,7 +117,7 @@
 
 <!-- deo sa listom svih proizvoda -->
 
-<app-product-list [products]="this.products"></app-product-list>
+<app-product-list [products]="this.products" *ngIf = "!isLoading"></app-product-list>
 
 <div class="row justify-content-center my-3">
     <div class="col-1 p-0 text-center">

@@ -29,6 +29,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   a5: boolean = false;
   idKnjizare: string = null;
   queryParams = {};
+  isLoading: boolean;
 
   cene = [{controlName: 'cena1', value: '0-1000', text : '0-1000', checked: false},
           {controlName: 'cena2', value: '1000-2000', text : '1000-2000', checked: false},
@@ -202,6 +203,8 @@ export class ProductPageComponent implements OnInit, OnDestroy {
         return;
       }
 
+      if(this.tipStranice == 'proizvodi'){
+      } else
       if(this.tipStranice == 'knjige'){
         queryParams = {kategorija: 'knjiga', ...queryParams};
       } else if(this.tipStranice == 'iznajmljivanje') {
@@ -220,9 +223,11 @@ export class ProductPageComponent implements OnInit, OnDestroy {
         selectFields.push('zahtevaliZajam');
       }
 
+      this.isLoading = true;
       this.prodService.ucitajProizvode2(brStranice * this.velicinaStranice, this.velicinaStranice, queryParams, selectFields).subscribe({
         next: resp => {
           this.products = resp;
+          this.isLoading = false;
         },
         error: err => {console.log(err);}
       });
@@ -241,9 +246,11 @@ export class ProductPageComponent implements OnInit, OnDestroy {
           queryParams = {kategorija: 'knjiga', ...queryParams};
         }
 
+        this.isLoading = true;
         this.prodService.ucitajProizvodeKnjizare(idKnjizare, brStranice * this.velicinaStranice, this.velicinaStranice, queryParams).subscribe({
           next: resp => {
             this.products = resp;
+            this.isLoading = false;
           },
           error: err => {console.log(err);}
         });

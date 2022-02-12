@@ -61,7 +61,7 @@ router.get("/:productId", async(req, res) => {
     try {
         const product = await ProductModel.findById(req.params.productId);
         if(product.kategorija == 'knjiga na izdavanje') {
-            if (req.query.uid) {
+            if (req.query.uid != 'null') {
                 const leased = (await LeaseModel.find({ "korisnikPozajmljuje.id": req.query.uid }).select('knjiga potvrdjeno')).reduce((acc, el) => ({...acc, [String(el.knjiga.id)]: el.potvrdjeno }), {});
                 const lease = leased[String(product._id)];
                 if(lease == 0 || lease){

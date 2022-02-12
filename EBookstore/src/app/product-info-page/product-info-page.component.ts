@@ -80,7 +80,10 @@ export class ProductInfoPageComponent implements OnInit {
         this.productService.getProductById(this.productId, null).subscribe({
           next: response=>{
             this.product=response;
-            this.personal=user.id==this.product.poreklo.id;
+            if(user)
+              this.personal=user.id==this.product.poreklo.id;
+            else
+              this.personal = false;
           },
           error: err=>{
             console.log(err);
