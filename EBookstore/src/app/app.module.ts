@@ -41,6 +41,7 @@ import { CommonModule } from '@angular/common';
 import { LeaseDialogComponent } from './lease-dialog/lease-dialog.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { SpinnerComponent } from './spinner/spinner.component';
 import { LoadingDialogComponent } from './components/loading-dialog/loading-dialog.component';
 
 @NgModule({
@@ -68,6 +69,7 @@ import { LoadingDialogComponent } from './components/loading-dialog/loading-dial
     LeaseSingleComponent,
     AddUsersBookComponent,
     LeaseDialogComponent,
+    SpinnerComponent,
     LoadingDialogComponent
   ],
   imports: [
