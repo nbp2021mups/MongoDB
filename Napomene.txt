@@ -1,3 +1,5 @@
+Link ka github repozitorijumu: https://github.com/nbp2021mups/MongoDB
+
 Članovi tima MUPS:
 - Miljana 	Simić 		[17401]
 - Uroš 		Pešić 		[17356]
