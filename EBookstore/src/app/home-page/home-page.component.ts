@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/services/auth.service';
 
 @Component({
   selector: 'app-home-page',
@@ -8,9 +9,30 @@ import { Router } from '@angular/router';
 })
 export class HomePageComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  userType: string = null;
+  id: string = null;
+
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.resolveUser();
+  }
+
+  resolveUser() {
+    this.authService.user.subscribe(user => {
+      if(!user){
+        this.userType = 'none';
+        this.id = null;
+      }
+      else if(user.role == 'user'){
+        this.userType = 'user';
+        this.id = user.id;
+      }
+      else if(user.role == 'bookstore'){
+        this.userType = 'bookstore';
+        this.id = user.id;
+      }
+    }).unsubscribe();
   }
 
   register(){
@@ -25,11 +47,25 @@ export class HomePageComponent implements OnInit {
     this.router.navigate(['knjige']);
   }
 
+  bookstoreBooks() {
+    this.router.navigate(['knjige', this.id]);
+  }
+
+  bookstoreProducts() {
+    this.router.navigate(['proizvodi', this.id]);
+  }
+
   rent(){
-    this.router.navigate(['iznajmljivanje']);
+    console.log('ovde');
+    this.router.navigate(['knjige-za-iznajmljivanje']);
   }
 
   products(){
     this.router.navigate(['proizvodi']);
+  }
+
+  onAddProduct(){
+    console.log('obde');
+    this.router.navigate(['novi-proizvod']);
   }
 }

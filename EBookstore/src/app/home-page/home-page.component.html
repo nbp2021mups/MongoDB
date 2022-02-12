@@ -19,7 +19,8 @@
 
       <p class="p-desc">EKnjižara poseduje u svojoj ponudi knjižare iz čitave zemlje, pa možete kupovati i iz knjižara koje nisu dostupne u Vašoj blizini.
       </p>
-      <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="bookstores()">Knjižare u ponudi</button>
+      <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="bookstores()" *ngIf="userType && userType !='bookstore'">Knjižare u ponudi</button>
+      <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="onAddProduct()" *ngIf="userType && userType =='bookstore'">Dodaj proizvod</button>
 
     </div>
     <div class="d-flex flex-column align-items-center border rounded p-2 col-12 col-lg-3 div-card">
@@ -27,8 +28,9 @@
 
       <p class="p-desc">Naša internet knjižara nudi laku i brzu narudžbinu i dostavu na adresu. Možete istraživati celokupnu ponudu novih knjiga iz svih dostupnih knjižara, ili pak iznajmiti knjigu od nekoga.</p>
       <div>
-        <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="books()">Knjige u ponudi</button>
-        <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="rent()">Iznajmi knjigu</button>
+        <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="books()" *ngIf="userType && userType !='bookstore'">Knjige u ponudi</button>
+        <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="rent()" *ngIf="userType && userType !='bookstore'">Iznajmi knjigu</button>
+        <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="bookstoreBooks()" *ngIf="userType && userType =='bookstore'">Vase knjige</button>
       </div>
 
     </div>
@@ -38,7 +40,8 @@
       <p class="p-desc">Za one koji traže nešto osim knjiga, na našoj aplikaciji mogu pronaći proizvode iz školskog i gift programa.
         Baš kao što naš slogan kaže: <i>sve dobre knjige su na jednom mestu</i>, a danas i više od toga.
       </p>
-      <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="products()">Dostupni proizvodi</button>
+      <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="products()" *ngIf="userType && userType != 'bookstore'">Dostupni proizvodi</button>
+      <button type="button" class="btn btn-outline-info m-2 btn-card" (click)="bookstoreProducts()" *ngIf="userType && userType =='bookstore'">Vasi proizvodi</button>
 
     </div>
   </div>

@@ -139,7 +139,7 @@ export class EditProductComponent implements OnInit, OnDestroy {
            trajanje:igra.trajanje,
            brojIgraca:igra.brIgraca,
            uzrastOd:igra.uzrast.substring(0,igra.uzrast.indexOf("-")),
-           uzrastDo:igra.uzrast.substring(igra.uzrast.indexOf("-"))
+           uzrastDo:igra.uzrast.substring(igra.uzrast.indexOf("-")+1)
           });
         }
         else if (this.selectedCategory=='slagalica'){
@@ -188,14 +188,14 @@ export class EditProductComponent implements OnInit, OnDestroy {
         if (this.selectedCategory!='knjiga na izdavanje')
           this.router.navigate(['/proizvod', this.idProizvoda]);
         else
-          this.router.navigate(['/pocetna']);//PROMENI OVO
+          this.router.navigate(['/zajam']);
       },
       error: err=>{
         console.log(err)
         if (this.selectedCategory!='knjiga na izdavanje')
           this.router.navigate(['/proizvod', this.idProizvoda]);
         else
-          this.router.navigate(['/pocetna']);//PROMENI OVO
+          this.router.navigate(['/zajam']);
       }
     })
 

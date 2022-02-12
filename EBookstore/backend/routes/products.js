@@ -220,7 +220,7 @@ router.delete('/:productId/company/:idPorekla', async(req, res) => {
 router.delete('/:productId/user/:idPorekla', async(req, res) => {
     try {
         await ProductModel.findByIdAndDelete(req.params.productId);
-        await UserModel.findByIdAndUpdate(req.params.idPorekla, { $pull: { ponudjeneKnjige: ObjectId(req.params.productId) } });
+        await UserModel.findByIdAndUpdate(req.params.idPorekla, { $pull: { ponudjeneKnjige: new mongoose.Types.ObjectId(req.params.productId) } });
         const path = "./backend" + req.body.imagePath.substring(req.body.imagePath.indexOf("/images"));
 
         fs.unlink(path, (err) => {
