@@ -53,23 +53,7 @@ export class OrdersComponent implements OnInit {
         });
   }
 
-  deleteOrder(orderID: string, ind: number) : void {
-    const dialog = this.matDialog.open(LoadingDialogComponent, {
-      data: {
-        content: 'Narudžbina se briše! Molimo sačekajte...'
-      }
-    });
-
-    this.http.delete("http://localhost:3000/orders/" + orderID).subscribe({
-        next: data => {
-        this.orders = this.orders.filter((el, index) => ind != index);
-        dialog.componentInstance.response('Narudžbina je uspešno obrisana!', true);
-      },
-      error: err => {
-        console.log(err);
-        dialog.componentInstance.response(err.error.sadrzaj, false);
-      }
-    });
+  removeOrder(orderID: string, ind: number) : void {
+    this.orders = this.orders.filter((el, index) => ind != index);
   }
-
 }

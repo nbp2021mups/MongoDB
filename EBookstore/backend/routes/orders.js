@@ -70,7 +70,7 @@ router.patch("/decline", async(req, res) => {
         session.startTransaction();
 
         try {
-            const order = await OrderModel.findOneAndUpdate({ _id: req.body.orderID }, { $set: { "status.potvrdjena": -1 } }, { new: true, session })
+            const order = await OrderModel.findOneAndDelete({ _id: req.body.orderID }, { new: true, session })
                 .populate({
                     path: 'korisnik',
                     select: 'email',
@@ -97,8 +97,13 @@ router.patch("/decline", async(req, res) => {
                 throw "Narudzbina nije korektno povezana!";
 
             if (userOrder.status.naCekanju.length == 0) {
-                userOrder.status.potvrdjena = userOrder.status.potvrdili.length == 0 ? -1 : 1;
-                await userOrder.save({ session });
+                if (userOrder.status.potvrdili.length > 0) {
+                    userOrder.status.potvrdjena = 1;
+                    await userOrder.save({ session });
+                } else {
+                    await userOrder.delete();
+                    await UserModel.updateOne({ _id: order.korisnik._id }, { $pull: { narudzbine: userOrder._id } });
+                }
             }
 
             await sendEmail(order.korisnik.email, "Odbijena narudžbina",
@@ -181,7 +186,7 @@ router.delete('/:orderID', async(req, res) => {
                     <label>email: ${ userOrder.korisnik.email }</label><br/>
                     <label>telefon: ${ userOrder.korisnik.telefon }</label>`);
 
-            await UserModel.updateOne({ _id: userOrder.korisnik._id }, { $pull: userOrder._id });
+            await UserModel.updateOne({ _id: userOrder.korisnik._id }, { $pull: { narudzbine: userOrder._id } });
 
             await session.commitTransaction();
             await session.endSession();

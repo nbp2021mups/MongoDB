@@ -20,10 +20,10 @@
                     <a class="nav-link" routerLink="/proizvodi" *ngIf="tip == null || tip == 'user'">Svi proizvodi</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/knjige', this.id]" *ngIf="tip == 'bookstore'">Vase knjige</a>
+                    <a class="nav-link" [routerLink]="['/knjige', this.id]" *ngIf="tip == 'bookstore'">Vaše knjige</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/proizvodi', this.id]" *ngIf="tip == 'bookstore'">Vasi proizvodi</a>
+                    <a class="nav-link" [routerLink]="['/proizvodi', this.id]" *ngIf="tip == 'bookstore'">Vaši proizvodi</a>
                 </li>
                 <li class="nav-item" *ngIf="!this.ulogovan || this.tip && this.tip=='user'">
                     <a class="nav-link" routerLink="/knjige-za-iznajmljivanje">Iznajmljivanje</a>

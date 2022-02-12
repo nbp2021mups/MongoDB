@@ -16,7 +16,7 @@ export class OrderSingleComponent implements OnInit {
   @Input() order: OrderBasic = new OrderBasic();
   @Input() category: string = 'user';
 
-  @Output() orderDeleted: EventEmitter<string> = new EventEmitter<string>();
+  @Output() removeOrder: EventEmitter<{ orderID: string }> = new EventEmitter<{ orderID: string }>();
 
   public count: number = 5;
   public hasMoreProducts: boolean = false;
@@ -100,7 +100,7 @@ export class OrderSingleComponent implements OnInit {
     .subscribe({
       next: response => {
         console.log(response);
-        this.order.status.potvrdjena = -1;
+        this.removeOrder.emit({ orderID: this.order._id });
         dialog.componentInstance.response('Narudžbina je uspešno odbijena!', true);
       },
       error: response =>  {
@@ -110,6 +110,22 @@ export class OrderSingleComponent implements OnInit {
   }
 
   deleteOrder(): void {
-    this.orderDeleted.emit(this.order._id);
+    const dialog = this.matDialog.open(LoadingDialogComponent, {
+      data: {
+        content: 'Narudžbina se briše! Molimo sačekajte...'
+      }
+    });
+
+    this.http.delete("http://localhost:3000/orders/" + this.order._id)
+    .subscribe({
+        next: data => {
+          this.removeOrder.emit({ orderID: this.order._id });
+          dialog.componentInstance.response('Narudžbina je uspešno obrisana!', true);
+        },
+        error: err => {
+          console.log(err);
+          dialog.componentInstance.response(err.error.sadrzaj, false);
+        }
+    });
   }
 }
