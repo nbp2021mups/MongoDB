@@ -41,7 +41,7 @@ export class ProductsService {
     }
 
     ucitajProizvode2(skip: number, count: number, queryParams, selectFields) {
-        return this.http.get<any>('http://localhost:3000/uros/search/' + skip + '/' + count, {
+        return this.http.get<any>('http://localhost:3000/pretraga/search/' + skip + '/' + count, {
             params: {
                 ...queryParams,
                 selectFields: selectFields
@@ -66,7 +66,7 @@ export class ProductsService {
 
 
     ucitajProizvodeKnjizare(idKnjizare: string, skip: number, count: number, queryParams) {
-        return this.http.get<any>('http://localhost:3000/uros/search/' + idKnjizare + '/' + skip + '/' + count, {
+        return this.http.get<any>('http://localhost:3000/pretraga/search/' + idKnjizare + '/' + skip + '/' + count, {
             params: {
                 ...queryParams,
                 selectFields: '_id naziv proizvodjac cena slika kolicina kategorija autor zanr poreklo'
@@ -92,8 +92,10 @@ export class ProductsService {
         return this.http.post<any>("http://localhost:3000/products", productData);
     }
 
-    getProductById(id: string){
-      return this.http.get<any>('http://localhost:3000/products/'+id).pipe(map(response=>{
+    getProductById(id: string, uid: string){
+      console.log(uid);
+      return this.http.get<any>('http://localhost:3000/products/'+id,
+      {params: { uid: uid}}).pipe(map(response=>{
         const id= response._id;
         const kategorija= response.kategorija;
         const naziv = response.naziv;
@@ -127,9 +129,8 @@ export class ProductsService {
             , kategorija, opis, response.poreklo, response.dimenzije, response.brojDelova);
         }
         else if(kategorija=='knjiga na izdavanje'){
-          console.log(response.poreklo)
           return new KnjigaIznajmljivanjeFull(id, naziv, proizvodjac, kolicina, cena, slika, kategorija, opis, response.poreklo, response.autor,
-            response.zanr, response.brojStrana, response.izdata, response.stanje, response.zahtevaliZajam);
+            response.zanr, response.brojStrana, response.izdata, response.stanje, response.status);
         }
 
       }))

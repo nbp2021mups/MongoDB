@@ -75,9 +75,8 @@ export class EditProductComponent implements OnInit, OnDestroy {
 
     });
 
-    this.productService.getProductById(this.idProizvoda).subscribe({
+    this.productService.getProductById(this.idProizvoda, null).subscribe({
       next: resp=>{
-        console.log(resp)
         this.selectedCategory=resp.kategorija;
         this.currentImage=resp.slika;
         this.imagePreview=resp.slika;

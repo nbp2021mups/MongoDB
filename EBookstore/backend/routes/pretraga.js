@@ -168,7 +168,7 @@ router.get("/search/:skip/:count", async(req, res) => {
                 const leased = (await LeaseModel.find({ "korisnikPozajmljuje.id": req.query.uid }).select('knjiga potvrdjeno')).reduce((acc, el) => ({...acc, [String(el.knjiga.id)]: el.potvrdjeno }), {});
                 products.forEach(prod => {
                     const lease = leased[String(prod._id)];
-                    if(lease){
+                    if(lease == 0 || lease){
                         prod._doc.status = lease;
                     } else {
                         prod._doc.status = 2;
