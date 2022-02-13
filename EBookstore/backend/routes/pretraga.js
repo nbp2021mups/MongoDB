@@ -131,7 +131,8 @@ router.get("/search/:skip/:count", async(req, res) => {
 
                 uzrasti.forEach(u => {
                     u = u.split("-");
-                    nizUzrasta.push({ uzrastOd: { $gte: parseInt(u[0]) }, uzrastDo: { $lte: parseInt(u[1]) } });
+                    console.log(u);
+                    nizUzrasta.push({ uzrastOd: { $lte: parseInt(u[0]) }, uzrastDo: { $gte: parseInt(u[1]) } });
                 });
                 filter.$or = nizUzrasta;
             }

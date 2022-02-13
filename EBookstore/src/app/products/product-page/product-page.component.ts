@@ -53,7 +53,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
           {controlName: 'uzrast2', value: '5-8', text : '5 - 8 godina', checked: false},
           {controlName: 'uzrast3', value: '8-13', text : '8 - 13 godina', checked: false},
           {controlName: 'uzrast4', value: '13-18', text : '13 - 18 godina', checked: false},
-          {controlName: 'uzrast5', value: '18-999', text : '18+ godina', checked: false}];
+          {controlName: 'uzrast5', value: '18-18', text : '18+ godina', checked: false}];
   
   brDelova = [{controlName: 'delovi1', value: 500, text : '500', checked: false},
           {controlName: 'delovi2', value: 1000, text : '1000', checked: false},
@@ -204,6 +204,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
       }
 
       if(this.tipStranice == 'proizvodi'){
+
       } else
       if(this.tipStranice == 'knjige'){
         queryParams = {kategorija: 'knjiga', ...queryParams};
